@@ -41,10 +41,12 @@ void	rush(int x, int y)
 	count2 = 0;
 	while (count2 < y)
 	{
-		if (count2 == 0 || count2 == y - 1)
-			ft_print_ligne(x, 'o', '-', 'o');
+		if (count2 == 0)
+			ft_print_ligne(x, '/', '*', '\\');
+		else if (count2 < y - 1)
+			ft_print_ligne(x, '*', ' ', '*');
 		else
-			ft_print_ligne(x, '|', ' ', '|');
+			ft_print_ligne(x, '\\', '*', '/');
 		count2++;
 	}
 }
