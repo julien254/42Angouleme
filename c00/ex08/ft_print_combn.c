@@ -16,58 +16,65 @@ void	ft_putchar(char c)
 	write(1, &c, 1);
 }
 
-void	ft_putnbr(int nb)
+void	ft_write_tab(int n, int holders[])
 {
-	unsigned int n;
+	int	index;
+	int	last;
 
-	if (nb < 0)
+	index = 0;
+	while (index < n)
 	{
-		ft_putchar('-');
-		n = -nb;
+		ft_putchar(48 + holders[index]);
+		index++;
 	}
-	else
-		n = nb;
-	if (n > 9)
+	index = n - 1;
+	last = 1;
+	while (index >= 0)
 	{
-		ft_putnbr(n / 10);
-		n %= 10;
+		if (holders[index] != 9 - (n - 1 - index))
+		{
+			last = 0;
+			break ;
+		}
+		index--;
 	}
-	ft_putchar(n + '0');
+	if (!last)
+	{
+		ft_putchar(',');
+		ft_putchar(' ');
+	}
 }
 
-void	ft_print_num(int *tab,int n,int index)
+void    ft_recurcive(int *tab, int n, int num, int niveau)
 {
-	if (tab[index] < 9)
+        int next_num;
+        if (niveau == n)
+                ft_write_tab(n, tab);
+        else
         {
-		int i;
-
-                i = 0;
-                while (i < n)
+                next_num = num + 1;
+                while (next_num <= 9)
                 {
-                        ft_putnbr(tab[i]);
-                        i++;
+                        tab[niveau] = next_num;
+                        ft_recurcive(tab, n, next_num, niveau + 1);
+                        next_num++;
                 }
-                ft_putchar('\n');
-                tab[index]++;
-                ft_print_num(tab, n, index);
         }
-}
+}	
+
 
 void	ft_print_combn(int n)
 {
 	int tab[n];
 	int i;
-	int index;
-	//int last;
-	
+
 	i = 0;
-	//last = n;
 	while (i < n)
 	{
 		tab[i] = 0;
 		i++;
 	}
-	ft_print_num(tab, n, index);
+	ft_recurcive(tab, n, -1, 0);
 }
 
 int main(void)
