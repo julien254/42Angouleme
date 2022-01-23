@@ -39,7 +39,7 @@ void	ft_control_and_print(int a, int b)
 	}
 }
 
-void	ft_print_comb(void)
+void	ft_print_comb2(void)
 {
 	int	a;
 	int	b;
