@@ -341,7 +341,7 @@ void check_col_and_put_result (int possibility[4][6][4], int *cond)
 		index++;
 		if (index == sizeof (tabcomb_col) / (sizeof (int) * 4) && tabindex[3] == 0)
 		{
-			printf ("error!\n");
+			printf ("error\n");
 		}
 	}
 }
@@ -357,7 +357,7 @@ int main (int argv, char *argc[])
 	indexcond[0] = 0;
 	indexcond[1] = 0;
 	if (argv != 2)
-		ft_putstr("error!");
+		ft_putstr("error\n");
 
 	else
 	{
@@ -372,7 +372,7 @@ int main (int argv, char *argc[])
 		}
 		if (indexcond[1] != 16)
 		{
-			ft_putstr("error!");
+			ft_putstr("error\n");
 		}
 		else
 		{
@@ -500,22 +500,6 @@ int main (int argv, char *argc[])
 				indexcond[1] = indexcond[1] + 2;
 				ligne++;
 			}
-			//	printf ("%d %d %d %d %d %d %d %d\n", possibility[0][0][0],
-			//			possibility[0][0][1], possibility[0][0][2], possibility[0][0][3],
-			//			possibility[0][1][0], possibility[0][1][1], possibility[0][1][2],
-			//			possibility[0][1][3]);
-			//	printf ("%d %d %d %d %d %d %d %d\n", possibility[1][0][0],
-			//			possibility[1][0][1], possibility[1][0][2], possibility[1][0][3],
-			//			possibility[1][1][0], possibility[1][1][1], possibility[1][1][2],
-			//			possibility[1][1][3]);
-			//	printf ("%d %d %d %d %d %d %d %d\n", possibility[2][0][0],
-			//			possibility[2][0][1], possibility[2][0][2], possibility[2][0][3],
-			//			possibility[2][1][0], possibility[2][1][1], possibility[2][1][2],
-			//			possibility[2][1][3]);
-			//	printf ("%d %d %d %d %d %d %d %d\n", possibility[3][0][0],
-			//			possibility[3][0][1], possibility[3][0][2], possibility[3][0][3],
-			//			possibility[3][1][0], possibility[3][1][1], possibility[3][1][2],
-			//			possibility[3][1][3]);
 			check_col_and_put_result (possibility, cond);
 		}
 

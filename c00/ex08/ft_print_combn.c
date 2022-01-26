@@ -6,7 +6,7 @@
 /*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 12:31:02 by jdetre            #+#    #+#             */
-/*   Updated: 2022/01/20 09:33:17 by jdetre           ###   ########.fr       */
+/*   Updated: 2022/01/26 05:16:39 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <unistd.h>
@@ -45,28 +45,28 @@ void	ft_write_tab(int n, int holders[])
 	}
 }
 
-void    ft_recurcive(int *tab, int n, int num, int niveau)
+void	ft_recurcive(int *tab, int n, int num, int niveau)
 {
-        int next_num;
-        if (niveau == n)
-                ft_write_tab(n, tab);
-        else
-        {
-                next_num = num + 1;
-                while (next_num <= 9)
-                {
-                        tab[niveau] = next_num;
-                        ft_recurcive(tab, n, next_num, niveau + 1);
-                        next_num++;
-                }
-        }
-}	
+	int	next_num;
 
+	if (niveau == n)
+		ft_write_tab(n, tab);
+	else
+	{
+		next_num = num + 1;
+		while (next_num <= 9)
+		{
+			tab[niveau] = next_num;
+			ft_recurcive(tab, n, next_num, niveau + 1);
+			next_num++;
+		}
+	}
+}	
 
 void	ft_print_combn(int n)
 {
-	int tab[n];
-	int i;
+	int	tab[9];
+	int	i;
 
 	i = 0;
 	while (i < n)
@@ -77,7 +77,7 @@ void	ft_print_combn(int n)
 	ft_recurcive(tab, n, -1, 0);
 }
 
-int main(void)
+/*int	main(void)
 {
 	ft_print_combn(9);
-}
+}*/
