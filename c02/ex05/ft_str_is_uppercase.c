@@ -12,9 +12,9 @@
 #include <unistd.h>
 #include <stdio.h>
 
-int ft_str_is_uppercase(char *str)
+int	ft_str_is_uppercase(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] != '\0')

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include <unistd.h>
 
-void    ft_putchar(char c)
+/*void    ft_putchar(char c)
 {
         write(1, &c, 1);
 }
@@ -27,25 +27,24 @@ void    ft_putstr(char *str)
                 a++;
         }
 }
-
-char *ft_strncpy(char *dest, char *src, unsigned int n)
+*/
+char	*ft_strncpy(char *dest, char *src, unsigned int n)
 {
-        int unsigned i;
+	int unsigned	i;
 
-        i = 0;
-        while(src[i] != '\0' && i < n)
-        {
-                dest[i] = src[i];
-                i++;
-        }
-	while(i < n)
+	i = 0;
+	while (src[i] != '\0' && i < n)
 	{
-	      	dest[i] = '\0';
+		dest[i] = src[i];
 		i++;
 	}
-        return dest;
+	while (i < n)
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
 }
-
 /*int main(void)
 {
         char    dest[20];
@@ -53,4 +52,3 @@ char *ft_strncpy(char *dest, char *src, unsigned int n)
 
         ft_putstr(ft_strncpy(dest, src, 18));
 }*/
-

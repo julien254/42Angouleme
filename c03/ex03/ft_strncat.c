@@ -1,49 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   ft_strncat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/21 08:25:53 by jdetre            #+#    #+#             */
-/*   Updated: 2022/01/21 08:39:41 by jdetre           ###   ########.fr       */
+/*   Created: 2022/01/27 20:35:21 by jdetre            #+#    #+#             */
+/*   Updated: 2022/01/27 21:16:16 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <unistd.h>
+#include <stdio.h>
 
-/*void	ft_putchar(char c)
+char	*ft_strncat(char *dest, char *src, unsigned int nb)
 {
-	write(1, &c, 1);
-}
-
-void	ft_putstr(char *str)
-{
-	int	a;
-
-	a = 0;
-	while (str[a] != '\0')
-	{
-		ft_putchar(str[a]);
-		a++;
-	}
-}*/
-char	*ft_strcpy(char *dest, char *src)
-{
-	int	i;
+	unsigned int	i;
+	unsigned int	j;
 
 	i = 0;
-	while (src[i] != '\0')
-	{
-		dest[i] = src[i];
+	while (dest[i] != '\0')
 		i++;
+	j = 0;
+	while (src[j] != '\0' && j < nb)
+	{
+		dest[i] = src[j];
+		i++;
+		j++;
 	}
 	dest[i] = '\0';
 	return (dest);
 }
-/*int main(void)
+/*
+int main()
 {
-	char	dest[1];
-	char	src[] = "lol c'est ouf !";
-
-	ft_putstr(ft_strcpy(dest, src));
+	char a[100] = "salut les amis,";
+	printf("%s",ft_strncat(a, "vous aller bien?denfuisngjksn", 16));
 }*/

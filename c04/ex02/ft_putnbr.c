@@ -1,49 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/21 08:25:53 by jdetre            #+#    #+#             */
-/*   Updated: 2022/01/21 08:39:41 by jdetre           ###   ########.fr       */
+/*   Created: 2022/01/17 12:31:02 by jdetre            #+#    #+#             */
+/*   Updated: 2022/01/20 17:30:34 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <unistd.h>
 
-/*void	ft_putchar(char c)
+void	ft_putchar(char c)
 {
 	write(1, &c, 1);
 }
 
-void	ft_putstr(char *str)
+void	ft_putnbr(int nb)
 {
-	int	a;
+	unsigned int	n;
 
-	a = 0;
-	while (str[a] != '\0')
+	if (nb < 0)
 	{
-		ft_putchar(str[a]);
-		a++;
+		ft_putchar('-');
+		n = -nb;
 	}
-}*/
-char	*ft_strcpy(char *dest, char *src)
-{
-	int	i;
-
-	i = 0;
-	while (src[i] != '\0')
+	else
+		n = nb;
+	if (n > 9)
 	{
-		dest[i] = src[i];
-		i++;
+		ft_putnbr(n / 10);
+		n %= 10;
 	}
-	dest[i] = '\0';
-	return (dest);
+	ft_putchar(n + '0');
 }
-/*int main(void)
-{
-	char	dest[1];
-	char	src[] = "lol c'est ouf !";
-
-	ft_putstr(ft_strcpy(dest, src));
-}*/

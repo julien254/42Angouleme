@@ -12,9 +12,9 @@
 #include <unistd.h>
 #include <stdio.h>
 
-int ft_str_is_lowercase(char *str)
+int	ft_str_is_lowercase(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] != '\0')
@@ -25,7 +25,6 @@ int ft_str_is_lowercase(char *str)
 	}
 	return (1);
 }
-
 /*int main(void)
 {
 	char *str;
