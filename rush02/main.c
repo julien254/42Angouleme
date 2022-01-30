@@ -6,7 +6,7 @@
 /*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 12:31:02 by jdetre            #+#    #+#             */
-/*   Updated: 2022/01/29 14:05:07 by jdetre           ###   ########.fr       */
+/*   Updated: 2022/01/30 13:07:35 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <sys/types.h>
@@ -81,6 +81,7 @@ void	init_str(char *str)
 void stock_nbr_rank_in_temp(char *pattern, char *pattern_temp, int i, int mode)
 {
 	int j;
+
 	j = 0;
 	if (mode == 100)
 	{
@@ -183,7 +184,7 @@ void	search_nbr_in_dico_and_print(char *str, char *pattern, int i)
 			{
 				while (!(str[temp_i] >= 'a' && str[temp_i] <= 'z'))
 					temp_i++;
-				while (str[temp_i] != '\n')
+				while (str[temp_i] == '-' || (str[temp_i] >= 'a' && str[temp_i] <= 'z'))
 				{
 					ft_putchar(str[temp_i]);
 					temp_i++;
@@ -290,13 +291,13 @@ void    recup_dico(char *pattern)
 	cut_print_pattern(str, pattern);
 }
 
-int	main(int argv, char *argc[])
+int	main(int argc, char *argv[])
 {
-	if (argv == 2)
+	if (argc == 2)
 	{
-		printf("%s", argc[1]);
+		printf("%s", argv[1]);
 		printf("%c", '\n');
-		recup_dico(argc[1]);
+		recup_dico(argv[1]);
 		printf("%c", '\n');
 
 	}
