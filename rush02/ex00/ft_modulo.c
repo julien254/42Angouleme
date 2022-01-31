@@ -50,9 +50,10 @@ void	ft_if_modulo_2(char *pattern, char *pattern_temp, int i, char *str)
 	}
 	else
 	{
-		ft_stock_num_in_temp(pattern, pattern_temp, i, 2);
+		ft_stock_num_10to19_in_temp(pattern, pattern_temp, i, 2);
 		ft_search_nbr_in_dico_and_print(str, pattern_temp, i);
-		ft_putstr(" ");
+		if (i < ft_strlen(pattern) - 3)
+			ft_putstr(" ");
 	}
 }
 

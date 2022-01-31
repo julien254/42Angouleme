@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include <stdio.h>
 
-void	ft_strupcase(char *str)
+char	*ft_strupcase(char *str)
 {
 	int	i;
 
@@ -22,6 +22,7 @@ void	ft_strupcase(char *str)
 			str[i] = str[i] - 32;
 		i++;
 	}
+	return (str);
 }
 
 /*int main(void)

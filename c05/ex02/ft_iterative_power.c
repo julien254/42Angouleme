@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_iterative_factorial.c                           :+:      :+:    :+:   */
+/*   ft_iterative_power.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/31 10:57:28 by jdetre            #+#    #+#             */
-/*   Updated: 2022/01/31 12:51:08 by jdetre           ###   ########.fr       */
+/*   Created: 2022/01/31 13:41:17 by jdetre            #+#    #+#             */
+/*   Updated: 2022/01/31 13:51:27 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-int	ft_iterative_factorial(int nb)
+#include <stdio.h>
+int	ft_iterative_power(int nb, int power)
 {
-	int	i;
+	int n;
 
-	if (nb < 0)
+	if (power < 0)
 		return (0);
-	if (nb == 0)
+	if (power == 0)
 		return (1);
-	i = 1;
-	while (nb)
-		i *= nb;
-		nb--;
-	return (i);
+	n = nb - 1;
+	while (power--)
+		n *= nb;
+	return (n);
+}
+
+int main(void)
+{
+	printf("%d", ft_iterative_power(0, 3));
 }

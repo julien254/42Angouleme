@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include <stdio.h>
 
-void	ft_strcapitalize(char *str)
+char	*ft_strcapitalize(char *str)
 {
 	int	i;
 
@@ -34,6 +34,7 @@ void	ft_strcapitalize(char *str)
 			str[i] = str[i] + 32;
 		i++;
 	}
+	return (str)
 }
 /*int	main(void)
 {

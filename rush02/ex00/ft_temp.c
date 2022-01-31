@@ -29,16 +29,19 @@ void	ft_stock_nbr_rank_in_temp(char *pattern, char *pattern_temp, \
 		}
 		pattern_temp[j] = '\0';
 	}
-	while (pattern[i])
+	else 
 	{
-		if (j == 0)
-			pattern_temp[j] = '1';
-		else
-			pattern_temp[j] = '0';
-		j++;
-		i++;
+		while (pattern[i])
+		{
+			if (j == 0)
+				pattern_temp[j] = '1';
+			else
+				pattern_temp[j] = '0';
+			j++;
+			i++;
+		}
+		pattern_temp[j] = '\0';
 	}
-	pattern_temp[j] = '\0';
 }
 
 void	ft_stock_num_in_temp(char *pattern, char *pattern_temp, \

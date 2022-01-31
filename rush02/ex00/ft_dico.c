@@ -25,7 +25,6 @@ void	ft_search_nbr_in_dico_and_print(char *str, char *pattern, int i)
 		{
 			ft_if_str_same_pattern(str, &temp_i, pattern, &j, &i);
 		}
-		ft_putnbr(i);
 		if (i == -1)
 			break ;
 		i++;

@@ -1,25 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_iterative_factorial.c                           :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/31 10:57:28 by jdetre            #+#    #+#             */
-/*   Updated: 2022/01/31 12:51:08 by jdetre           ###   ########.fr       */
+/*   Created: 2022/01/17 12:31:02 by jdetre            #+#    #+#             */
+/*   Updated: 2022/01/31 19:07:12 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-int	ft_iterative_factorial(int nb)
-{
-	int	i;
+#include <unistd.h>
 
-	if (nb < 0)
-		return (0);
-	if (nb == 0)
-		return (1);
-	i = 1;
-	while (nb)
-		i *= nb;
-		nb--;
-	return (i);
+int	ft_atoi(char *str)
+{
+	int	c;
+	int	neg;
+	int	result;
+
+	c = 0;
+	neg = 1;
+	result = 0;
+	while ((str[c] >= '\t' && str[c] <= '\r') || str[c] == ' ')
+		c++;
+	while (str[c] == '+' || str[c] == '-')
+	{
+		if (str[c] == '-')
+			neg = neg * -1;
+		c++;
+	}
+	while (str[c] >= '0' && str[c] <= '9')
+	{
+		result = (str[c] - '0') + (result * 10);
+		c++;
+	}
+	return (result * neg);
 }

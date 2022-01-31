@@ -38,6 +38,8 @@ void					ft_stock_nbr_rank_in_temp(char *pattern, \
 						char *pattern_temp, int i, int mode);
 void					ft_stock_num_in_temp(char *pattern, char *pattern_temp, \
 						int index, int rank);
+void					ft_stock_num_10to19_in_temp(char *pattern, char *pattern_temp, \
+						int index, int rank);
 void					ft_if_str_same_pattern(char *str, int *temp_i, \
 						char *pattern, int *j, int *i);
 #endif
