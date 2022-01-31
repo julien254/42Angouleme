@@ -22,20 +22,20 @@ void	ft_strcapitalize(char *str)
 	}
 	while (str[i] != '\0')
 	{
-		if ((str[i] >= 'a' && str[i] <= 'z') && (!(str[i - 1] >= 'a'\
-				&& str[i - 1] <= 'z')) && (!(str[i - 1] >= 'A'\
-				&& str[i - 1] <= 'Z')) && (!(str[i - 1] >= '0'\
-				&& str[i - 1] <= '9'))) 
+		if ((str[i] >= 'a' && str[i] <= 'z') && (!(str[i - 1] >= 'a' \
+				&& str[i - 1] <= 'z')) && (!(str[i - 1] >= 'A' \
+				&& str[i - 1] <= 'Z')) && (!(str[i - 1] >= '0' \
+				&& str[i - 1] <= '9')))
 			str[i] = str[i] - 32;
-		else if ((str[i] >= 'A' && str[i] <= 'Z') && ((str[i - 1] >= 'a'\
+		else if ((str[i] >= 'A' && str[i] <= 'Z') && ((str[i - 1] >= 'a' \
 				&& str[i - 1] <= 'z') || (str[i - 1] >= 'A' && \
-				 str[i - 1] <= 'Z') || (str[i - 1] >= '0'\
+				 str[i - 1] <= 'Z') || (str[i - 1] >= '0' \
 				&& str[i - 1] <= '9')))
 			str[i] = str[i] + 32;
 		i++;
 	}
 }
-int	main(void)
+/*int	main(void)
 {
 	char str[] = "nNnnNNnnNN 87889nNnnNNnnN!";
 	char str1[] = "faut pas 556Respirer la compote, ca fait tousser !!!";
@@ -50,4 +50,4 @@ int	main(void)
 	printf("%s", str1);
 	printf("%s", str2);
 	printf("%s", str3);
-}
+}*/
