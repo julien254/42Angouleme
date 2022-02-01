@@ -22,7 +22,7 @@ int	main(int argc, char **argv)
 	{
 		while (i < argc)
 		{
-			i = 0;
+			j = 0;
 			while (argv[i][j] != '\0')
 			{
 				write(1, &argv[i][j], 1);
