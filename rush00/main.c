@@ -16,6 +16,6 @@ int	main(void)
 {
 	rush(8, 8);
 	rush(0, 8);
-	rush(-8, 8);
+	rush(7, 8);
 	return (0);
 }
