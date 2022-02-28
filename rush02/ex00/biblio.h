@@ -9,13 +9,12 @@
 /*   Updated: 2022/01/30 20:00:58 by cmieuzet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#ifndef BIBLIO_H
-# define BIBLIO_H
-# include <sys/types.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <unistd.h>
-# include <stdlib.h>
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 void					ft_init_str(char *str);
 unsigned long long int	ft_atoi(char *str);
@@ -42,4 +41,3 @@ void					ft_stock_num_10to19_in_temp(char *pattern, char *pattern_temp, \
 						int index, int rank);
 void					ft_if_str_same_pattern(char *str, int *temp_i, \
 						char *pattern, int *j, int *i);
-#endif
