@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 19:25:08 by julien            #+#    #+#             */
-/*   Updated: 2022/04/15 11:05:01 by julien           ###   ########.fr       */
+/*   Updated: 2022/04/15 18:59:53 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -64,11 +64,11 @@
 
 /* int	main(int argc, char *argv[]) */
 /* { */
-/* 	char str[] = "Plus Ultra !"; */
+/* 	char str[] = "tripouille"; */
 /* 	(void)argc; */
 /* 	(void)argv; */
-/* 	printf("%s", strchr(str, 'U')); */
-/* 	printf("%s", ft_strchr(str, 'U')); */
+/* 	printf("%s", strchr(str, 't' + 265)); */
+/* 	printf("%s", ft_strchr(str, 't' + 256)); */
 /* 	return (0); */
 /* } */
 
@@ -127,14 +127,13 @@
 
 /* ------------------------ FT_SUBSTR ------------------------ */
 
-/* int	main(int argc, char *argv[]) */
-/* { */
-/* 	(void)argc; */
-/* 	(void)argv; */
-/* 	char	str[] = "lorem ipsum dolor sit amet"; */
-/* 	printf("%s", ft_substr(str, 400, 20)); */
-/* 	return (0); */
-/* } */
+int	main(int argc, char *argv[])
+{
+	(void)argc;
+	(void)argv;
+	printf("%s", ft_substr("tripouille", 0, 42000));
+	return (0);
+}
 
 /* ------------------------ FT_STRJOIN ------------------------ */
 
@@ -237,21 +236,21 @@
 
 /* ------------------------ FT_CALLOC ------------------------ */
 
-int	main(int argc, char *argv[])
-{
-	void	*str;
-	(void)argc;
-	(void)argv;
-	str = (void *)ft_calloc(20000000000, 1);
-	if (!str)
-	{
-		ft_putstr_fd("NULL", 1);
-		return (0);
-	}
-	else
-	{
-	ft_putstr_fd("OK", 1);
-	free(str);
-	return (1);
-	}
-}
+/* int	main(int argc, char *argv[]) */
+/* { */
+/* 	void	*str; */
+/* 	(void)argc; */
+/* 	(void)argv; */
+/* 	str = (void *)ft_calloc(20000000000, 1); */
+/* 	if (!str) */
+/* 	{ */
+/* 		ft_putstr_fd("NULL", 1); */
+/* 		return (0); */
+/* 	} */
+/* 	else */
+/* 	{ */
+/* 	ft_putstr_fd("OK", 1); */
+/* 	free(str); */
+/* 	return (1); */
+/* 	} */
+/* } */
