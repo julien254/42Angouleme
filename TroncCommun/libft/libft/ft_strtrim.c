@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:17:08 by julien            #+#    #+#             */
-/*   Updated: 2022/04/11 14:08:01 by julien           ###   ########.fr       */
+/*   Updated: 2022/04/16 08:57:19 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -33,16 +33,20 @@ char	*ft_strtrim(char const *s1, char const *set)
 	char	*str;
 
 	start = 0;
+	if (set[0] == '\0')
+		return (ft_strdup(s1));
 	while (searchc(s1[start], set))
 		start++;
-	end = ft_strlen(s1);
-	while (searchc(s1[end - 1], set))
+	end = ft_strlen(s1) - 1;
+	while (searchc(s1[end], set))
 		end--;
-	str = (char *)ft_calloc((end - start) + 1, 1);
+	if (end == 18446744073709551615UL && start == ft_strlen(s1))
+		return ((char *)ft_calloc(sizeof(char), 1));
+	str = (char *)ft_calloc((end + 1 - start) + 1, 1);
 	if (!str)
 		return (NULL);
 	i = 0;
-	while (start < end)
+	while (start < end + 1)
 		str[i++] = s1[start++];
 	str[i] = '\0';
 	return (str);

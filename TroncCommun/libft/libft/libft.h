@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:34:52 by julien            #+#    #+#             */
-/*   Updated: 2022/04/14 20:10:09 by julien           ###   ########.fr       */
+/*   Updated: 2022/04/18 19:51:39 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef struct s_list
 	struct s_list	*next;
 }				t_list;
 
-typedef struct s_
+typedef struct s_index
 {
 	size_t	i;
 	size_t	len;

@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2022/04/15 15:14:58 by julien           ###   ########.fr        #
+#    Updated: 2022/04/16 13:43:18 by julien           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC			= gcc -g
 
 CFLAGS		= -Wall -Wextra -Werror -I.
 
-SRCS		= ${wildcard ft_*.c}
+SRCS		= ${wildcard *.c}
 
 OBJS		= ${SRCS:.c=.o}
 
@@ -26,8 +26,11 @@ ${NAME}:	${OBJS}
 	ar rcs ${NAME} ${OBJS}
 
 bonus:		${OBJS}
-	ar rcs ${NAME} ${OBJS} 
+	ar rcs ${NAME} ${OBJS}
 
+so:
+	$(CC) -fPIC $(CFLAGS) $(SRCS)
+	gcc -shared -o libft.so $(OBJS)
 
 clean:
 	rm -f ${OBJS}

@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 18:56:25 by julien            #+#    #+#             */
-/*   Updated: 2022/04/11 23:04:05 by julien           ###   ########.fr       */
+/*   Updated: 2022/04/16 13:14:59 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,25 @@ static int	ft_abs(int nbr)
 	if (nbr < 0)
 		return (-nbr);
 	return (nbr);
+}
+
+static size_t	size(int n)
+{
+	size_t i;
+	size_t nb;
+	if (n == -2147483648)
+		nb = 2147483648;
+	else if (n < 0)
+		nb = -n;
+	else
+		nb = n;
+	i = 1;
+	while (nb > 9)
+	{
+		nb = nb / 10;
+		i++;
+	}
+	return (i);
 }
 
 static void	strrev(char *str)
@@ -43,9 +62,10 @@ char	*ft_itoa(int n)
 	size_t		i;
 
 	isneg = (n < 0);
-	nbr = (char *)ft_calloc(11 + isneg, 1);
+	nbr = malloc(size(n) + 1 + isneg);
 	if (!nbr)
 		return (NULL);
+	ft_bzero(nbr, size(n) + 1 + isneg);
 	if (n == 0)
 		nbr[0] = '0';
 	i = 0;

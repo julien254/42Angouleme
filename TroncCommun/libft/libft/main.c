@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 19:25:08 by julien            #+#    #+#             */
-/*   Updated: 2022/04/15 18:59:53 by jdetre           ###   ########.fr       */
+/*   Updated: 2022/04/16 13:12:20 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -127,13 +127,13 @@
 
 /* ------------------------ FT_SUBSTR ------------------------ */
 
-int	main(int argc, char *argv[])
-{
-	(void)argc;
-	(void)argv;
-	printf("%s", ft_substr("tripouille", 0, 42000));
-	return (0);
-}
+/* int	main(int argc, char *argv[]) */
+/* { */
+/* 	(void)argc; */
+/* 	(void)argv; */
+/* 	printf("%s", ft_substr("tripouille", 0, 42000)); */
+/* 	return (0); */
+/* } */
 
 /* ------------------------ FT_STRJOIN ------------------------ */
 
@@ -151,11 +151,11 @@ int	main(int argc, char *argv[])
 
 /* int	main(int argc, char *argv[]) */
 /* { */
-/* 	char	str[] = "lorem ipsum dolor sit amet"; */
+/* 	char	str[] = "      xxxxxtripouille"; */
 /* 	(void)argc; */
 /* 	(void)argv; */
 /* 	printf("\n"); */
-/* 	printf("%s", ft_strtrim(str, "te")); */
+/* 	printf("%s", ft_strtrim(str, " x")); */
 /* 	printf("\n"); */
 /* 	return (0); */
 /* } */
@@ -165,30 +165,32 @@ int	main(int argc, char *argv[])
 /* int	main(int argc, char *argv[]) */
 /* { */
 /* 	char	**split; */
-/* 	char const *s = ""; */
 /* 	size_t	i; */
 /* 	(void)argc; */
 /* 	(void)argv; */
-/* 	split = ft_split("", 'z'); */
+/* 	split = ft_split("dsnidsajij", ' '); */
 /* 	i = 0; */
-/* 	while (split[i++]) */
+/* 	while (split[i]) */
 /* 	{ */
 /* 		printf("%s", split[i]); */
 /* 		printf("\n"); */
+/* 		i++; */
 /* 	} */
+/* 	printf("%s", split[i]); */
+/* 	free(split); */
 /* 	return (0); */
 /* } */
 
 /* ------------------------ FT_ATOI ------------------------ */
 
-/* int	main(int argc, char *argv[]) */
-/* { */
-/* 	(void)argc; */
-/* 	(void)argv; */
-/* 	ft_putendl_fd("loool", 1); */
-/* 	printf("\n"); */
-/* 	return (0); */
-/* } */
+int	main(int argc, char *argv[])
+{
+	(void)argc;
+	(void)argv;
+	printf("%s", ft_itoa(2147483647));
+	printf("\n");
+	return (0);
+}
 
 /* ------------------------ FT_LST ------------------------ */
 
