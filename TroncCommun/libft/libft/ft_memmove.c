@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 15:14:47 by julien            #+#    #+#             */
-/*   Updated: 2022/04/08 15:56:00 by julien           ###   ########.fr       */
+/*   Updated: 2022/04/27 11:21:29 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 {
 	size_t	i;
 
+	if (src == NULL)
+		return (NULL);
 	if (check_overlap(dest, src, n))
 	{
 		i = n;

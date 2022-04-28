@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 18:35:41 by julien            #+#    #+#             */
-/*   Updated: 2022/04/23 13:52:41 by julien           ###   ########.fr       */
+/*   Updated: 2022/04/26 12:48:32 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	*ft_setbuf(char *str_read, t_list *filed, int *reader, int *boo)
 		str_read = ft_strdup(filed->ligne, '\0');
 		free(filed->ligne);
 		filed->ligne = "";
-		ft_strchr(str_read, filed);
+		ft_strchr(str_read, filed, 0);
 		*boo = 0;
 		return (str_read);
 	}
@@ -83,7 +83,7 @@ static char	*ft_split_str(int reader, char *str_read, int *boo, t_list *filed)
 		if (str_read[i] == '\n')
 		{
 			*boo = 0;
-			ft_strchr(str_read, filed);
+			ft_strchr(str_read, filed, 0);
 			return (str_read);
 		}
 		i++;
@@ -135,7 +135,7 @@ char	*get_next_line(int fd)
 	{
 		filed.ligne = ft_strdup(filed.residu, '\0');
 		filed.residu[0] = 0;
-		/* filed.save.residu[filed.save.index_currentfd][0] = 0; */
+		filed.save.residu[filed.save.index_currentfd][0] = 0;
 	}
 	boo = 1;
 	while (boo)

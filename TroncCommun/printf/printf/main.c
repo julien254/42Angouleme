@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/10 23:22:14 by julien            #+#    #+#             */
-/*   Updated: 2022/04/25 15:56:48 by jdetre           ###   ########.fr       */
+/*   Created: 2022/04/27 08:34:16 by jdetre            #+#    #+#             */
+/*   Updated: 2022/04/28 08:00:49 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+int	main(int argc, char *argv[])
 {
-	void	*ptr;
-
-	if (size > 4294967295 || nmemb > 4294967295)
-		return (NULL);
-	ptr = malloc(nmemb * size);
-	if (!ptr)
-		return (NULL);
-	ft_bzero(ptr, nmemb * size);
-	return (ptr);
+	(void)argc;
+	(void)argv;
+	ft_printf("%%%%%% lol");
+	return (0);
 }

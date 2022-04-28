@@ -27,27 +27,26 @@ char	*ft_strdup(char *src, char end)
 	return (str);
 }
 
-void	ft_strchr(char *s, t_list *filed)
+void	ft_strchr(char *s, t_list *filed, size_t i)
 {
-	size_t	i;
-	size_t	saveI;
+	size_t	save_i;
 	size_t	j;
 	size_t	index_end_s;
 
-	i = 0;
 	while (s[i])
 	{
 		if (s[i] == '\n')
 		{
 			index_end_s = ++i;
-			saveI = i;
+			save_i = i;
 			j = 0;
 			while (s[i])
 				filed->residu[j++] = s[i++];
 			filed->residu[j] = 0;
 			j = 0;
-			while (s[saveI])
-				filed->save.residu[filed->save.index_currentfd][j++] = s[saveI++];
+			while (s[save_i])
+				filed->save.residu[filed->save.index_currentfd][j++] = \
+				s[save_i++];
 			filed->save.residu[filed->save.index_currentfd][j] = 0;
 			s[index_end_s] = '\0';
 			break ;

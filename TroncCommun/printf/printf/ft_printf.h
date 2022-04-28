@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/12 20:46:02 by julien            #+#    #+#             */
-/*   Updated: 2022/04/25 16:04:59 by jdetre           ###   ########.fr       */
+/*   Created: 2022/04/27 08:10:39 by jdetre            #+#    #+#             */
+/*   Updated: 2022/04/27 08:38:26 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef FT_PRINTF_H
+# define FFT_PRINT_H
 
-void	ft_lstdelone(t_list *lst, void (*del)(void *))
-{
-	if (del && lst)
-	{
-		(*del)(lst->content);
-		free(lst);
-	}
-}
+# include <stdarg.h>
+# include <stddef.h>
+# include <unistd.h>
+
+int ft_printf(const char *str, ...);
+
+#endif

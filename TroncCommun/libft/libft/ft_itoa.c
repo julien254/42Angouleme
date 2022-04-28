@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 18:56:25 by julien            #+#    #+#             */
-/*   Updated: 2022/04/16 13:14:59 by julien           ###   ########.fr       */
+/*   Updated: 2022/04/25 16:01:19 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ static int	ft_abs(int nbr)
 
 static size_t	size(int n)
 {
-	size_t i;
-	size_t nb;
+	size_t	i;
+	size_t	nb;
+
 	if (n == -2147483648)
 		nb = 2147483648;
 	else if (n < 0)

@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 14:29:23 by julien            #+#    #+#             */
-/*   Updated: 2022/04/16 11:30:40 by julien           ###   ########.fr       */
+/*   Updated: 2022/04/25 16:04:30 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	count(const char *str, char c)
 {
-	int lock;
-	int i;
+	int	lock;
+	int	i;
 
 	i = 0;
 	lock = 0;
@@ -46,14 +46,15 @@ static char	*substr(const char *str, size_t start, size_t end)
 	return (sub);
 }
 
-char		**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	size_t	i;
 	int		i2;
 	size_t	j;
 	char	**split;
 
-	if (!s || !(split = malloc((count(s, c) + 1) * sizeof(char *))))
+	split = malloc((count(s, c) + 1) * sizeof(char *));
+	if (!s || !split)
 		return (0);
 	i = 0;
 	j = 0;
