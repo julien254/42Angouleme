@@ -3,38 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/18 17:30:06 by julien            #+#    #+#             */
-/*   Updated: 2022/04/28 16:26:19 by jdetre           ###   ########.fr       */
+/*   Created: 2022/04/27 08:34:16 by jdetre            #+#    #+#             */
+/*   Updated: 2022/05/31 14:24:39 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "ft_printf.h"
+#include <limits.h>
 
 int	main(int argc, char *argv[])
 {
-	int		fd[4];
-	char	*str;
-	int	i;
 
 	(void)argc;
 	(void)argv;
-
-	fd[0] = open("files/1", O_RDWR);
-	fd[1] = open("files/2", O_RDWR);
-	fd[2] = open("files/4", O_RDWR);
-	fd[3] = open("files/3", O_RDWR);
-	i = 0;
-	while (i < 20)
-	{
-		printf("%s", str = get_next_line(fd[0]));
-		printf("%s", str = get_next_line(fd[0]));
-		printf("%s", str = get_next_line(fd[1]));
-		printf("%s", str = get_next_line(fd[3]));
-		printf("%s", str = get_next_line(fd[2]));
-		i++;
-	}
+	printf("%d", printf(" %llx ", 9223372036854775807LL));
+	printf("%d", ft_printf(" %x ", 9223372036854775807LL));
+	printf("\n");
+	printf("%d", printf(" %lx ", LONG_MAX));
+	printf("%d", ft_printf(" %x ", LONG_MAX));
+	printf("\n");
+	printf("%d", printf(" %lx ", LONG_MIN));
+	printf("%d", ft_printf(" %x ", LONG_MIN));
+	printf("\n");
+	printf("%d", printf(" %lx ", ULONG_MAX));
+	printf("%d", ft_printf(" %x ", ULONG_MAX));
+	printf("\n");
 	return (0);
-
 }

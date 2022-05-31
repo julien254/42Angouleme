@@ -1,27 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/27 08:10:39 by jdetre            #+#    #+#             */
-/*   Updated: 2022/05/28 09:13:16 by jdetre           ###   ########.fr       */
+/*   Created: 2022/04/12 17:35:19 by julien            #+#    #+#             */
+/*   Updated: 2022/04/12 18:02:01 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include "libft/libft.h"
-
-typedef struct s_ind
+void	ft_lstadd_front(t_list **lst, t_list *neW)
 {
-	size_t	i;
-	size_t	lastindex;
-	size_t	count;
-}				t_ind;
-
-int		ft_printf(const char *str, ...);
-#endif
+	neW->next = *lst;
+	*lst = neW;
+}

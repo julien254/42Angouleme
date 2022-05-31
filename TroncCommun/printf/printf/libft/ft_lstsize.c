@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/27 08:10:39 by jdetre            #+#    #+#             */
-/*   Updated: 2022/05/28 09:13:16 by jdetre           ###   ########.fr       */
+/*   Created: 2022/04/12 18:08:23 by julien            #+#    #+#             */
+/*   Updated: 2022/04/12 19:17:09 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include "libft/libft.h"
-
-typedef struct s_ind
+int	ft_lstsize(t_list *lst)
 {
-	size_t	i;
-	size_t	lastindex;
-	size_t	count;
-}				t_ind;
+	int	i;
 
-int		ft_printf(const char *str, ...);
-#endif
+	i = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
+}

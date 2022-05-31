@@ -38,12 +38,12 @@ void	ft_putstr(char *str, unsigned int first, unsigned int last)
 	}
 }
 
-void	ft_print_int_in_hexa(long long int nbr, int niveau)
+void	ft_print_int_in_hexa(long long int nbr, int level)
 {
 	char	*basehexa;
 
 	basehexa = "0123456789abcdef";
-	if (nbr < 16 && niveau == 0)
+	if (nbr < 16 && level == 0)
 	{
 		ft_putchar('0');
 		ft_putchar(basehexa[nbr]);
@@ -52,7 +52,7 @@ void	ft_print_int_in_hexa(long long int nbr, int niveau)
 		ft_putchar(basehexa[nbr]);
 	else
 	{
-		ft_print_int_in_hexa(nbr / 16, niveau + 1);
+		ft_print_int_in_hexa(nbr / 16, level + 1);
 		ft_putchar(basehexa[nbr % 16]);
 	}
 }

@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/27 08:10:39 by jdetre            #+#    #+#             */
-/*   Updated: 2022/05/28 09:13:16 by jdetre           ###   ########.fr       */
+/*   Created: 2022/04/12 17:00:41 by julien            #+#    #+#             */
+/*   Updated: 2022/04/12 17:26:47 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include "libft/libft.h"
-
-typedef struct s_ind
+t_list	*ft_lstnew(void *content)
 {
-	size_t	i;
-	size_t	lastindex;
-	size_t	count;
-}				t_ind;
+	t_list	*list;
 
-int		ft_printf(const char *str, ...);
-#endif
+	list = (t_list *)ft_calloc(sizeof(t_list), 1);
+	if (!list)
+		return (NULL);
+	list->content = content;
+	list->next = NULL;
+	return (list);
+}

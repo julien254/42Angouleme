@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/27 08:10:39 by jdetre            #+#    #+#             */
-/*   Updated: 2022/05/28 09:13:16 by jdetre           ###   ########.fr       */
+/*   Created: 2022/04/12 21:38:36 by julien            #+#    #+#             */
+/*   Updated: 2022/04/12 21:43:14 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include "libft/libft.h"
-
-typedef struct s_ind
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	size_t	i;
-	size_t	lastindex;
-	size_t	count;
-}				t_ind;
-
-int		ft_printf(const char *str, ...);
-#endif
+	while (lst && f)
+	{
+		(*f)(lst->content);
+		lst = lst->next;
+	}
+}
