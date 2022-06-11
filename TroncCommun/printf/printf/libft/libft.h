@@ -67,7 +67,7 @@ int		ft_putnbr_fd(int n, int fd);
 int		ft_put_u_nbr_fd(unsigned int n, int fd);
 int		ft_puthexa_fd(unsigned int nbr, int fd, int uppercase);
 int		ft_puthexa_ll_fd(size_t nbr, int fd, int uppercase);
-int		ft_putadd_fd(size_t hexa,int fd);
+int		ft_putadd_fd(size_t hexa, int fd);
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *neW);
 int		ft_lstsize(t_list *lst);

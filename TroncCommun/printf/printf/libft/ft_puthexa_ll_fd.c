@@ -29,4 +29,4 @@ int	ft_puthexa_ll_fd(size_t nbr, int fd, int uppercase)
 		i += ft_putchar_fd(basehexa[nbr % 16], fd);
 	}
 	return (i);
- }
+}

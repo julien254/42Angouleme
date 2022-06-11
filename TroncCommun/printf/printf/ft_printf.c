@@ -11,7 +11,15 @@
 /* ************************************************************************** */
 #include "ft_printf.h"
 
-static int ft_print_arg(va_list *ap, char const *str, size_t i)
+static void	setindex(t_ind *index)
+{
+	index->i = 0;
+	index->lastindex = 0;
+	index->count = 0;
+	index->ifarg = 0;
+}
+
+static int	ft_print_arg(va_list *ap, char const *str, size_t i)
 {
 	int	len;
 
@@ -35,32 +43,30 @@ static int ft_print_arg(va_list *ap, char const *str, size_t i)
 	return (len);
 }
 
-int ft_printf(const char *str, ...)
+int	ft_printf(const char *str, ...)
 {
 	t_ind	index;
 	va_list	ap;
-	int		ifarg;
 
-	index.i = 0;
-	index.lastindex = 0;
-	index.count = 0;
-	ifarg = 0;
+	setindex(&index);
 	va_start(ap, str);
 	while (str[index.i])
 	{
 		if (str[index.i] == '%')
 		{
-			ifarg = 1;
-			index.count += write(1, str + index.lastindex, index.i - index.lastindex);
+			index.ifarg = 1;
+			index.count += write(1, str + index.lastindex, \
+				index.i - index.lastindex);
 			index.count += ft_print_arg(&ap, str, index.i);
 			index.lastindex = ++index.i + 1 ;
 		}
 		index.i++;
 	}
-	if (!ifarg)
+	if (!index.ifarg)
 		index.count += write(1, str, index.i);
 	else
-		index.count += write(1, str + index.lastindex, index.i - index.lastindex);
+		index.count += write(1, str + index.lastindex, \
+			index.i - index.lastindex);
 	va_end(ap);
 	return (index.count);
 }

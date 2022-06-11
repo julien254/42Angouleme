@@ -21,6 +21,7 @@ typedef struct s_ind
 	size_t	i;
 	size_t	lastindex;
 	size_t	count;
+	int		ifarg;
 }				t_ind;
 
 int		ft_printf(const char *str, ...);

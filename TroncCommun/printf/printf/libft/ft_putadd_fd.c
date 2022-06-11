@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int	ft_putadd_fd(size_t hexa,int fd)
+int	ft_putadd_fd(size_t hexa, int fd)
 {
 	int	i;
 
