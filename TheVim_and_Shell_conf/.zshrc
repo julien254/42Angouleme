@@ -3,7 +3,7 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-
+export TAF="/home/julien/Bureau/Devlinux/42Angouleme/"
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -101,8 +101,10 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias gotaf="$TAF"
 alias gcw="gcc -Wall -Wextra -Werror"
-alias gopm="cd ~/Bureau/Devlinux/42/42Angouleme/Maison/piscine/"
-alias gop4="cd ~/Bureau/Devlinux/42/42Angouleme/Piscine/"
+alias gopm="cd ~/Bureau/Devlinux/42Angouleme/Maison/piscine/"
+alias gop4="cd ~/Bureau/Devlinux/42Angouleme/Piscine/"
+alias gotc="cd ~/Bureau/Devlinux/42Angouleme/TroncCommun/"
+alias golib="cd ~/Bureau/Devlinux/42Angouleme/TroncCommun/libft/libft"
 alias vsnip="vim ~/.vim/mysnips/c.snippets"
 alias vrc="vim ~/.vimrc"
 alias zrc="vim ~/.zshrc"

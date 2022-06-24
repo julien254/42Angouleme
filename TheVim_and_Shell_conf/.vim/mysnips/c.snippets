@@ -115,6 +115,10 @@ snippet  stdlib "include <stdlib.h>"
 #include <stdlib.h>
 endsnippet
 
+snippet  libft "include libft.h"
+#include "libft.h"
+endsnippet
+
 ## ___________________________ Snip FONCTIONS ________________________ ##
 
 # Snip libc~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -206,9 +210,7 @@ snippet ftpsf "void ft_putstr(char *str)"
 
 void	ft_putstr(char *str)
 {
-	while (*str)
-		write(1, str++, 1);
-	}
+	write(1, str, ft_strlen(str));
 }
 
 endsnippet
@@ -225,9 +227,7 @@ int	ft_strlen(char *str)
 
 	i = 0;
 	while (str[i])
-	{
 		i++;
-	}
 	return (i);
 }
 
