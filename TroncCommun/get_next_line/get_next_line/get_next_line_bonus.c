@@ -6,13 +6,13 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 18:35:41 by julien            #+#    #+#             */
-/*   Updated: 2022/06/03 15:13:54 by jdetre           ###   ########.fr       */
+/*   Updated: 2022/07/02 01:56:29 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-static void	check_fd(int fd, t_list *filed)
+void	check_fd(int fd, t_list *filed)
 {
 	int	i;
 	int	j;
@@ -41,109 +41,100 @@ static void	check_fd(int fd, t_list *filed)
 	}
 }
 
-static char	*ft_setbuf(char *str_read, t_list *filed, int *reader, int *boo)
-{
-	if (*filed->ligne == '\n')
-	{
-		free(str_read);
-		str_read = ft_strdup(filed->ligne, '\0');
-		free(filed->ligne);
-		filed->ligne = "";
-		ft_strchr(str_read, filed, 0);
-		*boo = 0;
-		return (str_read);
-	}
-	*reader = read(filed->fd, str_read, BUFFER_SIZE);
-	str_read[*reader] = 0;
-	if (*reader == 0)
-	{
-		free(str_read);
-		str_read = ft_strdup(filed->ligne, '\0');
-		if (*filed->ligne != 0)
-			free(filed->ligne);
-		filed->ligne = "";
-		*boo = 2;
-		return (str_read);
-	}
-	return (str_read);
-}
-
-static char	*ft_split_str(int reader, char *str_read, int *boo, t_list *filed)
+char	*ft_save_residu(t_list *filed, char *ligne)
 {
 	int	i;
+	int	j;
 
-	if (reader == 0 && *str_read == 0)
-	{
-		free(str_read);
-		return (NULL);
-	}
 	i = 0;
-	while (str_read[i])
-	{
-		if (str_read[i] == '\n')
-		{
-			*boo = 0;
-			ft_strchr(str_read, filed, 0);
-			return (str_read);
-		}
+	if (!ligne[i])
+		return (NULL);
+	while (ligne[i] != '\n' && ligne[i])
 		i++;
+	if (ligne[i])
+		i++;
+	j = 0;
+	while (ligne[i])
+	{
+		filed->save.residu[filed->save.index_currentfd][j] = ligne[i];
+		ligne[i] = 0;
+		i++;
+		j++;
 	}
-	return (str_read);
+	filed->save.residu[filed->save.index_currentfd][j] = 0;
+	if (j == 0)
+		ft_memset(filed->save.residu[filed->save.index_currentfd]);
+	ft_memset(filed->residu);
+	return (ligne);
 }
 
-static char	*ft_readbuf(t_list *filed, int *boo)
+char	*ft_split_and_save(t_list *filed)
+{
+	int		i;
+	int		j;
+	char	*ligne;
+
+	ligne = (char *)malloc(end_line(filed->residu) + 2);
+	if (!ligne)
+		return (ligne);
+	i = 0;
+	while (filed->residu[i] != '\n')
+	{
+		ligne[i] = filed->residu[i];
+		i++;
+	}
+	ligne[i++] = '\n';
+	ligne[i] = 0;
+	j = 0;
+	if (filed->residu[i] == 0)
+		ft_memset(filed->save.residu[filed->save.index_currentfd]);
+	while (filed->residu[i])
+		filed->save.residu[filed->save.index_currentfd][j++] \
+				= filed->residu[i++];
+	filed->save.residu[filed->save.index_currentfd][j] = 0;
+	return (ligne);
+}
+
+char	*ft_readbuf(t_list *filed)
 {
 	char	*str_read;
 	int		reader;
-	char	*result;
 
 	str_read = (char *)malloc(BUFFER_SIZE + 1);
 	if (!str_read)
-		return (NULL);
-	result = ft_setbuf(str_read, filed, &reader, boo);
-	if (result && *boo == 0)
-	{
-		str_read = result;
 		return (str_read);
-	}
-	else if (result && *boo == 2)
-	{
-		str_read = result;
-		*boo = 0;
-	}
-	result = ft_split_str(reader, str_read, boo, filed);
-	if (result)
-	{
-		str_read = result;
-		return (str_read);
-	}
-	return (NULL);
+	reader = read(filed->fd, str_read, BUFFER_SIZE);
+	str_read[reader] = 0;
+	if (reader == 0)
+		filed->save.is_finish[filed->save.index_currentfd] = 1;
+	return (str_read);
 }
 
 char	*get_next_line(int fd)
 {
-	static t_list	filed = {0, {0}, "", {{0}, {""}, 0}};
-	char			*ltemp;
-	int				boo;
+	static t_list	filed = {0, {0}, {{0}, {""}, {0}, 0}};
+	char			*str_read;
+	char			*ligne;
 
-	if (fd != filed.fd)
-		check_fd(fd, &filed);
-	if (read(filed.fd, filed.ligne, 0) == -1)
+	if (read(fd, "", 0) == -1)
 		return (NULL);
-	filed.ligne = "";
-	if (filed.residu[0] != 0)
+	check_fd(fd, &filed);
+	if (end_line(filed.residu))
+		return (ft_split_and_save(&filed));
+	if (filed.save.is_finish[filed.save.index_currentfd])
+		return (NULL);
+	ligne = (char *)malloc(BUFFER_SIZE + 1);
+	ft_strcpy(filed.save.residu[filed.save.index_currentfd], ligne);
+	while (!end_line(ligne) && \
+			!filed.save.is_finish[filed.save.index_currentfd])
 	{
-		filed.ligne = ft_strdup(filed.residu, '\0');
-		filed.residu[0] = 0;
-		filed.save.residu[filed.save.index_currentfd][0] = 0;
-	}
-	boo = 1;
-	while (boo)
-	{
-		ltemp = ft_readbuf(&filed, &boo);
-		if (!ltemp)
+		str_read = ft_readbuf(&filed);
+		ligne = ft_strjoin(ligne, str_read, &filed);
+		if (!ligne)
+		{
+			free(str_read);
 			return (NULL);
-		filed.ligne = ft_strjoin(filed.ligne, ltemp);
+		}
 	}
-	return (filed.ligne);
+	return (ft_save_residu(&filed, ligne));
 }

@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 19:48:15 by julien            #+#    #+#             */
-/*   Updated: 2022/04/23 08:52:30 by julien           ###   ########.fr       */
+/*   Updated: 2022/07/01 23:18:58 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 4
 
 # endif
 # include <stdio.h>
@@ -24,19 +24,24 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+typedef struct s_save
+{
+	int				fd[50];
+	char			residu[50][BUFFER_SIZE + 1];
+	int				is_finish[50];
+	int				index_currentfd;
+}				t_save;
+
 typedef struct s_list
 {
 	int				fd;
 	char			residu[BUFFER_SIZE + 1];
-	char			*ligne;
-	struct s_list	*next;
+	t_save			save;
 }				t_list;
 
-char		*get_next_line(int fd);
-char		*ft_strjoin(char *s1, char *s2);
-size_t		ft_strlcat(char *dst, char *src, size_t size);
-size_t		ft_strlen(char *s);
-void		ft_strchr(char *s, t_list *filed);
-void		ft_strcpy(char *dest, char *src);
-char		*ft_strdup(char *s, char end);
+char	*get_next_line(int fd);
+char	*ft_strjoin(char *s1, char *s2, t_list *filed);
+void	ft_memset(char *str);
+void	ft_strcpy(char *s1, char *s2);
+int		end_line(char *residu);
 #endif

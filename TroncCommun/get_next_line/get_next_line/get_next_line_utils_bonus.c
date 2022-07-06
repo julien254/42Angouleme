@@ -6,54 +6,10 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 18:59:42 by julien            #+#    #+#             */
-/*   Updated: 2022/04/23 11:40:09 by julien           ###   ########.fr       */
+/*   Updated: 2022/07/02 01:51:41 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line_bonus.h"
-
-char	*ft_strdup(char *src, char end)
-{
-	int		i;
-	char	*str;
-
-	str = (char *)malloc(ft_strlen(src) + 1);
-	i = 0;
-	while (src[i] != end)
-	{
-		str[i] = src[i];
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
-}
-
-void	ft_strchr(char *s, t_list *filed, size_t i)
-{
-	size_t	save_i;
-	size_t	j;
-	size_t	index_end_s;
-
-	while (s[i])
-	{
-		if (s[i] == '\n')
-		{
-			index_end_s = ++i;
-			save_i = i;
-			j = 0;
-			while (s[i])
-				filed->residu[j++] = s[i++];
-			filed->residu[j] = 0;
-			j = 0;
-			while (s[save_i])
-				filed->save.residu[filed->save.index_currentfd][j++] = \
-				s[save_i++];
-			filed->save.residu[filed->save.index_currentfd][j] = 0;
-			s[index_end_s] = '\0';
-			break ;
-		}
-		i++;
-	}
-}
 
 size_t	ft_strlen(char *s)
 {
@@ -67,53 +23,69 @@ size_t	ft_strlen(char *s)
 	return (i);
 }
 
-size_t	ft_strlcat(char *dst, char *src, size_t size)
+void	ft_memset(char *str)
 {
 	size_t	i;
-	size_t	j;
-	size_t	dstlen;
-	size_t	srclen;
 
-	dstlen = ft_strlen(dst);
-	srclen = ft_strlen(src);
-	i = dstlen;
-	if (dstlen < size - 1 && size > 0)
-	{
-		j = 0;
-		while (i < size - 1 && src[j])
-			dst[i++] = src[j++];
-		dst[i] = '\0';
-	}
-	if (dstlen > size)
-		dstlen = size;
-	return (srclen + dstlen);
+	i = 0;
+	while (i < BUFFER_SIZE)
+		str[i++] = 0;
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+void	ft_strcpy(char *s1, char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i])
+	{
+		s2[i] = s1[i];
+		i++;
+	}
+	s2[i] = 0;
+}
+
+int	end_line(char *residu)
+{
+	int	i;
+
+	i = 0;
+	while (residu[i])
+	{
+		if (residu[i] == '\n')
+		{
+			i++;
+			return (i);
+		}
+		i++;
+	}
+	return (0);
+}
+
+char	*ft_strjoin(char *s1, char *s2, t_list *filed)
 {
 	char	*str;
-	size_t	i;
-	size_t	size;
+	size_t	i[2];
 
-	if (s1 == 0 && s2 == 0)
-		return (NULL);
-	str = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!str)
-		return (NULL);
-	i = 0;
-	size = ft_strlen(s1) + 1;
-	if (size > 0)
+	if (filed->save.is_finish[filed->save.index_currentfd])
 	{
-		while (i < size - 1 && s1[i])
+		if (s1[0] == 0)
 		{
-			str[i] = s1[i];
-			i++;
+			free(s1);
+			return (NULL);
 		}
-		str[i] = '\0';
+		free(s2);
+		return (s1);
 	}
-	ft_strlcat(str, s2, (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (s1[0] != 0)
-		free(s1);
+	str = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	i[0] = -1;
+	while (s1[++i[0]])
+		str[i[0]] = s1[i[0]];
+	i[1] = -1;
+	while (s2[++i[1]])
+		str[i[0]++] = s2[i[1]];
+	str[i[0]] = 0;
+	free(s1);
 	free(s2);
 	return (str);
 }
