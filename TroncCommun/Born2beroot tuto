@@ -1,0 +1,31 @@
+ BORN2BEROOT
+ 
+ 1) Installer virtualbox.
+ 
+ 2) Creer une NOUVELLE vm.
+ 	Taille du vdi : 30.8GB
+ 
+ 3) Demarrer la VM et installer debian
+ 	nom de machine : login42
+ 	Partition : a) creer une partition primaire monter sur /boot de 525MB
+ 		    et une partition logique de taille "max", cette partition 
+ 		    ne sera pas monter
+ 		    b) chiffre la partition logique
+ 		    c) creer un groupe de LVM appele LVMGroup
+ 		    d) creer LVM root de 10.3GB
+ 		    e) creer LVM swap de 2.5GB
+ 		    f) creer LVM home de 5.4GB
+ 		    g) creer LVM var de 3.3GB
+ 		    h) creer LVM srv de 3.3GB
+ 		    i) creer LVM tmp de 3.3GB
+ 		    j) creer LVM var-log de 4.3GB
+ 		    
+ 4) Parametre debian
+ 	a) se logger en root : su -
+ 	b) installer sudo
+ 	c) ajouter utilisateur au groupe sudo : usermod -aG sudo login
+ 	d) verifier si l'utilisateur fait parti du groupe sudo : getent group sudo
+ 	
+ 	e) install vim, zsh, ohmyzsh, git
+ 	f)installer ssh et ufw
+ 	g) ouvrir les port 4242 et configurer le server ssh sur le port 4242
