@@ -12,15 +12,15 @@
  		    ne sera pas monter
  		    b) chiffre la partition logique
  		    c) creer un groupe de LVM appele LVMGroup
- 		    d) creer LVM root de 10.3GB
+ 		    d) creer LVM root de 10.7GB
  		    e) creer LVM swap de 2.5GB
  		    f) creer LVM home de 5.4GB
- 		    g) creer LVM var de 3.3GB
- 		    h) creer LVM srv de 3.3GB
- 		    i) creer LVM tmp de 3.3GB
+ 		    g) creer LVM var de 3.2GB
+ 		    h) creer LVM srv de 3.2GB
+ 		    i) creer LVM tmp de 3.2GB
  		    j) creer LVM var-log de 4.3GB
  		    
- 4) Parametre debian
+ 4) Configurer debian:
  	a) se logger en root : su -
  	b) installer sudo
  	c) ajouter utilisateur au groupe sudo : usermod -aG sudo login
