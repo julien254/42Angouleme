@@ -32,3 +32,5 @@ fermer un port : 				sudo ufw delete allow "numero ou nom du port"
 						SSH Serveur
 
 Fichier de configuration ssh (port etc..) : /etc/ssh/sshd_config
+
+redemarrer le serveur ssh :					sudo service ssh restart
