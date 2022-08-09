@@ -4,7 +4,7 @@ echo "Installation de Git ----->"
 sudo apt install git -y
 echo "Installation de Git termine."
 echo "Installation des composant essentiel ----->"
-sudo apt install build-essential python3.9
+sudo apt install -y build-essential python3.9 python3.9-dev libncurses-dev
 echo "Installation des composant essentiel termine."
 echo "Installation de vim 8.2 avec python ----->"
 git clone https://github.com/vim/vim.git
@@ -12,6 +12,7 @@ curl -L https://raw.githubusercontent.com/julien254/42Angouleme/main/ConfigLinux
 cd ~/vim/src/
 make
 sudo make install
+cd ../.. && rm -rf ~/vim/
 echo "Installation de vim 8.2 avec python termine."
 echo "Installation de ZSH"
 sudo apt install zsh -y
@@ -29,3 +30,6 @@ cp .bashrc ~/
 cp .zshrc ~/
 cd ~
 chsh -s /bin/zsh
+cd ../.. && rm -rf 42Angouleme/
+echo "Configuration Zsh et vim termine"
+echo "Apres avoir reboot le systeme, lancer vim et taper ':PlugInstall' pour finaliser l'installation de vim."
