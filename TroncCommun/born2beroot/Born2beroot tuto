@@ -31,6 +31,6 @@
 		-sudo sh /media/cdrom/VBoxLinuxAdditions.run
 		-eteindre la vm, configurer le dossier partager si besoin et les option de copier/coller dans virtualbox et relancer la machine
 		-ajouter utilisateur au group 'vboxsf' pour pouvoir consulter les dossiers
- 	f) install vim, zsh, ohmyzsh, git
+ 	f) installer curl et lancer la commande : curl https://raw.githubusercontent.com/julien254/42Angouleme/main/TroncCommun/born2beroot/install-utils.sh | sh
  	g)installer ssh et ufw
  	h) ouvrir les port 4242 et configurer le server ssh sur le port 4242

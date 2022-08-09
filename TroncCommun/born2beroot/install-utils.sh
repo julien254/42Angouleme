@@ -29,7 +29,7 @@ cp .vimrc ~/
 cp .bashrc ~/
 cp .zshrc ~/
 cd ~
-chsh -s /bin/zsh
-cd ../.. && rm -rf 42Angouleme/
+sudo chsh -s /bin/zsh
+rm -rf 42Angouleme/
 echo "Configuration Zsh et vim termine"
 echo "Apres avoir reboot le systeme, lancer vim et taper ':PlugInstall' pour finaliser l'installation de vim."
