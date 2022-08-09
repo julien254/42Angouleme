@@ -1,0 +1,7 @@
+Hostname : /etc/hostname, /etc/hosts
+
+lister les partitions : lsblk
+
+fichier sudoer : sudo visudo
+
+ajouter au groupe : sudo usermod -aG group user

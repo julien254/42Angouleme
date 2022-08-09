@@ -19,13 +19,18 @@
  		    h) creer LVM srv de 3.2GB
  		    i) creer LVM tmp de 3.2GB
  		    j) creer LVM var-log de 4.3GB
- 		    
+ 		
  4) Configurer debian:
  	a) se logger en root : su -
  	b) installer sudo
  	c) ajouter utilisateur au groupe sudo : usermod -aG sudo login
  	d) verifier si l'utilisateur fait parti du groupe sudo : getent group sudo
- 	
- 	e) install vim, zsh, ohmyzsh, git
- 	f)installer ssh et ufw
- 	g) ouvrir les port 4242 et configurer le server ssh sur le port 4242
+	e) installer virtualbox addition :
+		-sudo apt install build-essential dkms linux-headers-$(uname -r)
+		-monter l'iso avec : sudo mount /media/cdrom
+		-sudo sh /media/cdrom/VBoxLinuxAdditions.run
+		-eteindre la vm, configurer le dossier partager si besoin et les option de copier/coller dans virtualbox et relancer la machine
+		-ajouter utilisateur au group 'vboxsf' pour pouvoir consulter les dossiers
+ 	f) install vim, zsh, ohmyzsh, git
+ 	g)installer ssh et ufw
+ 	h) ouvrir les port 4242 et configurer le server ssh sur le port 4242
