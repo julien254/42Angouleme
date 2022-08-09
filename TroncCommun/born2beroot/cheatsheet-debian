@@ -7,3 +7,28 @@ fichier sudoer : sudo visudo
 ajouter au groupe : sudo usermod -aG group user
 
 ZSH par defaut : chsh -s /bin/zsh
+
+
+
+						UFW (firewall)
+
+
+activer ufw :					sudo ufw enable
+
+activer le service ufw :		sudo systemctl start ufw
+
+redemarrer le service ufw : 	sudo systemctl restart ufw
+
+status du firewall : 			sudo systemctl status ufw
+
+ouvrir un port : 				sudo ufw allow "numero ou nom du port"
+
+afficher les ports ave numero:	sudo ufw status numbered 
+
+fermer un port : 				sudo ufw delete allow "numero ou nom du port"
+										ou
+				 				sudo ufw delete "nombre associer port(1,2,3,...)"
+
+						SSH Serveur
+
+Fichier de configuration ssh (port etc..) : /etc/ssh/sshd_config

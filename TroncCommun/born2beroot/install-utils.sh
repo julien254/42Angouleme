@@ -4,7 +4,7 @@ echo "Installation de Git ----->"
 sudo apt install git -y
 echo "Installation de Git termine."
 echo "Installation des composant essentiel ----->"
-sudo apt install -y build-essential python3.9 python3.9-dev libncurses-dev
+sudo apt install -y build-essential python3.9 python3.9-dev libncurses-dev curl
 echo "Installation des composant essentiel termine."
 echo "Installation de vim 8.2 avec python ----->"
 git clone https://github.com/vim/vim.git
@@ -16,9 +16,10 @@ cd ../.. && rm -rf ~/vim/
 echo "Installation de vim 8.2 avec python termine."
 echo "Installation de ZSH"
 sudo apt install zsh -y
+echo "Acces ROOT requis pour configurer ZSH par defaut"
+chsh -s /bin/zsh
 echo "Installation de ZSH termine."
 echo "Installation de Oh-My-Zsh ----->"
-sudo apt install curl -y
 curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 echo "Installation de Oh-My-Zsh termine."
 echo "Configuration Zsh et vim en cours..."
@@ -28,8 +29,6 @@ cp -r .vim/ ~/
 cp .vimrc ~/
 cp .bashrc ~/
 cp .zshrc ~/
-cd ~
-sudo chsh -s /bin/zsh
-rm -rf 42Angouleme/
+cd ~ && rm -rf 42Angouleme/
 echo "Configuration Zsh et vim termine"
-echo "Apres avoir reboot le systeme, lancer vim et taper ':PlugInstall' pour finaliser l'installation de vim."
+echo "rebooter le systeme, puis lancer vim et taper ':PlugInstall' pour finaliser l'installation de vim."
