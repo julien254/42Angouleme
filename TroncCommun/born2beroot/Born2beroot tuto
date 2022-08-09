@@ -25,7 +25,7 @@
  	b) installer sudo
  	c) ajouter utilisateur au groupe sudo : usermod -aG sudo login
  	d) verifier si l'utilisateur fait parti du groupe sudo : getent group sudo
-	e) installer virtualbox addition :
+	e) installer virtualbox addition (Optionnel) :
 		-sudo apt install build-essential dkms linux-headers-$(uname -r)
 		-monter l'iso avec : sudo mount /media/cdrom
 		-sudo sh /media/cdrom/VBoxLinuxAdditions.run

@@ -5,3 +5,5 @@ lister les partitions : lsblk
 fichier sudoer : sudo visudo
 
 ajouter au groupe : sudo usermod -aG group user
+
+ZSH par defaut : chsh -s /bin/zsh
