@@ -13,6 +13,7 @@ ZSH par defaut : chsh -s /bin/zsh
 						UFW (firewall)
 
 
+
 activer ufw :					sudo ufw enable
 
 activer le service ufw :		sudo systemctl start ufw
@@ -29,8 +30,13 @@ fermer un port : 				sudo ufw delete allow "numero ou nom du port"
 										ou
 				 				sudo ufw delete "nombre associer port(1,2,3,...)"
 
+
 						SSH Serveur
+
+
 
 Fichier de configuration ssh (port etc..) : /etc/ssh/sshd_config
 
 redemarrer le serveur ssh :					sudo service ssh restart
+
+address localhost pour connection ssh :		127.0.0.1 -p 4242

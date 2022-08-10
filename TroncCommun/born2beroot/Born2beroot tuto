@@ -2,9 +2,11 @@
  
  1) Installer virtualbox.
  
+
  2) Creer une NOUVELLE vm.
  	Taille du vdi : 30.8GB
  
+
  3) Demarrer la VM et installer debian
  	nom de machine : login42
  	Partition : a) creer une partition primaire monter sur /boot de 525MB
@@ -19,17 +21,26 @@
  		    h) creer LVM srv de 3.2GB
  		    i) creer LVM tmp de 3.2GB
  		    j) creer LVM var-log de 4.3GB
- 		
- 4) Configurer debian:
+
+
+4) Configurer debian:
+
+
  	a) se logger en root : su -
+
  	b) installer sudo
+
  	c) ajouter utilisateur au groupe sudo : usermod -aG sudo login
+
  	d) verifier si l'utilisateur fait parti du groupe sudo : getent group sudo
+
 	e) installer virtualbox addition (Optionnel) :
 		-sudo apt install build-essential dkms linux-headers-$(uname -r)
 		-monter l'iso avec : sudo mount /media/cdrom
 		-sudo sh /media/cdrom/VBoxLinuxAdditions.run
 		-eteindre la vm, configurer le dossier partager si besoin et les option de copier/coller dans virtualbox et relancer la machine
 		-ajouter utilisateur au group 'vboxsf' pour pouvoir consulter les dossiers
+
  	f) installer curl et lancer la commande : curl https://raw.githubusercontent.com/julien254/42Angouleme/main/TroncCommun/born2beroot/install-utils.sh | sh
+
  	h)installer ssh et ufw (en lancant la commande : curl  https://raw.githubusercontent.com/julien254/42Angouleme/main/TroncCommun/born2beroot/install-security.sh | sudo sh)
