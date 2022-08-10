@@ -1,12 +1,18 @@
 Hostname : /etc/hostname, /etc/hosts
 
+afficher le hostname courant : hostnamectl status
+
+changer le hostname : hostnamectl set-hostname new-hostname
+
 lister les partitions : lsblk
 
 fichier sudoer : sudo visudo
 
-ajouter au groupe : sudo usermod -aG group user
-
 ZSH par defaut : chsh -s /bin/zsh
+
+Fichier config pwquality : /etc/pam.d/common-passwd
+
+Fichier config expiration MDP : /etc/login.defs
 
 
 
@@ -40,3 +46,15 @@ Fichier de configuration ssh (port etc..) : /etc/ssh/sshd_config
 redemarrer le serveur ssh :					sudo service ssh restart
 
 address localhost pour connection ssh :		127.0.0.1 -p 4242
+
+
+						Gestion user et group
+
+
+creer un user : 					sudo adduser user (ou useradd user)
+supprimer un user : 				sudo userdel -r user 
+
+afficher les groupes : 				getent group
+creer un group :					groupadd name-group
+ajouter utilisateur au groupes :	usermod -aG group user (ou gpasswd -d pour l'enlever)
+supprimer un groupe :				groupdel name-group

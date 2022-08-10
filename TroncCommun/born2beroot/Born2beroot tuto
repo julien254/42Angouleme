@@ -43,4 +43,6 @@
 
  	f) installer curl et lancer la commande : curl https://raw.githubusercontent.com/julien254/42Angouleme/main/TroncCommun/born2beroot/install-utils.sh | sh
 
- 	h)installer ssh et ufw (en lancant la commande : curl  https://raw.githubusercontent.com/julien254/42Angouleme/main/TroncCommun/born2beroot/install-security.sh | sudo sh)
+ 	h)installer ssh et ufw (en lancant la commande : curl  https://raw.githubusercontent.com/julien254/42Angouleme/main/TroncCommun/born2beroot/install-security.sh | sudo sh) cela configurera egalement tous les parametres de securite
+
+
