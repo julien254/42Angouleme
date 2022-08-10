@@ -12,7 +12,7 @@ mkdir /var/log/sudo
 curl https://raw.githubusercontent.com/julien254/42Angouleme/main/TroncCommun/born2beroot/sudoers > /etc/sudoers
 echo "Configuration du fichier sudoers termine"
 echo "installation et configuration de la politique de mot de passe..."
-apt install libpam-pwquality
+apt install libpam-pwquality -y
 curl https://raw.githubusercontent.com/julien254/42Angouleme/main/TroncCommun/born2beroot/common-password > /etc/pam.d/common-password
 echo "Configuration du delais de changement de mot de passe"
 curl https://raw.githubusercontent.com/julien254/42Angouleme/main/TroncCommun/born2beroot/login.defs > /etc/login.defs
@@ -25,3 +25,4 @@ chage -W 7 jdetre
 echo "Configuration termine."
 echo "Si vous n'avez pas lance le script en tant qu'utilisateur root, veillez recommencer l'installation."
 echo "N'oubliez pas de configurer la redirection de port si vous utiliser un VM dans les parametres de celle-ci."
+echo "Penser a redemarrer la VM pour que tous les changements soient pris en compte."

@@ -1,5 +1,7 @@
 #!/bin/bash
 cd ~
+sudo groupadd user42
+sudo usermod -aG user42 jdetre
 echo "Installation de Git ----->"
 sudo apt install git -y
 echo "Installation de Git termine."
