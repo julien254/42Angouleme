@@ -24,5 +24,5 @@ chage -m 2 jdetre
 chage -W 7 jdetre
 echo "Configuration termine."
 echo "Si vous n'avez pas lance le script en tant qu'utilisateur root, veillez recommencer l'installation."
-echo "N'oubliez pas de configurer la redirection de port si vous utiliser un VM dans les parametres de celle-ci."
+echo "N'oubliez pas de configurer la redirection de port si vous utiliser une VM dans les parametres de celle-ci."
 echo "Penser a redemarrer la VM pour que tous les changements soient pris en compte."
