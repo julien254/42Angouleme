@@ -56,5 +56,5 @@ supprimer un user : 				sudo userdel -r user
 
 afficher les groupes : 				getent group
 creer un group :					groupadd name-group
-ajouter utilisateur au groupes :	usermod -aG group user (ou gpasswd -d pour l'enlever)
+ajouter utilisateur au groupes :	usermod -aG user group (ou gpasswd -d pour l'enlever)
 supprimer un groupe :				groupdel name-group
