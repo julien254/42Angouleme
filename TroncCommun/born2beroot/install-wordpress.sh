@@ -61,7 +61,6 @@ sudo mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
 echo "Changement des droits du repertoire wordpress..."
 sudo chown -R www-data:www-data /var/www/html/
 sudo chmod -R 755 /var/www/html/
-sudo rm -rf 42Angouleme/
 echo "Pour lier la database a wordpress,"
 echo "Ouvrer avec sudo le fichier /var/www/html/wp-config.php,"
 echo "Chercher les lignes suivante et changer les infos pour qu'elles correspondent qvec les infos de votre base de donne :"
