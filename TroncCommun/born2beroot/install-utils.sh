@@ -32,5 +32,6 @@ cp .vimrc ~/
 cp .bashrc ~/
 cp .zshrc ~/
 cd ~
+sudo rm -rf 42Angouleme/
 echo "Configuration Zsh et vim termine"
 echo "rebooter le systeme, puis lancer vim et taper ':PlugInstall' pour finaliser l'installation de vim."
