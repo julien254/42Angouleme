@@ -27,7 +27,7 @@ echo "Installation et configuration de mariadb..."
 sudo apt install -y mariadb-server
 sudo systemctl start mariadb
 sudo systemctl enable mariadb
-sudo systemctl status mariadb
+echo "\n\n\n\nConfiguration de la securite de MariaDB :\n"
 echo "Exemple de configuration :"
 echo "Enter current password for root (enter for none): <Entrée>"
 echo "Switch to unix_socket authentication [Y/n]: Y"
@@ -40,12 +40,14 @@ echo "Remove test database and access to it? [Y/n]:  Y"
 echo "Reload privilege tables now? [Y/n]:  Y"
 sudo mysql_secure_installation
 sudo systemctl restart mariadb
+echo "\nConfiguration de la base de donnees:\n"
 echo "Exemple de configuration rapide d'une base de donnees :"
 echo "MariaDB [(none)]> CREATE DATABASE votre-nom-de-DB;"
 echo "MariaDB [(none)]> CREATE USER 'votre-user'@'localhost' IDENTIFIED BY 'votre-MDP';"
-echo "MariaDB [(none)]> GRANT ALL ON wordpressDB.* TO 'votre-user'@'localhs;ost' IDENTIFIED BY 'votre-MDP-' WITH GRANT OPTION;"
+echo "MariaDB [(none)]> GRANT ALL ON votre-user.* TO 'votre-user'@'localhs;ost' IDENTIFIED BY 'votre-MDP-' WITH GRANT OPTION;"
 echo "MariaDB [(none)]> FLUSH PRIVILEGES;"
 echo "MariaDB [(none)]> EXIT;"
+echo "Entrer votre mot de passe de mariaDB"
 mysql -u root -p
 echo "Database operationel"
 echo "Installation de Wordpress..."
@@ -55,7 +57,7 @@ tar -xzvf latest.tar.gz
 sudo mv wordpress/* /var/www/html/
 rm -rf latest.tar.gz wordpress/
 sudo mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
-echo "Changement des droits du repertoire wordpress"
+echo "Changement des droits du repertoire wordpress..."
 sudo chown -R www-data:www-data /var/www/html/
 sudo chmod -R 755 /var/www/html/
 echo "Pour lier la database a wordpress,"
