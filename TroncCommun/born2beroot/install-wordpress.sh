@@ -28,4 +28,3 @@ echo "Installation et configuration de mariadb..."
 sudo apt install -y mariadb-server
 sudo systemctl start mariadb
 sudo systemctl enable mariadb
-sh 42Angouleme/TroncCommun/born2beroot/config-mariadb.sh
