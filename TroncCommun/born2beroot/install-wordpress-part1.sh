@@ -39,4 +39,5 @@ echo "Disallow root login remotely? [Y/n]: Y"
 echo "Remove test database and access to it? [Y/n]:  Y"
 echo "Reload privilege tables now? [Y/n]:  Y"
 sudo mysql_secure_installation
+wait
 echo "\nEntrer a present la commande suivante : curl https://raw.githubusercontent.com/julien254/42Angouleme/main/TroncCommun/born2beroot/install-wordpress-part2.sh | sh"
