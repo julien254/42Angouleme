@@ -61,7 +61,7 @@ sudo mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
 echo "Changement des droits du repertoire wordpress..."
 sudo chown -R www-data:www-data /var/www/html/
 sudo chmod -R 755 /var/www/html/
-echo "\n\n\nLiaison de la base de donnees a Wordpress\n"
+echo "\n\n\nLiaison de la base de donnees a Wordpress :\n"
 echo "Quel est le nom de votre base de donnees ?"
 read DB
 echo "Quel est votre nom utilisateur MariaDB ?"
@@ -163,5 +163,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /** Sets up WordPress vars and included files. */
-require_once ABSPATH . 'wp-settings.php';" > /var/www/html/wp-config.php
+require_once ABSPATH . 'wp-settings.php';" > wp-config.php ; sudo mv wp-config.php /var/www/html/
 echo "Apres cela redemarrer la VM (sudo reboot),puis connectez vous a l'aide de votre navigateur a l'adresse suivante pour profiter pleinement de votre tous nouveau site wordpress ! Please enjoy : http://localhost:8080 ."
