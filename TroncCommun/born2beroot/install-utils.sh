@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Installation de ZSH"
 sudo apt install zsh -y
-echo "Acces ROOT requis pour configurer ZSH par defaut"
+echo "\n\n\nAcces ROOT requis pour configurer ZSH par defaut"
 chsh -s /bin/zsh
 echo "Installation de ZSH termine."
 cd ~
