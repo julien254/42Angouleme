@@ -24,4 +24,9 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
-*/10 * * * * sh /root/sleep.sh ; sh /root/monitoring.sh
+#*/10 * * * * sh /root/sleep.sh ; sh /root/monitoring.sh
+#            ^              ^               ^
+#            |              |               |
+#            |              |               |
+#            |              |               |
+#      BORN2BEROOT : Decommenter cette ligne, enregistrer et quitter pour finaliser l'installation du monitoring.sh.
