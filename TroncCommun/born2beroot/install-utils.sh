@@ -3,6 +3,9 @@ echo "Installation de ZSH"
 sudo apt-get install zsh -y
 sudo cp 42Angouleme/TroncCommun/born2beroot/passwd /etc/passwd
 echo "Installation de ZSH termine."
+echo "Installation de Oh-My-Zsh ----->"
+curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
+echo "Installation de Oh-My-Zsh termine."
 cd ~
 sudo groupadd user42
 sudo usermod -aG user42 jdetre
@@ -21,9 +24,6 @@ make
 sudo make install
 cd ../.. && rm -rf ~/vim/
 echo "Installation de vim 8.2 avec python termine."
-echo "Installation de Oh-My-Zsh ----->"
-curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
-echo "Installation de Oh-My-Zsh termine."
 echo "Configuration Zsh et vim en cours..."
 cd 42Angouleme/ConfigLinux/
 sudo cp -r .vim/ /root/
