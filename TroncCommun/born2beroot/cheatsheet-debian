@@ -58,3 +58,18 @@ afficher les groupes : 				getent group
 creer un group :					groupadd name-group
 ajouter utilisateur au groupes :	usermod -aG user group (ou gpasswd -d pour l'enlever)
 supprimer un groupe :				groupdel name-group
+
+
+						CRON
+
+
+creer une nouvelle tab :			crontab -e (connecte en root)
+emplacement du fichier crontab :	/var/spool/cron/crontabs/
+
+
+
+						COMMANDE BASH
+
+
+afficher l'heure : 							uptime
+afficher l'heure du dernier demarrage :		uptime -s

@@ -3,6 +3,7 @@ echo "Installation de ZSH"
 sudo apt install zsh -y
 echo "\n\n\nAcces ROOT requis pour configurer ZSH par defaut"
 chsh -s /bin/zsh
+sudo chsh -s /bin/zsh
 echo "Installation de ZSH termine."
 cd ~
 sudo groupadd user42
@@ -27,10 +28,12 @@ curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | 
 echo "Installation de Oh-My-Zsh termine."
 echo "Configuration Zsh et vim en cours..."
 cd 42Angouleme/ConfigLinux/
+sudo cp -r .vim/ /root/
 cp -r .vim/ ~/
+sudo cp .vimrc /root/
 cp .vimrc ~/
-cp .bashrc ~/
 cp .zshrc ~/
+sudo cp .zshrc /root/
 cd ~
 echo "Configuration Zsh et vim termine"
-echo "rebooter le systeme, puis lancer vim et taper ':PlugInstall' pour finaliser l'installation de vim."
+echo "lancer vim et taper ':PlugInstall' pour finaliser l'installation des plugins. (Pour le compte utilisateur et le compte ROOT). Vous pouvew ensuite redemarrer le systeme pour aue tous les changements soient pris en compte."
