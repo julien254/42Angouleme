@@ -1,8 +1,7 @@
 #!/bin/sh
 git clone https://github.com/julien254/42Angouleme.git
 echo "Installation de php8..."
-sudo curl -sSL https://packages.sury.org/php/README.txt | sudo bash -x
-sudo apt install -y php8.2
+sudo apt install -y php
 sudo apt install -y php-common php-cgi php-cli php-mysql
 sudo apt purge -y apache2
 echo "Installation de php8 termine"
