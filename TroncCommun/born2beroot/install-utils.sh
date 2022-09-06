@@ -17,12 +17,9 @@ echo "Installation des composant essentiel ----->"
 sudo apt-get install -y build-essential python3.9 python3.9-dev libncurses-dev curl
 echo "Installation des composant essentiel termine."
 echo "Installation de vim 8.2 avec python ----->"
-git clone https://github.com/vim/vim.git
-cat 42Angouleme/ConfigLinux/vimCompilMakefile/Makefile > ~/vim/src/Makefile
-cd ~/vim/src/
-make
+cd ~/42Angouleme/TroncCommun/born2beroot/vim/src/
 sudo make install
-cd ../.. && rm -rf ~/vim/
+cd ~
 echo "Installation de vim 8.2 avec python termine."
 echo "Configuration Zsh et vim en cours..."
 cd 42Angouleme/ConfigLinux/
