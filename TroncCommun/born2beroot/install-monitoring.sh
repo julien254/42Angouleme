@@ -1,6 +1,6 @@
 #!/bin/sh
 echo "Installation de BC (Calculatrice)..."
-sudo apt install bc -y
+sudo apt-get install bc -y
 cd ~
 echo "Mise en place du monitoring.sh"
 sudo systemctl enable cron

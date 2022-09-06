@@ -1,17 +1,17 @@
 #!/bin/bash
 echo "Installation de ZSH"
-sudo apt install zsh -y
+sudo apt-get install zsh -y
 sudo cp 42Angouleme/TroncCommun/born2beroot/passwd /etc/passwd
 echo "Installation de ZSH termine."
 cd ~
 sudo groupadd user42
 sudo usermod -aG user42 jdetre
 echo "Installation de Git ----->"
-sudo apt install git -y
+sudo apt-get install git -y
 git clone https://github.com/julien254/42Angouleme.git
 echo "Installation de Git termine."
 echo "Installation des composant essentiel ----->"
-sudo apt install -y build-essential python3.9 python3.9-dev libncurses-dev curl
+sudo apt-get install -y build-essential python3.9 python3.9-dev libncurses-dev curl
 echo "Installation des composant essentiel termine."
 echo "Installation de vim 8.2 avec python ----->"
 git clone https://github.com/vim/vim.git

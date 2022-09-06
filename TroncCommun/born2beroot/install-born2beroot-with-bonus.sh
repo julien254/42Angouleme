@@ -1,8 +1,8 @@
 #!/bin/sh
 cd ~/
-sudo apt update -y
-sudo apt upgrade -y
-sudo apt install git -y
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get install git -y
 git clone https://github.com/julien254/42Angouleme.git
 sh 42Angouleme/TroncCommun/born2beroot/install-utils.sh
 sudo sh 42Angouleme/TroncCommun/born2beroot/install-security.sh
