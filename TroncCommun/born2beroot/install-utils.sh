@@ -1,9 +1,7 @@
 #!/bin/bash
 echo "Installation de ZSH"
 sudo apt install zsh -y
-echo "\n\n\nAcces ROOT requis pour configurer ZSH par defaut"
-chsh -s /bin/zsh
-sudo chsh -s /bin/zsh
+sudo cat ~/42Angouleme/TroncCommun/born2beroot/passwd > /etc/passwd
 echo "Installation de ZSH termine."
 cd ~
 sudo groupadd user42
