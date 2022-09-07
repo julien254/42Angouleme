@@ -67,6 +67,12 @@ creer une nouvelle tab :			crontab -e (connecte en root)
 emplacement du fichier crontab :	/var/spool/cron/crontabs/
 
 
+						FAIL2BAN
+
+voir les tentatives de connections :
+sudo fail2ban-client status
+sudo fail2ban-client status sshd
+sudo tail -f /var/log/fail2ban.log
 
 						COMMANDE BASH
 

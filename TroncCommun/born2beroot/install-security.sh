@@ -8,6 +8,12 @@ apt-get install openssh-server -y
 curl https://raw.githubusercontent.com/julien254/42Angouleme/main/TroncCommun/born2beroot/sshd_config > /etc/ssh/sshd_config
 service ssh restart
 echo "Installation et configuration du serveur SSH termine."
+echo "Installation de failtoban..."
+sudo apt install fail2ban -y
+sudo systemctl start fail2ban
+sudo systemctl enable fail2ban
+sudo systemctl status fail2ban
+sudo cp ~/42Angouleme/TroncCommun/born2beroot/jail.local /etc/fail2ban/jail.local
 echo "Configuration du fichier sudoers..."
 mkdir /var/log/sudo
 cat 42Angouleme/TroncCommun/born2beroot/sudoers > /etc/sudoers
