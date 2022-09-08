@@ -2,12 +2,12 @@
 git clone https://github.com/julien254/42Angouleme.git
 echo "Installation de php8..."
 sudo curl -sSL https://packages.sury.org/php/README.txt | sudo bash -x
-sudo apt-get install -y php8.2
-sudo apt-get install -y php-common php-cgi php-cli php-mysql
-sudo apt-get purge -y apache2
+sudo apt-get install php8.2 -y
+sudo apt-get install php-common php-cgi php-cli php-mysql -y
+sudo apt-get purge apache2 -y
 echo "Installation de php8 termine"
 echo "Installation de lighttpd..."
-sudo apt-get install -y lighttpd
+sudo apt-get install lighttpd -y
 echo "Installation de lighttpd termine"
 echo "Activation de lighttpd..."
 sudo systemctl start lighttpd
@@ -24,8 +24,10 @@ sudo mv ~/info.php /var/www/html/
 sudo lighty-enable-mod fastcgi
 sudo lighty-enable-mod fastcgi-php
 sudo service lighttpd force-reload
+sleep 1
 echo "Installation et configuration de mariadb..."
-sudo apt-get install -y mariadb-server
+sleep 1
+sudo apt-get install mariadb-server -y
 sudo systemctl start mariadb
 sudo systemctl enable mariadb
 sleep 1
