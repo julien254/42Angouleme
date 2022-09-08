@@ -28,6 +28,7 @@ echo "Installation et configuration de mariadb..."
 sudo apt-get install -y mariadb-server
 sudo systemctl start mariadb
 sudo systemctl enable mariadb
+sleep 1
 echo "\n\n\n\nConfiguration de la securite de MariaDB :\n"
 echo "Exemple de configuration :"
 echo "Enter current password for root (enter for none): <Entrée>"
@@ -39,7 +40,9 @@ echo "Remove anonymous users? [Y/n]: Y"
 echo "Disallow root login remotely? [Y/n]: Y"
 echo "Remove test database and access to it? [Y/n]:  Y"
 echo "Reload privilege tables now? [Y/n]:  Y"
+sleep 1
 sudo mysql_secure_installation
+sleep 1
 sudo systemctl restart mariadb
 echo "\nConfiguration de la base de donnees:\n"
 echo "Exemple de configuration rapide d'une base de donnees :"
@@ -61,6 +64,7 @@ sudo mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
 echo "Changement des droits du repertoire wordpress..."
 sudo chown -R www-data:www-data /var/www/html/
 sudo chmod -R 755 /var/www/html/
+sleep 1
 echo "\n\n\nLiaison de la base de donnees a Wordpress :\n"
 echo "Quel est le nom de votre base de donnees ?"
 read DB
