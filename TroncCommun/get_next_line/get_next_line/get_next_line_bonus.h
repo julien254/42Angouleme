@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 19:48:15 by julien            #+#    #+#             */
-/*   Updated: 2022/07/02 01:56:16 by julien           ###   ########.fr       */
+/*   Updated: 2022/09/11 19:08:24 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 4
-
 # endif
+
 # include <stdio.h>
 # include <sys/types.h>
 # include <sys/stat.h>
