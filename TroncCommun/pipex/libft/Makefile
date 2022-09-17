@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2022/09/16 09:24:48 by julien           ###   ########.fr        #
+#    Updated: 2022/09/17 05:41:21 by julien           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRCS		=   ft_atoi.c       \
 				ft_strjoin_malloc.c \
 				ft_strlcat.c    \
 				ft_strlcpy.c    \
+				ft_strmcpy.c    \
 				ft_strlen.c     \
 				ft_strmapi.c    \
 				ft_strncmp.c    \

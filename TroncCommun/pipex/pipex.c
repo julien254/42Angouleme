@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 14:54:25 by julien            #+#    #+#             */
-/*   Updated: 2022/09/16 18:27:39 by julien           ###   ########.fr       */
+/*   Updated: 2022/09/17 08:46:05 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ int	main(int argc, char *argv[], char **envp)
 {
 	t_var	pipex;
 
+	if (argc < 5)
+		ft_printf("Pipex: Too few arguments.\n");
+	else if (argc > 5)
+		ft_printf("Pipex: Too many arguments.\n");
 	if (argc == 5)
 	{
 		pipex.envp = envp;

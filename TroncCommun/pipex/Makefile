@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2022/09/16 17:21:49 by julien           ###   ########.fr        #
+#    Updated: 2022/09/17 07:35:56 by julien           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,13 @@ CC			= gcc -g
 
 CFLAGS		= -Wall -Wextra -Werror -I.
 
-SRCS		= pipex.c
+SRCS		= pipex.c pipex_utils.c open_free.c
+
+SRCS_BONUS		= bonus/pipex_bonus.c bonus/pipex_utils_bonus.c bonus/open_free_bonus.c
 
 OBJS		= ${SRCS:.c=.o}
+
+OBJS_BONUS		= ${SRCS_BONUS:.c=.o}
 
 LIBPATH		= libft/
 
@@ -28,9 +32,13 @@ ${NAME}:	${OBJS}
 	make -C ${LIBPATH}
 	${CC} ${CFLAGS} $^ -L./libft -lft -o $@
 
+bonus:		${OBJS_BONUS}
+	make -C ${LIBPATH}
+	${CC} ${CFLAGS} $^ -L./libft -lft -o pipex
+
 
 clean:
-	rm -f ${OBJS}
+	rm -f ${OBJS} ${OBJS_BONUS}
 
 fclean:		clean
 	make fclean -C ${LIBPATH}
