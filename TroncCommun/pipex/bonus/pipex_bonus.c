@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 14:54:25 by julien            #+#    #+#             */
-/*   Updated: 2022/09/17 09:59:09 by julien           ###   ########.fr       */
+/*   Updated: 2022/09/18 03:00:27 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,23 @@ void	ft_setbuffer(char *buffer)
 		buffer[i++] = 0;
 }
 
-void	ft_read_stdin(t_var *pipex, char *buffer, char **argv)
+void	print_here_doc(int argc)
+{
+	int	i;
+
+	ft_printf("\033[1;34m──(\033[0m");
+	if (argc > 6)
+	{
+		i = 5;
+		while(i++ != argc - 1)
+			ft_printf("\033[1;32mpipe \033[0m");
+	}
+	ft_printf("\033[1;32mpipe \033[0m");
+	ft_printf("\033[1;32mheredoc\033[0m");
+	ft_printf("\033[1;34m)── \033[0m");
+}
+
+void	ft_read_stdin(t_var *pipex, char *buffer, char **argv, int argc)
 {
 	int		ret;
 	char	*buffertmp;
@@ -76,6 +92,7 @@ void	ft_read_stdin(t_var *pipex, char *buffer, char **argv)
 	dest = (char*)ft_calloc(sizeof(char) * 1, 1);
 	while (strncmp(delimiter, buffer, (ft_strlen(argv[2]) + 1)) != 0)
 	{
+		print_here_doc(argc);
 		ret = read(0, buffer, 10000);
 		buffer[ret] = 0;
 		if (strncmp(delimiter, buffer, (ft_strlen(argv[2]) + 1)) == 0)
@@ -94,7 +111,7 @@ char	**ft_here_doc(t_var *pipex, char **argv, int *argc)
 
 	if (strncmp(argv[1], "here_doc", 8) == 0)
 	{
-		ft_read_stdin(pipex,buffer, argv);
+		ft_read_stdin(pipex,buffer, argv, *argc);
 		pipex->argV = argv + 1;
 		pipex->argC = *argc - 1;
 	}

@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 14:54:25 by julien            #+#    #+#             */
-/*   Updated: 2022/09/17 08:46:05 by julien           ###   ########.fr       */
+/*   Updated: 2022/09/18 03:03:45 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	ft_pipex(t_var *pipex, int indexfd, char *order, char *argv)
 		close(pipex->pipe_fd[indexfd]);
 		ft_choose_dup2(pipex, order);
 		ft_execve(pipex, argv);
-		exit(EXIT_SUCCESS);
 	}
 }
 
