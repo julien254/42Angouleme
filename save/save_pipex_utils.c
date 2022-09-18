@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_utils_bonus.c                                :+:      :+:    :+:   */
+/*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 18:00:48 by julien            #+#    #+#             */
-/*   Updated: 2022/09/18 04:30:53 by julien           ###   ########.fr       */
+/*   Updated: 2022/09/16 18:20:23 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,16 @@ pid_t	ft_fork(void)
 
 void	ft_dup2(int fd_in, int fd_out)
 {
-	if (dup2(fd_in, 0) == -1)
-		perror("dup2");
-	if (dup2(fd_out, 1) == -1)
-		perror("dup2");
+	dup2(fd_in, 0);
+	dup2(fd_out, 1);
 }
 
 void	ft_choose_dup2(t_var *pipex, char *order)
 {
-		if (ft_strncmp(order, "last", 4) == 0)
-		{
-			if (pipex->outfile == -1)
-				pipex->outfile = pipex->pipe_fd[1];
-			ft_dup2(pipex->infile, pipex->outfile);
-		}
-		else
-			ft_dup2(pipex->infile, pipex->pipe_fd[1]);
+	if (ft_strncmp(order, "first", 4) == 0)
+		ft_dup2(pipex->infile, pipex->pipe_fd[1]);
+	else
+		ft_dup2(pipex->pipe_fd[0], pipex->outfile);
 }
 
 void	ft_execve(t_var *pipex, char *argv)

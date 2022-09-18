@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 14:54:25 by julien            #+#    #+#             */
-/*   Updated: 2022/09/18 03:00:27 by julien           ###   ########.fr       */
+/*   Updated: 2022/09/18 04:35:05 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_pipex_bonus(t_var *pipex, char *order, char *argv)
 	pipex->pid = ft_fork();
 	if (pipex->pid == 0)
 	{
-		if (!strncmp(order, "last", 4))
+		if (strncmp(order, "last", 4) == 0 && pipex->outfile != -1)
 			close(pipex->pipe_fd[1]);
 		close(pipex->pipe_fd[0]);
 		ft_choose_dup2(pipex, order);
@@ -126,11 +126,14 @@ char	**ft_here_doc(t_var *pipex, char **argv, int *argc)
 
 void	ft_write_fd(t_var *pipex)
 {
-	if (!pipex->infile)
+	if (pipex->infile < 1)
 	{
 		pipe(pipex->pipe_fd);
-		write(pipex->pipe_fd[1], pipex->input, ft_strlen(pipex->input));
-		free(pipex->input);
+		if (pipex->infile == 0)
+		{
+			write(pipex->pipe_fd[1], pipex->input, ft_strlen(pipex->input));
+			free(pipex->input);
+		}
 		close(pipex->pipe_fd[1]);
 		pipex->infile = pipex->pipe_fd[0];
 	}

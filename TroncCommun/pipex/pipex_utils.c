@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 18:00:48 by julien            #+#    #+#             */
-/*   Updated: 2022/09/18 03:15:24 by julien           ###   ########.fr       */
+/*   Updated: 2022/09/18 05:30:40 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,17 @@ void	ft_dup2(int fd_in, int fd_out)
 
 void	ft_choose_dup2(t_var *pipex, char *order)
 {
+	int	trash;
+
 	if (ft_strncmp(order, "last", 4) == 0)
+	{
+		if (pipex->outfile == -1)
+		{
+			trash = open("/dev/null", O_WRONLY );
+			pipex->outfile = trash;
+		}
 		ft_dup2(pipex->pipe_fd[0], pipex->outfile);
+	}
 	else
 		ft_dup2(pipex->infile, pipex->pipe_fd[1]);
 }

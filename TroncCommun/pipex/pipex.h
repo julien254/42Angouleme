@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 01:30:01 by julien            #+#    #+#             */
-/*   Updated: 2022/09/17 07:35:27 by julien           ###   ########.fr       */
+/*   Updated: 2022/09/18 04:58:39 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		open_infile(char *file);
 int		open_outfile(char *file);
 int		open_outfile_bonus(t_var *pipex, char *file);
 char	*ft_recovery_cmd(t_var *pipex);
-void	ft_pipex(t_var *pipex, int indexfd, char *order, char *argv);
+void	ft_pipex(t_var *pipex, char *order, char *argv);
 void	ft_pipex_bonus(t_var *pipex, char *order, char *argv);
 
 #endif /* ifndef PIPEX_H */
