@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 01:30:01 by julien            #+#    #+#             */
-/*   Updated: 2022/09/18 04:58:39 by julien           ###   ########.fr       */
+/*   Updated: 2022/09/18 17:08:09 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ typedef struct s_var
 	int		outfile;
 	int		here_doc;
 	int		i;
-	int		argC;
+	int		argc;
 	char	*cmd;
 	char	**cmd_arg;
 	char	**envp;
 	char	**path;
-	char	**argV;
+	char	**argv;
 	char	*input;
 }				t_var;
 
@@ -52,5 +52,9 @@ int		open_outfile_bonus(t_var *pipex, char *file);
 char	*ft_recovery_cmd(t_var *pipex);
 void	ft_pipex(t_var *pipex, char *order, char *argv);
 void	ft_pipex_bonus(t_var *pipex, char *order, char *argv);
-
+void	ft_setbuffer(char *buffer);
+void	print_here_doc(int argc);
+void	ft_read_stdin(t_var *pipex, char *buffer, char **argv, int argc);
+void	ft_write_fd(t_var *pipex);
+char	**ft_here_doc(t_var *pipex, char **argv, int *argc);
 #endif /* ifndef PIPEX_H */

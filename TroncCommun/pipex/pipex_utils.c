@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 18:00:48 by julien            #+#    #+#             */
-/*   Updated: 2022/09/18 05:30:40 by julien           ###   ########.fr       */
+/*   Updated: 2022/09/18 16:58:26 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_choose_dup2(t_var *pipex, char *order)
 	{
 		if (pipex->outfile == -1)
 		{
-			trash = open("/dev/null", O_WRONLY );
+			trash = open("/dev/null", O_WRONLY);
 			pipex->outfile = trash;
 		}
 		ft_dup2(pipex->pipe_fd[0], pipex->outfile);
