@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/10 23:38:35 by julien            #+#    #+#             */
-/*   Updated: 2022/09/16 18:29:53 by julien           ###   ########.fr       */
+/*   Created: 2022/04/12 18:08:23 by julien            #+#    #+#             */
+/*   Updated: 2022/04/12 20:35:00 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strdup(const char *s)
+void	ft_lstadd_back(t_list **lst, t_list *neW)
 {
-	char	*str;
+	t_list	*last;
 
-	if (s == 0)
-		return (0);
-	str = (char *)ft_calloc(ft_strlen(s) + 1, 1);
-	if (str == NULL)
-		return (NULL);
-	ft_strlcpy(str, s, ft_strlen(s) + 1);
-	return (str);
+	if (!(*lst))
+		*lst = neW;
+	else
+	{
+		last = ft_lstlast(*lst);
+		last->next = neW;
+	}
 }

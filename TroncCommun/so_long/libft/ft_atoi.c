@@ -1,26 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/10 23:38:35 by julien            #+#    #+#             */
-/*   Updated: 2022/09/16 18:29:53 by julien           ###   ########.fr       */
+/*   Created: 2022/04/10 22:25:57 by julien            #+#    #+#             */
+/*   Updated: 2022/04/10 23:15:20 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strdup(const char *s)
+int	ft_atoi(const char *str)
 {
-	char	*str;
+	size_t	i;
+	int		isneg;
+	int		nbr;
 
-	if (s == 0)
-		return (0);
-	str = (char *)ft_calloc(ft_strlen(s) + 1, 1);
-	if (str == NULL)
-		return (NULL);
-	ft_strlcpy(str, s, ft_strlen(s) + 1);
-	return (str);
+	i = 0;
+	isneg = 1;
+	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v' || \
+			str[i] == '\f' || str[i] == '\r' || str[i] == ' ')
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			isneg = -1;
+		i++;
+	}
+	nbr = 0;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		nbr = nbr * 10 + (str[i] - '0');
+		i++;
+	}
+	return (nbr * isneg);
 }

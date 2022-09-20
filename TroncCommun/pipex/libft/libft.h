@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:34:52 by julien            #+#    #+#             */
-/*   Updated: 2022/09/17 05:42:15 by julien           ###   ########.fr       */
+/*   Updated: 2022/09/19 17:20:15 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,9 @@
 #  define BUFFER_SIZE 100
 # endif
 
-# include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
 # include <stdarg.h>
-# include <sys/types.h>
-# include <sys/stat.h>
-# include <fcntl.h>
 
 typedef struct s_ind
 {

@@ -1,26 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/10 23:38:35 by julien            #+#    #+#             */
-/*   Updated: 2022/09/16 18:29:53 by julien           ###   ########.fr       */
+/*   Created: 2022/04/10 20:42:45 by julien            #+#    #+#             */
+/*   Updated: 2022/04/10 21:38:56 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strdup(const char *s)
+char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
-	char	*str;
+	size_t	i;
+	size_t	j;
 
-	if (s == 0)
-		return (0);
-	str = (char *)ft_calloc(ft_strlen(s) + 1, 1);
-	if (str == NULL)
+	if (little[0] != '\0')
+	{
+		i = 0;
+		while (i < len && big[i])
+		{
+			j = 0;
+			while (little[j] && i + j < len)
+			{
+				if (big[i + j] == little[j])
+				{
+					j++;
+					continue ;
+				}
+				break ;
+			}
+			if (little[j] == '\0')
+				return ((char *)(big + i));
+			i++;
+		}
 		return (NULL);
-	ft_strlcpy(str, s, ft_strlen(s) + 1);
-	return (str);
+	}
+	return ((char *)big);
 }

@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/10 23:38:35 by julien            #+#    #+#             */
-/*   Updated: 2022/09/16 18:29:53 by julien           ###   ########.fr       */
+/*   Created: 2022/09/19 16:19:41 by julien            #+#    #+#             */
+/*   Updated: 2022/09/20 00:35:12 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef SO_LONG_H
+#define SO_LONG_H value
 
-char	*ft_strdup(const char *s)
-{
-	char	*str;
+# include "libft/libft.h"
+# include "mlx.h"
 
-	if (s == 0)
-		return (0);
-	str = (char *)ft_calloc(ft_strlen(s) + 1, 1);
-	if (str == NULL)
-		return (NULL);
-	ft_strlcpy(str, s, ft_strlen(s) + 1);
-	return (str);
-}
+typedef struct	s_img {
+	void	*mlx;
+	void	*win;
+	void	*img;
+	char	*addr;
+	int		*bits_per_pixel;
+	int		*line_length;
+	int		*endian;
+	int		size_x;
+	int		size_y;
+}				t_img;
+
+#endif /* ifndef SO_LONG_H */
