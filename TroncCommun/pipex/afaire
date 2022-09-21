@@ -1,0 +1,5 @@
+make bonus relink
+retirer les .h inutile et dans les .c de la libft
+./pipex mdr "" "" lol
+si unset PATH
+alors doit marquer commande not found
