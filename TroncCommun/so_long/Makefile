@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2022/09/19 16:16:19 by julien           ###   ########.fr        #
+#    Updated: 2022/09/20 18:44:01 by jdetre           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,9 @@ CC			= gcc -g
 
 CFLAGS		= -Wall -Wextra -Werror
 
-INCLUDE		= -I/usr/local/include
+INCLUDE		= 
 
-LIB			= -L./libft -lft -L/usr/local/lib -lmlx -lXext -lX11 -lm -lz
+LIB			= -L./libft -lft -L. -lmlx -lXext -lX11 -lm -lz
 
 SRCS		= so_long.c
 

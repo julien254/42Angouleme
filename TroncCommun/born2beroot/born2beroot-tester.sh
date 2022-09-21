@@ -67,5 +67,5 @@ echo -n "\033[0;34;1mVerification de l'activation de SSH"; sleep 1; if [ $SSHACT
 echo -n "\033[0;34;1mVerification du port utilse par SSH:"; sleep 1; if [ $SSH4242 = "OK" ]; then echo "			\033[1;42;37m OK "; else echo "			\033[0;1;5;41;37m Failed... "; fi; sleep 1;
 echo -n "\033[0;34;1mVerification de l'activation de UFW:"; sleep 1; if [ $UFWACTIVE = "OK" ]; then echo "			\033[1;42;37m OK "; else echo "			\033[0;1;5;41;37m Failed... "; fi; sleep 1;
 echo -n "\033[0;34;1mVerification des ports autorises:"; sleep 1; if [ $UFW4242 = "OK" ]; then echo "			\033[1;42;37m OK "; else echo "			\033[0;1;5;41;37m Failed... "; fi; sleep 1;
-echo -n "\033[0;34;1mVerification de l'activation d'APPARMOR:"; sleep 1; if [ $APPARMOR = "OK" ]; then echo "			\033[1;42;37m OK "; else echo "			\033[0;1;5;41;37m Failed... "; fi; sleep 1;
+echo -n "\033[0;34;1mVerification de l'activation d'APPARMOR:"; sleep 1; if [ $APPARMOR = "OK" ]; then echo "		\033[1;42;37m OK "; else echo "			\033[0;1;5;41;37m Failed... "; fi; sleep 1;
 if [ $(echo $PARTITION$HOSTNAME$GROUPUSER42$GROUPSUDO$REGLEEXPIR$ROOTEXPIR$USEREXPIR$PWQUALITY$SUDOERS) = "OKOKOKOKOKOKOKOKOK" ]; then echo "\n\n\033[0;1;5;32mFelicitations Vous avez passez 100% du test avec succes.\n\n"; else echo "\n\n\033[0;1;31mOups, certaine choses sont a revoir ;).\n\n";fi
