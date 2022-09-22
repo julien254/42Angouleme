@@ -6,13 +6,13 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 18:06:27 by julien            #+#    #+#             */
-/*   Updated: 2022/09/17 07:43:03 by julien           ###   ########.fr       */
+/*   Updated: 2022/09/22 15:42:15 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_free(t_var *pipex)
+void	ft_free(t_var *pipex, int option)
 {
 	size_t	i;
 
@@ -21,9 +21,12 @@ void	ft_free(t_var *pipex)
 		free(pipex->cmd_arg[i++]);
 	free(pipex->cmd_arg);
 	i = 0;
-	while (pipex->path[i])
-		free(pipex->path[i++]);
-	free(pipex->path);
+	if (option)
+	{
+		while (pipex->path[i])
+			free(pipex->path[i++]);
+		free(pipex->path);
+	}
 }
 
 int	open_infile(char *file)

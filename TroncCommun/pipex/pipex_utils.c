@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 18:00:48 by julien            #+#    #+#             */
-/*   Updated: 2022/09/18 16:58:26 by julien           ###   ########.fr       */
+/*   Updated: 2022/09/22 14:14:31 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,21 @@ void	ft_choose_dup2(t_var *pipex, char *order)
 void	ft_execve(t_var *pipex, char *argv)
 {
 	pipex->cmd_arg = ft_split(argv, ' ');
+	if (!pipex->cmd_arg)
+	{
+		ft_putstr_fd("Pipex: Command not found:\n", 2);
+		exit(EXIT_SUCCESS);
+	}
 	pipex->cmd = ft_recovery_cmd(pipex);
 	if (!pipex->cmd)
 	{
 		ft_putstr_fd("Pipex: Command not found: ", 2);
 		ft_putstr_fd(*pipex->cmd_arg, 2);
 		ft_putstr_fd("\n", 2);
-		ft_free(pipex);
+		if (pipex->path == 0)
+			ft_free(pipex, 0);
+		else
+			ft_free(pipex, 1);
 		exit(EXIT_SUCCESS);
 	}
 	execve(pipex->cmd, pipex->cmd_arg, pipex->envp);

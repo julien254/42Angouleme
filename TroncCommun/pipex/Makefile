@@ -6,46 +6,52 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2022/09/21 17:08:28 by jdetre           ###   ########.fr        #
+#    Updated: 2022/09/22 16:37:59 by julien           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		= pipex
+NAME		=	pipex
 
-CC			= gcc -g
+NAME_BONUS	=	pipex_bonus
 
-CFLAGS		= -Wall -Wextra -Werror -I.
+CC			=	gcc
 
-SRCS		= pipex.c pipex_utils.c open_free.c
+CFLAGS		=	-Wall -Wextra -Werror -I.
 
-SRCS_BONUS	= bonus/pipex_bonus.c		\
-			bonus/pipex_utils_bonus.c	\
-			bonus/open_free_bonus.c	\
-			bonus/pipex_heredoc.c
+SRCS		=	pipex.c						\
+				pipex_utils.c				\
+				open_free.c
 
-OBJS		= ${SRCS:.c=.o}
+SRCS_BONUS	=	bonus/pipex_bonus.c			\
+				bonus/pipex_utils_bonus.c	\
+				bonus/open_free_bonus.c		\
+				bonus/pipex_heredoc.c
 
-OBJS_BONUS	= ${SRCS_BONUS:.c=.o}
+OBJS		= 	${SRCS:.c=.o}
 
-LIBPATH		= libft/
+OBJS_BONUS	= 	${SRCS_BONUS:.c=.o}
 
-all:		${NAME}
+LIBPATH		= 	libft/
 
-${NAME}:	${OBJS}
-	make -C ${LIBPATH}
-	${CC} ${CFLAGS} $^ -L./libft -lft -o $@
+all:			${NAME}
 
-bonus:		${OBJS_BONUS}
-	make -C ${LIBPATH}
-	${CC} ${CFLAGS} $^ -L./libft -lft -o pipex
+${NAME}:		${OBJS}
+			make -C ${LIBPATH}
+			${CC} ${CFLAGS} $^ -L./libft -lft -o $@
+
+bonus:			${NAME_BONUS}
+
+${NAME_BONUS}:	${OBJS_BONUS}
+			make -C ${LIBPATH}
+			${CC} ${CFLAGS} $^ -L./libft -lft -o ${NAME_BONUS}
 
 clean:
-	rm -f ${OBJS} ${OBJS_BONUS}
+			rm -f ${OBJS} ${OBJS_BONUS}
 
-fclean:		clean
-	make fclean -C ${LIBPATH}
-	rm -f ${NAME}
+fclean:			clean
+			make fclean -C ${LIBPATH}
+			rm -f ${NAME} ${NAME_BONUS}
 
-re:			fclean all
+re:				fclean all
 
-.PHONY:		all clean fclean re
+.PHONY:			all clean fclean re

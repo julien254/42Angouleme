@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 14:29:23 by julien            #+#    #+#             */
-/*   Updated: 2022/04/25 16:04:30 by jdetre           ###   ########.fr       */
+/*   Updated: 2022/09/22 11:39:27 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,30 +46,41 @@ static char	*substr(const char *str, size_t start, size_t end)
 	return (sub);
 }
 
+int	ft_control(char const *s, char **split)
+{
+	if (!s || !split)
+		return (1);
+	if (s[0] == 0)
+	{
+		free(split);
+		return (1);
+	}
+	return (0);
+}
+
 char	**ft_split(char const *s, char c)
 {
-	size_t	i;
+	size_t	index[2];
 	int		i2;
-	size_t	j;
 	char	**split;
 
-	split = malloc((count(s, c) + 1) * sizeof(char *));
-	if (!s || !split)
-		return (0);
-	i = 0;
-	j = 0;
+	split = (char **)malloc((count(s, c) + 1) * sizeof(char *));
+	if (ft_control(s, split))
+		return (NULL);
+	index[0] = 0;
+	index[1] = 0;
 	i2 = -1;
-	while (i <= ft_strlen(s))
+	while (index[0] <= ft_strlen(s))
 	{
-		if (s[i] != c && i2 < 0)
-			i2 = i;
-		else if ((s[i] == c || i == ft_strlen(s)) && i2 >= 0)
+		if (s[index[0]] != c && i2 < 0)
+			i2 = index[0];
+		else if ((s[index[0]] == c || index[0] == ft_strlen(s)) && i2 >= 0)
 		{
-			split[j++] = substr(s, i2, i);
+			split[index[1]++] = substr(s, i2, index[0]);
 			i2 = -1;
 		}
-		i++;
+		index[0]++;
 	}
-	split[j] = 0;
+	split[index[1]] = 0;
 	return (split);
 }

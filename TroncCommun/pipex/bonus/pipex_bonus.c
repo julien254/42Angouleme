@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 14:54:25 by julien            #+#    #+#             */
-/*   Updated: 2022/09/18 17:06:11 by julien           ###   ########.fr       */
+/*   Updated: 2022/09/22 15:22:44 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ char	*ft_recovery_cmd(t_var *pipex)
 	while (strncmp(*env, "PATH", 4))
 	{
 		env++;
+		if (*env == NULL)
+			return (NULL);
 	}
 	*env = *env + 5;
 	pipex->path = ft_split(*env, ':');
@@ -76,6 +78,7 @@ int	main(int argc, char *argv[], char **envp)
 	if (argc >= 5)
 	{
 		pipex.infile = 0;
+		pipex.path = 0;
 		ft_here_doc(&pipex, argv, &argc);
 		pipex.envp = envp;
 		pipex.outfile = open_outfile_bonus(&pipex, pipex.argv[pipex.argc - 1]);
