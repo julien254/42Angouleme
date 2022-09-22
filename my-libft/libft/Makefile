@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2022/09/22 16:35:20 by julien           ###   ########.fr        #
+#    Updated: 2022/09/22 16:57:16 by julien           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,7 @@ NAME		=	libft.a
 
 CC			=	gcc
 
-DEBUG		=	-g
-
-CFLAGS		=	-Wall -Wextra -Werror -I.
+CFLAGS		=	-Wall -Wextra -Werror
 
 SRCS		=	ft_atoi.c					\
 				ft_bzero.c					\

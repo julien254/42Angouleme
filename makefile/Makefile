@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2022/09/22 16:44:01 by julien           ###   ########.fr        #
+#    Updated: 2022/09/22 17:00:03 by julien           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,11 @@ NAME_BONUS	=
 
 CC			=	gcc
 
-CFLAGS		=	-Wall -Wextra -Werror -I.
+CFLAGS		=	-Wall -Wextra -Werror
+
+INCLUDE		=	-I.
+
+LIB			=	-L./libft -lft
 
 SRCS		=	
 
@@ -32,13 +36,13 @@ all:			${NAME}
 
 ${NAME}:		${OBJS}
 			make -C ${LIBPATH}
-			${CC} ${CFLAGS} $^ -L./libft -lft -o $@
+			${CC} ${CFLAGS} $^ ${INCLUDE} ${LIB} -o $@
 
 bonus:			${NAME_BONUS}
 
 ${NAME_BONUS}:	${OBJS_BONUS}
 			make -C ${LIBPATH}
-			${CC} ${CFLAGS} $^ -L./libft -lft -o ${NAME_BONUS}
+			${CC} ${CFLAGS} $^ ${INCLUDE} ${LIB} -o ${NAME_BONUS}
 
 clean:
 			rm -f ${OBJS} ${OBJS_BONUS}
