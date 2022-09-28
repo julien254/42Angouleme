@@ -6,47 +6,104 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:45:52 by julien            #+#    #+#             */
-/*   Updated: 2022/09/20 01:09:26 by julien           ###   ########.fr       */
+/*   Updated: 2022/09/26 19:24:06 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	ft_close_win(int key, t_img *img)
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 {
-	static int x = 0;
-	size_t	i;
+	char	*dst;
 
-	if (key == 65307)
+	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
+}
+
+void	update_font_hero(t_img *below, t_img *above)
+{
+	int	i;
+
+	i = 0;
+	while (i < (TILESIZE * TILESIZE))
 	{
-		mlx_destroy_window(img->mlx, img->win);
-		exit(EXIT_SUCCESS);
+		if (*(unsigned int *)above->addr == 4278190080)
+			*(unsigned int *)above->addr = \
+										*(unsigned int *)below->addr;
+		above->addr += 4;
+		below->addr += 4;
+		i++;
 	}
-	if (key == 100)
+	above->addr -= (TILESIZE * TILESIZE) * 4;
+	below->addr -= (TILESIZE * TILESIZE) * 4;
+}
+
+void	printmap(int size_x, int size_y, t_lst_img *boximg)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < size_y)
 	{
-		i = 0;
-		while (i < 10)
+		x = 0;
+		while (x < size_x)
 		{
-			mlx_put_image_to_window(img->mlx, img->win, img->img, x++, 0);
-			i++;
+			mlx_put_image_to_window(boximg->mlx, boximg->win, \
+											boximg->floor->img, x, y);
+			if (x == 0 || y == 0 || x == (size_x - 50) || y == (size_y - 50))
+			{
+				update_font_hero(boximg->floor, boximg->wall);
+				mlx_put_image_to_window(boximg->mlx, boximg->win, \
+											boximg->wall->img, x, y);
+			}
+			x += 50;
 		}
+		y += 50;
 	}
-	ft_printf("l'id de la touche est : %d.\n", key);
+}
+
+void	move(int key, t_lst_img *boximg)
+{
+	static int	x = 0;
+	static int	y = 0;
+
+	mlx_put_image_to_window(boximg->mlx, boximg->win, boximg->floor->img, x, y);
+	if (key == 100)
+		x += 50;
+	else if (key == 97)
+		x -= 50;
+	else if (key == 115)
+		y += 50;
+	else if (key == 119)
+		y -= 50;
+	update_font_hero(boximg->floor, boximg->hero);
+	mlx_put_image_to_window(boximg->mlx, boximg->win, boximg->hero->img, x, y);
+}
+
+int	ft_hook(int keycode, t_lst_img *boximg)
+{
+	move(keycode, boximg);
+	ft_printf("%d\n", keycode);
 	return (0);
 }
 
-
 int	main(int argc, char *argv[])
 {
-	t_img	img;
+	t_lst_img	boximg;
 
 	(void)argc;
 	(void)argv;
-	img.mlx = mlx_init();
-	img.win = mlx_new_window(img.mlx, 750, 650, "So_long");
-	mlx_key_hook(img.win, ft_close_win, (void *)&img);
-	img.img = mlx_xpm_file_to_image(img.mlx, "pokeball.xpm", &img.size_x, &img.size_y);
-	mlx_put_image_to_window(img.mlx, img.win, img.img, 0, 0);
-	mlx_loop(img.mlx);
+	boximg.mlx = mlx_init();
+	boximg.win = mlx_new_window(boximg.mlx, 1000, 600, "So_long");
+	boximg.floor = ft_lst_new_img("tiles/herbe.xpm", boximg.mlx, boximg.win);
+	boximg.hero = ft_lst_new_img("sprite/test.xpm", boximg.mlx, \
+																boximg.win);
+	boximg.wall = ft_lst_new_img("tiles/arbre.xpm", boximg.mlx, boximg.win);
+	printmap(1000, 600, &boximg);
+	update_font_hero(boximg.floor, boximg.hero);
+	mlx_put_image_to_window(boximg.mlx, boximg.win, boximg.hero->img, 50, 50);
+	mlx_hook(boximg.win, 2, 1L << 0, ft_hook, (void *)&boximg);
+	mlx_loop(boximg.mlx);
 	return (0);
 }
