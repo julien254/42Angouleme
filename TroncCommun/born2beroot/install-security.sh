@@ -13,7 +13,6 @@ apt install fail2ban -y
 systemctl start fail2ban
 systemctl enable fail2ban
 systemctl status fail2ban
-cat ~/42Angouleme/TroncCommun/born2beroot/jail.local > jail.local ; sudo mv jail.local /etc/fail2ban/
 echo "Configuration du fichier sudoers..."
 mkdir /var/log/sudo
 cat 42Angouleme/TroncCommun/born2beroot/sudoers > /etc/sudoers

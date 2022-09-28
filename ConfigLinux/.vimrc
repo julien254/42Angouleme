@@ -11,7 +11,7 @@ endif
 
 "---------------Reglage General---------------"
 
-colorscheme morning
+colorscheme atlantis
 syntax on
 set list " Affiche les caracteres non imprimable
 set listchars=nbsp:¤,tab:-->,trail:¤,extends:>,precedes:<,trail:· " Set les differents symbole pour les caracteres non imprimable
