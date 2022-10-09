@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2022/09/22 16:57:16 by julien           ###   ########.fr        #
+#    Updated: 2022/10/09 05:37:41 by julien           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		=	libft.a
 
 CC			=	gcc
 
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -I.
 
 SRCS		=	ft_atoi.c					\
 				ft_bzero.c					\
@@ -55,12 +55,17 @@ SRCS		=	ft_atoi.c					\
 				ft_printf.c					\
 				get_next_line_bonus.c		\
 				get_next_line_utils_bonus.c	\
-				ft_puthexa_fd.c 			\
+				ft_puthexa_fd.c				\
 				ft_put_u_nbr_fd.c			\
 				ft_putadd_fd.c				\
 				ft_puthexa_ll_fd.c			\
 				ft_puttab2_fd.c				\
 				ft_recover_fd.c				\
+				ft_count_line.c				\
+				ft_line_size.c				\
+				ft_line_size_max.c			\
+				ft_tab2dlen.c				\
+				ft_cpy_tab2d.c				\
 				ft_lstadd_back.c			\
 				ft_lstadd_front.c			\
 				ft_lstclear.c				\
@@ -69,7 +74,7 @@ SRCS		=	ft_atoi.c					\
 				ft_lstlast.c				\
 				ft_lstmap.c					\
 				ft_lstnew.c					\
-				ft_lstsize.c
+				ft_lstsize.c				\
 
 OBJS		=	${SRCS:.c=.o}
 
@@ -79,11 +84,11 @@ ${NAME}:		${OBJS}
 			ar rcs ${NAME} ${OBJS}
 
 clean:
-			rm -f ${OBJS}
+			rm -f ${OBJS} ${OBJS_BONUS}
 
-fclean:			clean
+fclean:		clean
 			rm -f ${NAME}
 
-re:				fclean all
+re:			fclean all
 
-.PHONY:			all clean fclean re
+.PHONY:		all clean fclean re

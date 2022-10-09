@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2022/09/28 08:26:18 by jdetre           ###   ########.fr        #
+#    Updated: 2022/10/09 05:32:57 by julien           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,9 @@ NAME		=	so_long
 
 NAME_BONUS	=	so_long_bonus
 
-NAME_TEST =	so_long_test
+NAME_TEST	=		so_long_test
 
-CC			=	gcc -g
+CC			=	gcc
 
 CFLAGS		=	-Wall -Wextra -Werror
 
@@ -25,7 +25,15 @@ INCLUDE		=	-I.
 LIB			=	-L./libft -lft -L. -lmlx -lXext -lX11 -lm -lz
 
 SRCS		=	so_long.c						\
-				ft_new_img.c
+				so_long_img.c					\
+				so_long_map.c					\
+				so_long_check.c					\
+				so_long_err.c					\
+				so_long_init.c					\
+				so_long_utils.c					\
+				so_long_close.c					\
+				so_long_way.c					\
+				so_long_map2d.c
 
 SRCS_BONUS	=	
 
@@ -51,16 +59,14 @@ test:			${NAME_TEST}
 
 ${NAME_TEST}:	${OBJS}
 			make -C ${LIBPATH}
-			${CC} ${CFLAGS} $^ ${INCLUDE} ${LIB} -o ${NAME_TEST}
-			./so_long_test > test; cat test | less; rm test
-			make fclean
+			${CC} -g ${CFLAGS} $^ ${INCLUDE} ${LIB} -o ${NAME_TEST}
 
 clean:
 			rm -f ${OBJS} ${OBJS_BONUS}
 
 fclean:			clean
 			make fclean -C ${LIBPATH}
-			rm -f ${NAME} ${NAME_BONUS} ${NAME_RESULT}
+			rm -f ${NAME} ${NAME_BONUS} ${NAME_TEST}
 
 re:				fclean all
 

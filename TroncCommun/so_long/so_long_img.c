@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_new_img.c                                       :+:      :+:    :+:   */
+/*   so_long_img.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 13:12:31 by julien            #+#    #+#             */
-/*   Updated: 2022/09/26 16:06:32 by julien           ###   ########.fr       */
+/*   Updated: 2022/10/06 12:56:17 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-t_img	*ft_lst_new_img(char *filename, void *mlx, void *win)
+t_img	*ft_new_img(char *filename, void *mlx, void *win)
 {
 	t_img	*img;
 
@@ -25,9 +25,57 @@ t_img	*ft_lst_new_img(char *filename, void *mlx, void *win)
 	img->win = win;
 	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, \
 											&img->line_length, &img->endian);
-	img->pos_x = 0;
-	img->pos_y = 0;
 	return (img);
+}
+
+void	update_font_hero(t_img *below, t_img *above)
+{
+	int	i;
+
+	i = 0;
+	while (i < (TILESIZE_Y * TILESIZE_X))
+	{
+		if (*(unsigned int *)above->addr == 4278190080)
+			*(unsigned int *)above->addr = \
+								*(unsigned int *)below->addr;
+		above->addr += 4;
+		below->addr += 4;
+		i++;
+	}
+	above->addr -= (TILESIZE_Y * TILESIZE_X) * 4;
+	below->addr -= (TILESIZE_Y * TILESIZE_X) * 4;
+}
+
+void	print_img(t_lst_img *boximg, t_img *img, int x, int y)
+{
+	update_font_hero(boximg->floor, img);
+	mlx_put_image_to_window(boximg->mlx, boximg->win, \
+			img->img, x, y);
+}
+
+void	choose_img(t_lst_img *boximg, char *line_map2d, int y)
+{
+	int	x;
+	int	j;
+
+	x = 0;
+	j = 0;
+	while (line_map2d[j])
+	{
+		if (line_map2d[j] == 'P')
+			print_img(boximg, boximg->hero, x, y);
+		else if (line_map2d[j] == '1')
+			print_img(boximg, boximg->wall, x, y);
+		else if (line_map2d[j] == 'E')
+			print_img(boximg, boximg->exit, x, y);
+		else if (line_map2d[j] == 'C')
+			print_img(boximg, boximg->item, x, y);
+		else
+			mlx_put_image_to_window(boximg->mlx, boximg->win, \
+					boximg->floor->img, x, y);
+		x += TILESIZE_X;
+		j++;
+	}
 }
 
 void	ft_put_img(t_img *img)
@@ -52,7 +100,5 @@ void	ft_put_img(t_img *img)
 		ft_printf("%d\n", img->endian);
 		ft_printf("%d\n", img->size_x);
 		ft_printf("%d\n", img->size_y);
-		ft_printf("%d\n", img->pos_x);
-		ft_printf("%d\n", img->pos_y);
 	}
 }

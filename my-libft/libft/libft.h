@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:34:52 by julien            #+#    #+#             */
-/*   Updated: 2022/09/22 16:17:16 by julien           ###   ########.fr       */
+/*   Updated: 2022/10/09 06:25:43 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdarg.h>
-# include <sys/types.h>
-# include <sys/stat.h>
 # include <fcntl.h>
-
 
 typedef struct s_ind
 {
@@ -117,4 +114,9 @@ void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 char	*ft_recover_fd(char *file);
+int		ft_count_line(char *str);
+int		ft_line_size(char *str);
+int		ft_line_size_max(char *str);
+int		ft_tab2dlen(char **tab);
+char	**ft_cpy_tab2d(char **tab2d);
 #endif

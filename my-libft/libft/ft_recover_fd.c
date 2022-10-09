@@ -6,34 +6,11 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 00:16:55 by julien            #+#    #+#             */
-/*   Updated: 2022/09/14 13:32:41 by julien           ###   ########.fr       */
+/*   Updated: 2022/10/09 05:05:56 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-int	check_files(char *file, int OPTION_OK)
-{
-	if (access(file, OPTION_OK) != 0)
-		return (1);
-	else
-		return (0);
-}
-
-int	check_files_infile(char *file)
-{
-	if (check_files(file, F_OK))
-	{
-		ft_printf("Aucun fichier ou dossier de ce type: %s", file);
-		return (1);
-	}
-	if (check_files(file, R_OK))
-	{
-		ft_printf("Permission non accordee: %s", file);
-		return (1);
-	}
-	return (0);
-}
 
 char	*ft_recover_fd(char *file)
 {
@@ -42,21 +19,20 @@ char	*ft_recover_fd(char *file)
 	char	*buffertmp;
 	char	*bufferfinal;
 
-	if (check_files_infile(file) == 0)
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+		return (NULL);
+	buffer = get_next_line(fd);
+	bufferfinal = ft_strdup(buffer);
+	while (buffer)
 	{
-		fd = open(file, O_RDONLY);
+		free(buffer);
 		buffer = get_next_line(fd);
-		bufferfinal = ft_strdup(buffer);
-		while (buffer)
-		{
-			free(buffer);
-			buffer = get_next_line(fd);
-			buffertmp = ft_strdup(buffer);
-			if (buffertmp)
-				bufferfinal = ft_strjoin_malloc(bufferfinal, buffertmp);
-		}
-		if (buffer)
-			free(buffer);
+		buffertmp = ft_strdup(buffer);
+		if (buffertmp)
+			bufferfinal = ft_strjoin_malloc(bufferfinal, buffertmp);
 	}
+	if (buffer)
+		free(buffer);
 	return (bufferfinal);
 }
