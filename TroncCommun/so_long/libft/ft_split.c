@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 14:29:23 by julien            #+#    #+#             */
-/*   Updated: 2022/04/25 16:04:30 by jdetre           ###   ########.fr       */
+/*   Updated: 2022/10/18 18:10:23 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static char	*substr(const char *str, size_t start, size_t end)
 
 	i = 0;
 	sub = malloc((end - start + 1) * sizeof(char));
+	ft_verif_malloc(sub);
 	while (start < end)
 		sub[i++] = str[start++];
 	sub[i] = '\0';
@@ -54,8 +55,7 @@ char	**ft_split(char const *s, char c)
 	char	**split;
 
 	split = malloc((count(s, c) + 1) * sizeof(char *));
-	if (!s || !split)
-		return (0);
+	ft_verif_malloc(split);
 	i = 0;
 	j = 0;
 	i2 = -1;

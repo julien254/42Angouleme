@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 14:59:01 by julien            #+#    #+#             */
-/*   Updated: 2022/10/09 03:21:12 by julien           ###   ########.fr       */
+/*   Updated: 2022/10/18 14:16:28 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ void	free_map2d(void **map2d, int sizeof_line)
 
 	i = 0;
 	while (i < sizeof_line)
-		free(map2d[i++]);
+	{
+		free(map2d[i]);
+		i++;
+	}
 	free(map2d);
 }
 

@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2022/10/09 05:32:57 by julien           ###   ########.fr        #
+#    Updated: 2022/10/13 20:17:30 by julien           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,9 @@ NAME		=	so_long
 
 NAME_BONUS	=	so_long_bonus
 
-NAME_TEST	=		so_long_test
+NAME_TEST	=	so_long_test
 
-CC			=	gcc
+CC			=	gcc -g
 
 CFLAGS		=	-Wall -Wextra -Werror
 
@@ -35,7 +35,18 @@ SRCS		=	so_long.c						\
 				so_long_way.c					\
 				so_long_map2d.c
 
-SRCS_BONUS	=	
+SRCS_BONUS	=	bonus/so_long_bonus.c			\
+				bonus/so_long_img_bonus.c		\
+				bonus/so_long_map_bonus.c		\
+				bonus/so_long_check_bonus.c		\
+				bonus/move_down.c				\
+				bonus/move_up.c					\
+				so_long_err.c					\
+				bonus/so_long_init_bonus.c		\
+				bonus/so_long_utils_bonus.c		\
+				so_long_close.c					\
+				so_long_way.c					\
+				so_long_map2d.c
 
 OBJS		= 	${SRCS:.c=.o}
 
@@ -57,9 +68,9 @@ ${NAME_BONUS}:	${OBJS_BONUS}
 
 test:			${NAME_TEST}
 
-${NAME_TEST}:	${OBJS}
+${NAME_TEST}:	${OBJS_BONUS}
 			make -C ${LIBPATH}
-			${CC} -g ${CFLAGS} $^ ${INCLUDE} ${LIB} -o ${NAME_TEST}
+			${CC} ${CFLAGS} $^ ${INCLUDE} ${LIB} -o ${NAME_TEST}
 
 clean:
 			rm -f ${OBJS} ${OBJS_BONUS}

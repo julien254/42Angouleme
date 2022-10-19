@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   so_long_check_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/10 23:22:14 by julien            #+#    #+#             */
-/*   Updated: 2022/10/18 18:11:12 by julien           ###   ########.fr       */
+/*   Created: 2022/09/28 12:23:09 by julien            #+#    #+#             */
+/*   Updated: 2022/10/13 20:12:07 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../so_long.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+int	check_all_letsgo(t_lst_img *boximg)
 {
-	void	*ptr;
-
-	if (size > 4294967295 || nmemb > 4294967295)
-		return (NULL);
-	ptr = malloc(nmemb * size);
-	ft_verif_malloc(ptr);
-	ft_bzero(ptr, nmemb * size);
-	return (ptr);
+	if (boximg->letsgo_down == 0 || \
+			boximg->letsgo_up == 0)
+		return (0);
+	return (1);
 }

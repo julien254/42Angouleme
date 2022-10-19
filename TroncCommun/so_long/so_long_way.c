@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 02:01:47 by julien            #+#    #+#             */
-/*   Updated: 2022/10/09 06:20:13 by julien           ###   ########.fr       */
+/*   Updated: 2022/10/18 18:13:45 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ t_lst_near	*lstnew(int y, int x, int *value)
 	t_lst_near	*list;
 
 	list = (t_lst_near *)malloc(sizeof(t_lst_near));
-	if (!list)
-		return (NULL);
+	ft_verif_malloc(list);
 	list->x = x;
 	list->y = y;
 	list->value = value;

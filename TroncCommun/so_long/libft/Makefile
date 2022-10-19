@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2022/10/09 05:37:41 by julien           ###   ########.fr        #
+#    Updated: 2022/10/18 18:16:07 by julien           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ CFLAGS		=	-Wall -Wextra -Werror -I.
 SRCS		=	ft_atoi.c					\
 				ft_bzero.c					\
 				ft_calloc.c					\
+				ft_verif_malloc.c			\
 				ft_isalnum.c				\
 				ft_isalpha.c				\
 				ft_isascii.c				\
@@ -74,7 +75,7 @@ SRCS		=	ft_atoi.c					\
 				ft_lstlast.c				\
 				ft_lstmap.c					\
 				ft_lstnew.c					\
-				ft_lstsize.c				\
+				ft_lstsize.c
 
 OBJS		=	${SRCS:.c=.o}
 

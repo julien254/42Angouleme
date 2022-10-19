@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:45:52 by julien            #+#    #+#             */
-/*   Updated: 2022/10/09 06:21:07 by julien           ###   ########.fr       */
+/*   Updated: 2022/10/18 15:02:22 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	move(int key, t_lst_img *boximg)
 	}
 }
 
-int	ft_hook(int keycode, t_lst_img *boximg)
+int	hook(int keycode, t_lst_img *boximg)
 {
 	move(keycode, boximg);
 	return (0);
@@ -55,8 +55,8 @@ int	main(int argc, char *argv[])
 	else if (boximg.item_found != map.item)
 		return_err(ERRITEM, &map, &boximg);
 	printmap(boximg.map2d, &boximg);
-	mlx_hook(boximg.win, 2, 1L << 0, &ft_hook, (void *)&boximg);
-	mlx_hook(boximg.win, 17, 0, &end_game, (void *)&boximg);
+	mlx_hook(boximg.win, 2, 1L << 0, &hook, &boximg);
+	mlx_hook(boximg.win, 17, 0, &end_game, &boximg);
 	mlx_loop(boximg.mlx);
 	return (0);
 }

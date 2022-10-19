@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:25:21 by julien            #+#    #+#             */
-/*   Updated: 2022/10/09 06:22:54 by julien           ###   ########.fr       */
+/*   Updated: 2022/10/18 18:14:20 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,14 @@ int	**tab2d_char_to_int(char **tab2d)
 	nbr_line = ft_tab2dlen(tab2d);
 	sizeof_line = ft_strlen(*tab2d);
 	tab2d_int = (int **)malloc(sizeof(int *) * nbr_line);
+	ft_verif_malloc(tab2d_int);
 	i = 0;
 	while (i < nbr_line)
 	{
 		tab2d_int[i] = (int *)malloc(sizeof(int) * sizeof_line);
+		ft_verif_malloc(tab2d_int[i]);
+		if (tab2d_int[i] == NULL)
+			exit(EXIT_FAILURE);
 		maketab(tab2d[i], tab2d_int[i]);
 		i++;
 	}
