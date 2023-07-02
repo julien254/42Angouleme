@@ -16,7 +16,7 @@ int	main(int argc, char *argv[])
 
 	(void)argc;
 	(void)argv;
-	str = "112345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890234567890";
+	str = "jecomprend pas loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
 	ft_print_memory(str, 92);
 	return (0);
 }

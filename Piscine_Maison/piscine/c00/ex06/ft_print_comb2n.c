@@ -184,6 +184,6 @@ int	main(int argc, char *argv[])
 {
 	(void)argc;
 	(void)argv;
-	ft_print_comb2n(99);
+	ft_print_comb2n(2);
 	return (0);
 }

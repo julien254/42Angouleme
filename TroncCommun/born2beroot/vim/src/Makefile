@@ -430,14 +430,14 @@ CClink = $(CC)
 # For Python3 support make a symbolic link in /usr/local/bin:
 #	ln -s python3 python3.1
 # If both python2.x and python3.x are enabled then the linking will be via
-# dlopen(), dlsym(), dlclose(), i.e. pythonX.Y.so must be available
+# dlopen(), dlsym(), dlclose(), i.e. pythonX.Y.so mustsudo be available
 # However, this may still cause problems, such as "import termios" failing.
 # Build two separate versions of Vim in that case.
 #CONF_OPT_PYTHON = --enable-pythoninterp
 #CONF_OPT_PYTHON = --enable-pythoninterp --with-python-command=python2.7
 #CONF_OPT_PYTHON = --enable-pythoninterp=dynamic
 #CONF_OPT_PYTHON3 = --enable-python3interp
-CONF_OPT_PYTHON3 = --enable-python3interp --with-python3-command=python3.9
+CONF_OPT_PYTHON3 = --enable-python3interp --with-python3-command=python3.10
 #CONF_OPT_PYTHON3 = --enable-python3interp=dynamic
 
 # RUBY
