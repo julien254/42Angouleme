@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:00:18 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/02 11:16:31 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/07/04 08:32:33 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,34 @@ int	main(int argc, char *argv[])
 	if (ft_strstr("  dsanjkdnsa          ddnsaknls lol", " fdsafdsfdsaf  ") == NULL)
 		ft_putstr("le pointeur est NULL");
 	ft_putchar('\n');
-	if (strstr("  dsanjkdnsa          ddnsaknls lol", " fdsafdsfdsaf  ") == NULL)
+	if (ft_strstr("  dsanjkdnsa          ddnsaknls lol", " fdsafdsfdsaf  ") == NULL)
 		ft_putstr("le pointeur est NULL");
+	ft_putchar('\n');
+	ft_putchar('\n');
 
+	ft_putstr(dest);
+	ft_putchar('\n');
+	ft_putnbr(ft_strlen(dest));
+	ft_putchar('\n');
+	ft_putstr("la taille de la chaine devrait faire : ");
+	ft_putnbr(strlcat(dest, "012345678901234567890123456789012345isdndjsananjfnjdnjknadkaj", 99));
+	ft_putchar('\n');
+	ft_putstr("mais la taille reel est de : ");
+	ft_putnbr(ft_strlen(dest));
+	ft_putchar('\n');
+	ft_putstr(dest);
+	ft_putchar('\n');
+	strcpy(dest, "Je suis force d'admettre que ta fonction fonctionne bel et bien.");
+	ft_putchar('\n');
+	ft_putnbr(ft_strlen(dest));
+	ft_putchar('\n');
+	ft_putstr("la taille de la chaine devrait faire : ");
+	ft_putnbr(ft_strlcat(dest, "012345678901234567890123456789012345isdndjsananjfnjdnjknadkaj", 99));
+	ft_putchar('\n');
+	ft_putstr("mais la taille reel est de : ");
+	ft_putnbr(ft_strlen(dest));
+	ft_putchar('\n');
+	ft_putstr(dest);
+	ft_putchar('\n');
 }
 

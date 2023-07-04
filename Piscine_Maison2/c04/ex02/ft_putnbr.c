@@ -1,34 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/02 11:29:39 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/04 08:30:32 by jdetre           ###   ########.fr       */
+/*   Created: 2023/06/18 18:40:06 by jdetre            #+#    #+#             */
+/*   Updated: 2023/06/18 19:19:02 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned int	ft_strlcat(char *dest, char *src, unsigned int size)
+#include <unistd.h>
+
+
+void	f_putchar(char c)
 {
-	unsigned int	i;
-	unsigned int	j;
-	(void)src;
-	i = 0;
-	while (dest[i] && i < size)
-		i++;
-	j= 0;
-	if (i < size)
+	write(1, &c, 1);
+}
+
+void	ft_putnbr(int nb)
+{
+	unsigned int	nbr;
+	if (nb < 0)
 	{
-		while (src[j] && i < size - 1)
-			dest[i++] = src[j++];
-		dest[i] = '\0';
+		f_putchar('-');
+		nbr = nb * -1;
 	}
-	while (src[j])
+	else
+		nbr = nb;
+	if (nbr < 10)
 	{
-		j++;
-		i++;
+		f_putchar('0' + nbr);
 	}
-	return (i);
+	else
+	{
+		ft_putnbr(nbr / 10);
+		f_putchar('0' + nbr % 10);
+	}
 }

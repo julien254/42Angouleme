@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/02 11:29:39 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/04 08:30:32 by jdetre           ###   ########.fr       */
+/*   Created: 2023/05/26 13:00:18 by jdetre            #+#    #+#             */
+/*   Updated: 2023/07/04 13:24:40 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned int	ft_strlcat(char *dest, char *src, unsigned int size)
+/* main test for c04 */
+#include "../piscine.h"
+
+void	ft_putchar(char c)
 {
-	unsigned int	i;
-	unsigned int	j;
-	(void)src;
-	i = 0;
-	while (dest[i] && i < size)
-		i++;
-	j= 0;
-	if (i < size)
-	{
-		while (src[j] && i < size - 1)
-			dest[i++] = src[j++];
-		dest[i] = '\0';
-	}
-	while (src[j])
-	{
-		j++;
-		i++;
-	}
-	return (i);
+	write(1, &c, 1);
+}
+
+int	main(int argc, char *argv[])
+{
+	(void)argc;
+	(void)argv;
+	ft_putnbr(ft_atoi("\n \v \f \r \t -+--324332f324"));
+
+	ft_putchar('\n');
+	ft_putchar('\n');
+
+	ft_putnbr_base(-123456, "0123456789ABCDEF");
 }

@@ -1,34 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/02 11:29:39 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/04 08:30:32 by jdetre           ###   ########.fr       */
+/*   Created: 2023/07/04 09:00:12 by jdetre            #+#    #+#             */
+/*   Updated: 2023/07/04 10:28:03 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned int	ft_strlcat(char *dest, char *src, unsigned int size)
+int	ft_atoi(char *str)
 {
-	unsigned int	i;
-	unsigned int	j;
-	(void)src;
+	int	i;
+	int	neg;
+	int	result;
+
 	i = 0;
-	while (dest[i] && i < size)
+	neg = 1;
+	result = 0;
+	while ((str[i] >= '\t' && str[i] <= '\r') || str[i] == ' ')
 		i++;
-	j= 0;
-	if (i < size)
+	
+	while (str[i] == '+' || str[i] == '-')
 	{
-		while (src[j] && i < size - 1)
-			dest[i++] = src[j++];
-		dest[i] = '\0';
-	}
-	while (src[j])
-	{
-		j++;
+		if (str[i] == '-')
+			neg = neg * -1;
 		i++;
 	}
-	return (i);
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = (str[i] - '0') + (result * 10);
+		i++;
+	}
+	return (result * neg);
 }

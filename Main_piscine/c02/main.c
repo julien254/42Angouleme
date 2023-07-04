@@ -6,13 +6,13 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:00:18 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/02 13:20:41 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/07/03 13:05:07 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /* main test for c02 */
 #include "../piscine.h"
-#include <string.h>
+
 void	ft_putnbr(int nb)
 {
 	if (nb < 0)
@@ -50,7 +50,8 @@ int	main(int argc, char *argv[])
 {
 	(void)argc;
 	(void)argv;
-	char dest[30];
+	char dest[100];
+	char dest2[100];
 	char str[] = "je suis Le grand magicien Ton pere.\n";
 	char str2[] = "saLut, coMment tu vAs ? 42Mots quarante-Deux; ciNquante+eT+un";
 
@@ -133,16 +134,27 @@ int	main(int argc, char *argv[])
 	ft_putchar('\n');
 	ft_putchar('\n');
 	ft_putstr("------------------------->");
+	*dest = '\0';
+	*dest2 = '\0';
 
 	ft_putstr(dest);
 	ft_putchar('\n');
-	ft_putnbr(strlcpy(dest, "lol", 3));
+	ft_putstr(dest2);
+	ft_putchar('\n');
+	ft_putnbr(ft_strlcpy(dest, "lol    ", 20));
+	ft_putchar('\n');
+	ft_putnbr(strlcpy(dest2, "lol    ", 20));
 	ft_putchar('\n');
 	ft_putstr(dest);
 	ft_putchar('\n');
+	ft_putstr(dest2);
 	ft_putchar('\n');
-	ft_putnbr(strlcpy(dest, "lol", 4));
+	ft_putchar('\n');
+	ft_putnbr(ft_strlcpy(dest, "lol    ", 9));
 	ft_putstr(dest);
+	ft_putchar('\n');
+	ft_putnbr(strlcpy(dest2, "lol    ", 9));
+	ft_putstr(dest2);
 	ft_putchar('\n');
 	ft_putstr("------------------------->");
 

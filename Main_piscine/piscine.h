@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:42:32 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/02 10:38:33 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/07/04 11:27:48 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 
 # include <limits.h>
 # include <stdio.h>
+# include <bsd/string.h>
 # include <string.h>
 # include <unistd.h>
+# include <stdlib.h>
 
 
 void			ft_putchar(char c);
@@ -55,4 +57,7 @@ int				ft_strncmp(char *s1, char*s2, unsigned int n);
 char			*ft_strcat(char *dest, char *src);
 char			*ft_strncat(char *dest, char *src, unsigned int nb);
 char			*ft_strstr(char *str, char *to_find);
+unsigned int	ft_strlcat(char *dest, char *src, unsigned int size);
+int				ft_atoi(char*str);
+void			ft_putnbr_base(int nbr, char *base);
 #endif
