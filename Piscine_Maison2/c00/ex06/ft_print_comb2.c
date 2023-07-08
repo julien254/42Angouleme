@@ -6,11 +6,10 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:55:25 by jdetre            #+#    #+#             */
-/*   Updated: 2023/06/18 18:33:13 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/07/05 12:06:05 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <unistd.h>
-
 
 void	ptchar(char c)
 {

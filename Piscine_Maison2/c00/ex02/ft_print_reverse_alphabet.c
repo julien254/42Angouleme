@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 12:47:28 by jdetre            #+#    #+#             */
-/*   Updated: 2023/06/09 14:15:23 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/07/05 12:05:12 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,4 @@ void	ft_print_reverse_alphabet(void)
 		write(1, &c, 1);
 		c--;
 	}
-
 }
-
