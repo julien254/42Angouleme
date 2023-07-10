@@ -61,6 +61,8 @@ noremap <S-Down>			<C-w><Down>
 vmap <C-c>					"+y
 nmap <S-q>					A*/<ESC>I/*<ESC>
 
+nmap <F8>					<ESC>:Termdebug<CR>file 
+
 "---------------VimPlug------------------"
 
 call plug#begin('~/.vim/plugged')

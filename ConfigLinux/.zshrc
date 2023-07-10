@@ -3,7 +3,9 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-export TAF="/home/julien/Bureau/Devlinux/42Angouleme/"
+export TAF="/home/jdetre/Bureau/42Angouleme/"
+export USER=jdetre
+export MAIL=julien.detre.dev@gmail.com
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -99,15 +101,20 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias gotaf="$TAF"
+alias gitc="sh ~/Bureau/42Angouleme/script/git.sh"
+alias gitp="sh ~/Bureau/42Angouleme/script/gitp.sh"
+alias gotaf="cd $TAF"
+alias goco="cd ~/Bureau/42Corrections/"
 alias gcw="gcc -Wall -Wextra -Werror"
-alias gopm="cd ~/Bureau/Devlinux/42Angouleme/Maison/piscine/"
-alias gop="cd ~/Bureau/Devlinux/42Angouleme/Piscine/"
-alias gotc="cd ~/Bureau/Devlinux/42Angouleme/TroncCommun/"
-alias gob2b="cd ~/Bureau/Devlinux/42Angouleme/TroncCommun/born2beroot/"
-alias golib="cd ~/Bureau/Devlinux/42Angouleme/TroncCommun/libft/libft"
+alias gopm="cd ~/Bureau/42Angouleme/Piscine_Maison2/"
+alias gomain="cd ~/Bureau/42Angouleme/Main_piscine/"
+alias gop="cd ~/Bureau/42Angouleme/Piscine/"
+alias gotc="cd ~/Bureau/42Angouleme/TroncCommun/"
+alias gob2b="cd ~/Bureau/42Angouleme/TroncCommun/born2beroot/"
+alias golib="cd ~/Bureau/42Angouleme/TroncCommun/libft/libft"
 alias vsnip="vim ~/.vim/mysnips/c.snippets"
 alias vrc="vim ~/.vimrc"
 alias zrc="vim ~/.zshrc"
+alias tester='curl https://raw.githubusercontent.com/julien254/42corrections/main/corrections.sh > corrections.sh; sh corrections.sh; sh clean.sh'
 stty stop undef
 stty start undef
