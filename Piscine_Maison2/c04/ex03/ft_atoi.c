@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 09:00:12 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/15 10:01:41 by judetre          ###   ########.fr       */
+/*   Updated: 2023/07/16 23:43:16 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@ int	ft_atoi(char *str)
 {
 	int	i;
 	int	neg;
-	int	result;
+	unsigned int	result;
 
 	i = 0;
 	neg = 1;
@@ -32,5 +32,5 @@ int	ft_atoi(char *str)
 		result = (str[i] - '0') + (result * 10);
 		i++;
 	}
-	return (result * neg);
+	return ((int)(result * neg));
 }
