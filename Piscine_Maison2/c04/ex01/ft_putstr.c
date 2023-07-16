@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 11:35:15 by jdetre            #+#    #+#             */
-/*   Updated: 2023/06/20 11:53:17 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/07/15 10:03:39 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,4 @@ void	ft_putstr(char *str)
 	while (str[i])
 		i++;
 	write(1, str, i);
-
 }

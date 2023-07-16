@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_reverse_alphabet.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
+/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 12:47:28 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/05 12:05:12 by jdetre           ###   ########.fr       */
+/*   Created: 2023/06/09 12:47:28 by judetre           #+#    #+#             */
+/*   Updated: 2023/07/11 11:07:42 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

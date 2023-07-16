@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:12:45 by jdetre            #+#    #+#             */
-/*   Updated: 2023/06/26 15:30:44 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/07/14 11:26:20 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <unistd.h>
@@ -18,7 +18,7 @@ void	ft_putchr(char c)
 
 void	putnbr_hexa(long long int nbr, int niveau)
 {
-	char *base_hexa;
+	char	*base_hexa;
 
 	base_hexa = "0123456789abcdef";
 	if (nbr < 16 && niveau == 0)

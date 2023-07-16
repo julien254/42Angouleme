@@ -6,12 +6,11 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 18:40:06 by jdetre            #+#    #+#             */
-/*   Updated: 2023/06/18 19:19:02 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/07/15 10:03:18 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-
 
 void	f_putchar(char c)
 {
@@ -21,6 +20,7 @@ void	f_putchar(char c)
 void	ft_putnbr(int nb)
 {
 	unsigned int	nbr;
+
 	if (nb < 0)
 	{
 		f_putchar('-');

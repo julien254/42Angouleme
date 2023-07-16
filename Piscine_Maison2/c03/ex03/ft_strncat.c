@@ -6,13 +6,13 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 08:49:39 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/02 09:24:37 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/07/15 09:41:41 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 char	*ft_strncat(char *dest, char *src, unsigned int nb)
 {
-	int	i;
+	int				i;
 	unsigned int	j;
 
 	i = 0;

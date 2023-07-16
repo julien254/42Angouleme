@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
+/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/26 12:55:42 by jdetre            #+#    #+#             */
-/*   Updated: 2023/05/26 12:59:09 by jdetre           ###   ########.fr       */
+/*   Created: 2023/05/26 12:55:42 by judetre           #+#    #+#             */
+/*   Updated: 2023/07/11 11:07:05 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <unistd.h>

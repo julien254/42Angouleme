@@ -6,11 +6,10 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 04:18:01 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/04 13:37:04 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/07/15 10:02:41 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <unistd.h>
-
 
 void	ft_ptchar(char c)
 {
@@ -49,7 +48,7 @@ int	base_error(char *base)
 	return (1);
 }
 
-void	ft_putnbr_in_base(unsigned int nbr,unsigned int sizebase, char *base)
+void	ft_putnbr_in_base(unsigned int nbr, unsigned int sizebase, char *base)
 {
 	if (nbr < sizebase)
 		ft_ptchar(base[nbr]);
@@ -60,7 +59,7 @@ void	ft_putnbr_in_base(unsigned int nbr,unsigned int sizebase, char *base)
 	}
 }
 
-void	ft_putnbr_base(int nbr, char* base)
+void	ft_putnbr_base(int nbr, char *base)
 {
 	unsigned int	nb;
 	unsigned int	sizebase;

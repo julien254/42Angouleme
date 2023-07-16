@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
+/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/02 10:37:48 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/02 11:01:22 by jdetre           ###   ########.fr       */
+/*   Created: 2023/07/15 09:27:27 by judetre           #+#    #+#             */
+/*   Updated: 2023/07/15 09:42:33 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stddef.h>
@@ -21,7 +21,7 @@ char	*ft_strstr(char *str, char *to_find)
 		while (to_find[i])
 		{
 			if (str[i] != to_find[i])
-				break;
+				break ;
 			i++;
 		}
 		if (to_find[i] == '\0')
