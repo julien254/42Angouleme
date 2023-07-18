@@ -6,14 +6,14 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 09:00:12 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/16 23:43:16 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/07/17 10:11:28 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	ft_atoi(char *str)
 {
-	int	i;
-	int	neg;
+	int				i;
+	int				neg;
 	unsigned int	result;
 
 	i = 0;

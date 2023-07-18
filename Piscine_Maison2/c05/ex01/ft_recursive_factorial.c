@@ -1,47 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strstr.c                                        :+:      :+:    :+:   */
+/*   ft_recursive_factorial.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/15 09:27:27 by judetre           #+#    #+#             */
-/*   Updated: 2023/07/17 19:14:12 by judetre          ###   ########.fr       */
+/*   Created: 2023/07/17 10:17:42 by judetre           #+#    #+#             */
+/*   Updated: 2023/07/17 16:44:18 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-int	ft_strlen(char *str)
+#include <unistd.h>
+#include <stdio.h>
+void	ft_recursive(int nb, int *result)
 {
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
+	if (nb == 1)
+		*result *= nb;
+	else
+	{
+		*result *= nb;
+		ft_recursive(nb - 1, result);
+	}
 }
 
-char	*ft_strstr(char *str, char *to_find)
+int	ft_recursive_factorial(int nb)
 {
-	int	i;
-	int	tcheck;
+	int	result;
 
-	if (ft_strlen(to_find) == 0)
-		return (str);
-	while (*str)
-	{
-		i = 0;
-		tcheck = 1;
-		while (to_find[i] && tcheck)
-		{
-			if (str[i] != to_find[i])
-				tcheck = 0;
-			if (tcheck)
-				i++;
-		}
-		if (tcheck)
-			return (str);
-		else
-			str++;
-	}
+	result = 1;
+	if (nb > 0)
+		ft_recursive(nb, &result);
+	return (result);
+}
+
+
+int	main(int argc, char *argv[])
+{
+	(void)argc;
+	(void)argv;
+	printf("%d", ft_recursive_factorial(0));
 	return (0);
 }

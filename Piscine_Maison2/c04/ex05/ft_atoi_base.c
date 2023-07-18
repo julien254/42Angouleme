@@ -6,10 +6,10 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 20:54:34 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/16 23:41:07 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/07/17 17:32:43 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdio.h>
+
 int	ft_strlen_base(char *str, char *base)
 {
 	int	i;
@@ -100,12 +100,12 @@ unsigned int	ft_conv_char_base_in_int(char *str, char *base, int size_str)
 
 int	ft_atoi_base(char *str, char *base)
 {
-	int	i;
-	int	neg;
+	int				i;
+	int				neg;
 	unsigned int	result;
-	int	str_size;
+	int				str_size;
 
-	if(base_error(base) == 0)
+	if (base_error(base) == 0)
 		return (0);
 	i = 0;
 	neg = 1;
@@ -126,15 +126,3 @@ int	ft_atoi_base(char *str, char *base)
 		result = ft_conv_char_base_in_int(str, base, str_size);
 	return ((int)(result * neg));
 }
-
-int	main(int argc, char *argv[])
-{
-	(void)argc;
-	(void)argv;
-	int	result;
-	result = ft_atoi_base("        ---++70101000", "0123456789ABCDEF");
-	printf("%d\n", result);
-	return (0);
-}
-
-
