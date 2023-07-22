@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_iterative_factorial.c                           :+:      :+:    :+:   */
+/*   ft_check_n.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/17 10:17:42 by judetre           #+#    #+#             */
-/*   Updated: 2023/07/19 18:54:06 by judetre          ###   ########.fr       */
+/*   Created: 2023/07/22 12:20:15 by judetre           #+#    #+#             */
+/*   Updated: 2023/07/22 12:58:37 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_iterative_factorial(int nb)
+int	ft_check_n(char *str)
 {
-	int	result;
+	int	i;
+	int	count;
 
-	result = 1;
-	if (nb < 0)
-		return (0);
-	while (nb > 1)
+	count = 0;
+	i = 0;
+	while (str[i])
 	{
-		result *= nb;
-		nb -= 1;
+		if (str[i] >= '0' && str[i] <= '9')
+			count++;
+		i++;
 	}
-	return (result);
+	if (count % 4 != 0)
+		return (0);
+	return (count / 4);
 }

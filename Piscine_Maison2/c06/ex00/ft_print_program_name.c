@@ -1,26 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_iterative_factorial.c                           :+:      :+:    :+:   */
+/*   ft_print_program_name.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/17 10:17:42 by judetre           #+#    #+#             */
-/*   Updated: 2023/07/19 18:54:06 by judetre          ###   ########.fr       */
+/*   Created: 2023/07/20 08:19:20 by judetre           #+#    #+#             */
+/*   Updated: 2023/07/20 13:47:28 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include <unistd.h>
 
-int	ft_iterative_factorial(int nb)
+int	ft_strlen(char *str)
 {
-	int	result;
+	int	i;
 
-	result = 1;
-	if (nb < 0)
-		return (0);
-	while (nb > 1)
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+void	ft_putstr(char *str)
+{
+	write(1, str, ft_strlen(str));
+}
+
+int	main(int argc, char *argv[])
+{
+	if (argc)
 	{
-		result *= nb;
-		nb -= 1;
+		ft_putstr(argv[0]);
+		ft_putstr("\n");
 	}
-	return (result);
+	return (0);
 }
