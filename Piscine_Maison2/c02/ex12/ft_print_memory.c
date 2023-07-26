@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 04:18:01 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/21 10:12:00 by judetre          ###   ########.fr       */
+/*   Updated: 2023/07/26 11:10:46 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <unistd.h>
@@ -37,7 +37,8 @@ void	ft_ptstr(char *str, unsigned int first, unsigned int last)
 	}
 }
 
-void	ft_putaddr_in_hexa(long long int nbr, int level, int tchek)
+void	ft_putaddr_in_hexa(long long int nbr, int level, int tchek, \
+															int adaptative)
 {
 	char	*basehexa;
 
@@ -48,10 +49,17 @@ void	ft_putaddr_in_hexa(long long int nbr, int level, int tchek)
 		ft_ptchar(basehexa[nbr]);
 	}
 	else if (nbr < 16)
+	{
+		if (adaptative)
+		{
+			while (level++ < 15)
+				ft_ptchar('0');
+		}
 		ft_ptchar(basehexa[nbr]);
+	}
 	else
 	{
-		ft_putaddr_in_hexa(nbr / 16, level + 1, 0);
+		ft_putaddr_in_hexa(nbr / 16, level + 1, 0, adaptative);
 		ft_ptchar(basehexa[nbr % 16]);
 	}
 	if (tchek)
@@ -66,9 +74,9 @@ void	ft_putchar_in_hexa(unsigned int *i, unsigned int j, char *str, \
 		if (*i >= size)
 			ft_ptchar(' ');
 		else if (*i % 2)
-			ft_putaddr_in_hexa(str[*i], 0, 1);
+			ft_putaddr_in_hexa(str[*i], 0, 1, 0);
 		else
-			ft_putaddr_in_hexa(str[*i], 0, 0);
+			ft_putaddr_in_hexa(str[*i], 0, 0, 0);
 		j++;
 		if (str[*i] == '\0')
 		{
@@ -96,8 +104,7 @@ void	*ft_print_memory(void *addr, unsigned int size)
 	while (i < size)
 	{
 		bookmark = i;
-		ft_ptstr("0000 ", 0, 4);
-		ft_putaddr_in_hexa((long long int)(addr + i), 0, 0);
+		ft_putaddr_in_hexa((long long int)(addr + i), 0, 0, 1);
 		ft_ptstr(":  ", 0, 2);
 		j = 0;
 		ft_putchar_in_hexa(&i, j, (char *)addr, size);

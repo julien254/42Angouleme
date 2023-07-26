@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:48:05 by judetre           #+#    #+#             */
-/*   Updated: 2023/07/21 09:46:21 by judetre          ###   ########.fr       */
+/*   Updated: 2023/07/25 16:36:40 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <string.h>
@@ -55,7 +55,8 @@ int	main(int argc, char *argv[])
 	(void)argc;
 	(void)argv;
 	char	*str;
-	str = ft_strdup("");
+	str = ft_strdup("salut les amies");
 	printf("%s", str);
+	free(str);
 	return (0);
 }

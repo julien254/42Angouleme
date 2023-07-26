@@ -6,12 +6,12 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:12:45 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/14 11:26:20 by judetre          ###   ########.fr       */
+/*   Updated: 2023/07/26 10:38:14 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <unistd.h>
 
-void	ft_putchr(char c)
+void	ft_putchr(unsigned char c)
 {
 	write(1, &c, 1);
 }
@@ -39,13 +39,13 @@ void	ft_putstr_non_printable(char *str)
 {
 	while (*str)
 	{
-		if (*str < 32 || *str == 127)
+		if (*str >= 32 || *str < 127)
+			ft_putchr(*str);
+		else
 		{
 			ft_putchr('\\');
-			putnbr_hexa(*str, 0);
+			putnbr_hexa((unsigned char)*str, 0);
 		}
-		else
-			ft_putchr(*str);
 		str++;
 	}
 }
