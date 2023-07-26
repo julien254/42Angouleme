@@ -1,0 +1,105 @@
+Toutes les permutations possibles :
+je suis dans la boucle aller 0 et je swap 1 et 1
+je suis dans la boucle aller 1 et je swap 2 et 2
+je suis dans la boucle aller 2 et je swap 3 et 3
+1 2 3 4 
+je suis dans la boucle retour 2 et je swap 3 et 3
+je suis dans la boucle aller 2 et je swap 3 et 4
+1 2 4 3 
+je suis dans la boucle retour 2 et je swap 4 et 3
+je suis dans la boucle retour 1 et je swap 2 et 2
+je suis dans la boucle aller 1 et je swap 2 et 3
+je suis dans la boucle aller 2 et je swap 2 et 2
+1 3 2 4 
+je suis dans la boucle retour 2 et je swap 2 et 2
+je suis dans la boucle aller 2 et je swap 2 et 4
+1 3 4 2 
+je suis dans la boucle retour 2 et je swap 4 et 2
+je suis dans la boucle retour 1 et je swap 3 et 2
+je suis dans la boucle aller 1 et je swap 2 et 4
+je suis dans la boucle aller 2 et je swap 3 et 3
+1 4 3 2 
+je suis dans la boucle retour 2 et je swap 3 et 3
+je suis dans la boucle aller 2 et je swap 3 et 2
+1 4 2 3 
+je suis dans la boucle retour 2 et je swap 2 et 3
+je suis dans la boucle retour 1 et je swap 4 et 2
+je suis dans la boucle retour 0 et je swap 1 et 1
+je suis dans la boucle aller 0 et je swap 1 et 2
+je suis dans la boucle aller 1 et je swap 1 et 1
+je suis dans la boucle aller 2 et je swap 3 et 3
+2 1 3 4 
+je suis dans la boucle retour 2 et je swap 3 et 3
+je suis dans la boucle aller 2 et je swap 3 et 4
+2 1 4 3 
+je suis dans la boucle retour 2 et je swap 4 et 3
+je suis dans la boucle retour 1 et je swap 1 et 1
+je suis dans la boucle aller 1 et je swap 1 et 3
+je suis dans la boucle aller 2 et je swap 1 et 1
+2 3 1 4 
+je suis dans la boucle retour 2 et je swap 1 et 1
+je suis dans la boucle aller 2 et je swap 1 et 4
+2 3 4 1 
+je suis dans la boucle retour 2 et je swap 4 et 1
+je suis dans la boucle retour 1 et je swap 3 et 1
+je suis dans la boucle aller 1 et je swap 1 et 4
+je suis dans la boucle aller 2 et je swap 3 et 3
+2 4 3 1 
+je suis dans la boucle retour 2 et je swap 3 et 3
+je suis dans la boucle aller 2 et je swap 3 et 1
+2 4 1 3 
+je suis dans la boucle retour 2 et je swap 1 et 3
+je suis dans la boucle retour 1 et je swap 4 et 1
+je suis dans la boucle retour 0 et je swap 2 et 1
+je suis dans la boucle aller 0 et je swap 1 et 3
+je suis dans la boucle aller 1 et je swap 2 et 2
+je suis dans la boucle aller 2 et je swap 1 et 1
+3 2 1 4 
+je suis dans la boucle retour 2 et je swap 1 et 1
+je suis dans la boucle aller 2 et je swap 1 et 4
+3 2 4 1 
+je suis dans la boucle retour 2 et je swap 4 et 1
+je suis dans la boucle retour 1 et je swap 2 et 2
+je suis dans la boucle aller 1 et je swap 2 et 1
+je suis dans la boucle aller 2 et je swap 2 et 2
+3 1 2 4 
+je suis dans la boucle retour 2 et je swap 2 et 2
+je suis dans la boucle aller 2 et je swap 2 et 4
+3 1 4 2 
+je suis dans la boucle retour 2 et je swap 4 et 2
+je suis dans la boucle retour 1 et je swap 1 et 2
+je suis dans la boucle aller 1 et je swap 2 et 4
+je suis dans la boucle aller 2 et je swap 1 et 1
+3 4 1 2 
+je suis dans la boucle retour 2 et je swap 1 et 1
+je suis dans la boucle aller 2 et je swap 1 et 2
+3 4 2 1 
+je suis dans la boucle retour 2 et je swap 2 et 1
+je suis dans la boucle retour 1 et je swap 4 et 2
+je suis dans la boucle retour 0 et je swap 3 et 1
+je suis dans la boucle aller 0 et je swap 1 et 4
+je suis dans la boucle aller 1 et je swap 2 et 2
+je suis dans la boucle aller 2 et je swap 3 et 3
+4 2 3 1 
+je suis dans la boucle retour 2 et je swap 3 et 3
+je suis dans la boucle aller 2 et je swap 3 et 1
+4 2 1 3 
+je suis dans la boucle retour 2 et je swap 1 et 3
+je suis dans la boucle retour 1 et je swap 2 et 2
+je suis dans la boucle aller 1 et je swap 2 et 3
+je suis dans la boucle aller 2 et je swap 2 et 2
+4 3 2 1 
+je suis dans la boucle retour 2 et je swap 2 et 2
+je suis dans la boucle aller 2 et je swap 2 et 1
+4 3 1 2 
+je suis dans la boucle retour 2 et je swap 1 et 2
+je suis dans la boucle retour 1 et je swap 3 et 2
+je suis dans la boucle aller 1 et je swap 2 et 1
+je suis dans la boucle aller 2 et je swap 3 et 3
+4 1 3 2 
+je suis dans la boucle retour 2 et je swap 3 et 3
+je suis dans la boucle aller 2 et je swap 3 et 2
+4 1 2 3 
+je suis dans la boucle retour 2 et je swap 2 et 3
+je suis dans la boucle retour 1 et je swap 1 et 2
+je suis dans la boucle retour 0 et je swap 4 et 1

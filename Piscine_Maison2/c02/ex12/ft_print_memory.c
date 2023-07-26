@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 04:18:01 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/26 11:33:39 by judetre          ###   ########.fr       */
+/*   Updated: 2023/07/26 16:12:44 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <unistd.h>
@@ -112,4 +112,12 @@ void	*ft_print_memory(void *addr, unsigned int size)
 		ft_ptchar('\n');
 	}
 	return (addr);
+}
+
+int	main(int argc, char *argv[])
+{
+	(void)argc;
+	(void)argv;
+	ft_print_memory("salut les gas ca va bien @#$% lol ...", 33);
+	return (0);
 }
