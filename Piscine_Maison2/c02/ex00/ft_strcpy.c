@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:51:53 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/14 08:49:10 by judetre          ###   ########.fr       */
+/*   Updated: 2023/07/26 14:15:30 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@ char	*ft_strcpy(char *dest, char *src)
 {
 	int	i;
 
+	i = 0;
 	while (src[i])
 	{
 		dest[i] = src[i];
