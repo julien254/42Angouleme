@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 11:29:39 by judetre            #+#    #+#             */
-/*   Updated: 2023/07/26 09:39:24 by judetre          ###   ########.fr       */
+/*   Updated: 2023/07/27 19:41:59 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdlib.h>
@@ -71,8 +71,7 @@ char *ft_strjoin(int size, char **strs, char *sep)
 	char	*result;
 	int		len;
 	int		i;
-
-	if (size == 0)
+	if (size == 0 || strs == NULL || sep == NULL)
 	{
 		result = (char *)malloc(sizeof(char));
 		if (result == NULL)
@@ -84,6 +83,7 @@ char *ft_strjoin(int size, char **strs, char *sep)
 	result = (char *)malloc(len * sizeof(char));
 	if (result == NULL)
 		return (NULL);
+	result[0] = 0;
 	i = 0;
 	while (i < size)
 	{
@@ -92,12 +92,4 @@ char *ft_strjoin(int size, char **strs, char *sep)
 		i++;
 	}
 	return(result);
-}
-#include <stdio.h>
-int	main(int argc, char *argv[])
-{
-	char *result;
-	result = ft_strjoin(argc, argv, "separateurseparateur//////////////////////");
-	printf("%s\n", result);
-	return (0);
 }

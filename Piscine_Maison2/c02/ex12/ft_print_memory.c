@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 04:18:01 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/26 16:12:44 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/07/27 07:35:06 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <unistd.h>
@@ -18,7 +18,7 @@ void	ft_ptchar(char c)
 
 void	ft_ptstr(char *str, unsigned int first, unsigned int last)
 {
-	while (first < last && str[first] != '\0')
+	while (first < last)
 	{
 		if (str[first] <= 31 || str[first] == 127)
 			ft_ptchar('.');
@@ -30,10 +30,6 @@ void	ft_ptstr(char *str, unsigned int first, unsigned int last)
 		else
 			ft_ptchar(str[first]);
 		first++;
-		if (str[first] == '\0')
-		{
-			ft_ptchar('.');
-		}
 	}
 }
 
@@ -66,7 +62,7 @@ void	ft_putaddr_in_hexa(long long int nbr, int level, int tchek, \
 		ft_ptchar(' ');
 }
 
-void	ft_putchar_in_hexa(unsigned int *i, unsigned int j, char *str, \
+void	ft_putchar_in_hexa(unsigned int *i, unsigned int j, unsigned char *str, \
 		unsigned int size)
 {
 	while (j < 16)
@@ -78,13 +74,13 @@ void	ft_putchar_in_hexa(unsigned int *i, unsigned int j, char *str, \
 		else
 			ft_putaddr_in_hexa(str[*i], 0, 0, 0);
 		j++;
-		if (str[*i] == '\0')
+		if (*i >= size)
 		{
-			while (j < 16)
+			while (j <= 16)
 			{
 				ft_ptchar(' ');
 				ft_ptchar(' ');
-				if (*i % 2)
+				if (*i % 2 && j < 15)
 					ft_ptchar(' ');
 				*i += 1;
 				j++;
@@ -107,17 +103,11 @@ void	*ft_print_memory(void *addr, unsigned int size)
 		ft_putaddr_in_hexa((long long int)(addr + i), 0, 0, 1);
 		ft_ptstr(":  ", 0, 2);
 		j = 0;
-		ft_putchar_in_hexa(&i, j, (char *)addr, size);
+		ft_putchar_in_hexa(&i, j, (unsigned char *)addr, size);
+		if (i >= size)
+			i = size;
 		ft_ptstr((char *)addr, bookmark, i);
 		ft_ptchar('\n');
 	}
 	return (addr);
-}
-
-int	main(int argc, char *argv[])
-{
-	(void)argc;
-	(void)argv;
-	ft_print_memory("salut les gas ca va bien @#$% lol ...", 33);
-	return (0);
 }
