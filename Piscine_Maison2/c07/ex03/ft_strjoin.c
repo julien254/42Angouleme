@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 11:29:39 by judetre            #+#    #+#             */
-/*   Updated: 2023/07/27 19:41:59 by judetre          ###   ########.fr       */
+/*   Updated: 2023/07/28 12:06:33 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdlib.h>
@@ -92,4 +92,19 @@ char *ft_strjoin(int size, char **strs, char *sep)
 		i++;
 	}
 	return(result);
+}
+
+int	main(int argc, char *argv[])
+{
+	(void)argc;
+	(void)argv;
+	char *strs[3];
+	char str1[100] = "lol1";
+	char str2[100] = "lol2";
+
+	strs[0] = str1;
+	strs[1] = NULL;
+	strs[2] = str2;
+	ft_strjoin(3 , strs, " ");
+	return (0);
 }

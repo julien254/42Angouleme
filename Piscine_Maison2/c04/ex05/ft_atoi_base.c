@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 20:54:34 by jdetre            #+#    #+#             */
-/*   Updated: 2023/07/26 10:22:45 by judetre          ###   ########.fr       */
+/*   Updated: 2023/07/28 08:15:50 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,4 +126,12 @@ int	ft_atoi_base(char *str, char *base)
 	else
 		result = ft_conv_char_base_in_int(str, base, str_size);
 	return ((int)(result * neg));
+}
+
+int	main(int argc, char *argv[])
+{
+	(void)argc;
+	(void)argv;
+	ft_atoi_base("7f", "0123456789abcdef");
+	return (0);
 }
