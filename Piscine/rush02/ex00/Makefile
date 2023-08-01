@@ -12,7 +12,7 @@
 
 NAME =	rush-02
 
-CFLAGS = -Wall -Werror -Wextra -I includes
+CFLAGS = -Wall -Werror -Wextra -g -I includes
 
 SRCS =	ft_atoi.c \
 		ft_check_0_in_rank.c \
