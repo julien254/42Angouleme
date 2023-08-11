@@ -55,21 +55,27 @@ UFWACTIVE=$(if [ $(sudo systemctl status ufw | grep Active | awk '{print $2}') =
 APPARMOR=$(if [ $(sudo aa-status | grep 'apparmor module is loaded' | wc -l) -eq 1 ]; then echo -e OK; else echo -e "KO";fi)
 
 clear
-echo -e "\n\n\033[1;40;37mWelcome to the Bonr2beroot's tester by jdetre42Angouleme" ; opt_sleep 3
-echo -e -n "\n\033[0;34;1mDemarrage du test"; opt_sleep 1; echo -e -n "." ; opt_sleep 1; echo -e -n "."; opt_sleep 1; echo -e "."
-echo -e -n "\n\033[0;34;1mVerification des partitions:"; opt_sleep 1; if [ $PARTITION = "OK" ]; then echo -e "					\033[1;42;37m OK "; else echo -e "					\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
-echo -e -n "\033[0;34;1mVerification des partitions bonus:"; opt_sleep 1; if [ $PARTITIONBONUS = "OK" ]; then echo -e "				\033[1;42;37m OK "; else echo -e "				\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
-echo -e -n "\033[0;34;1mVerification du Hostname:"; opt_sleep 1; if [ $HOSTNAME = "OK" ]; then echo -e "						\033[1;42;37m OK "; else echo -e "						\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
-echo -e -n "\033[0;34;1mVerification du groupe user42:"; opt_sleep 1; if [ $GROUPUSER42 = "OK" ]; then echo -e "					\033[1;42;37m OK "; else echo -e "					\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
-echo -e -n "\033[0;34;1mVerification du groupe sudo:"; opt_sleep 1; if [ $GROUPSUDO = "OK" ]; then echo -e "					\033[1;42;37m OK "; else echo -e "					\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
-echo -e -n "\033[0;34;1mVerification de la politique de mdp general:"; opt_sleep 1; if [ $REGLEEXPIR = "OK" ]; then echo -e "	\033[1;42;37m OK "; else echo -e "	\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
-echo -e -n "\033[0;34;1mVerification de la politique de mdp ROOT:"; opt_sleep 1; if [ $ROOTEXPIR = "OK" ]; then echo -e "		\033[1;42;37m OK "; else echo -e "		\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
-echo -e -n "\033[0;34;1mVerification de la politique de mdp USER:"; opt_sleep 1; if [ $USEREXPIR = "OK" ]; then echo -e "		\033[1;42;37m OK "; else echo -e "		\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
-echo -e -n "\033[0;34;1mVerification de la configuration de pw-quality:"; opt_sleep 1;  if [ $PWQUALITY = "OK" ]; then echo -e "	\033[1;42;37m OK "; else echo -e "	\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
-echo -e -n "\033[0;34;1mVerification du fichier sudoers:"; opt_sleep 1; if [ $SUDOERS = "OK" ]; then echo -e "				\033[1;42;37m OK "; else echo -e "				\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
-echo -e -n "\033[0;34;1mVerification de l'activation de SSH"; opt_sleep 1; if [ $SSHACTIVE = "OK" ]; then echo -e "				\033[1;42;37m OK "; else echo -e "				\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
-echo -e -n "\033[0;34;1mVerification du port utilse par SSH:"; opt_sleep 1; if [ $SSH4242 = "OK" ]; then echo -e "			\033[1;42;37m OK "; else echo -e "			\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
-echo -e -n "\033[0;34;1mVerification de l'activation de UFW:"; opt_sleep 1; if [ $UFWACTIVE = "OK" ]; then echo -e "			\033[1;42;37m OK "; else echo -e "			\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
-echo -e -n "\033[0;34;1mVerification des ports autorises:"; opt_sleep 1; if [ $UFW4242 = "OK" ]; then echo -e "				\033[1;42;37m OK "; else echo -e "				\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
-echo -e -n "\033[0;34;1mVerification de l'activation d'APPARMOR:"; opt_sleep 1; if [ $APPARMOR = "OK" ]; then echo -e "		\033[1;42;37m OK "; else echo -e "		\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
-if [ $(echo -e $PARTITION$HOSTNAME$GROUPUSER42$GROUPSUDO$REGLEEXPIR$ROOTEXPIR$USEREXPIR$PWQUALITY$SUDOERS) = "OKOKOKOKOKOKOKOKOK" ]; then echo -e "\n\n\033[0;1;5;32mFelicitations Vous avez passez 100% du test avec succes.\n\n"; else echo -e "\n\n\033[0;1;31mOups, certaine choses sont a revoir ;).\n\n";fi
+echo -e "\n\n\033[1;40;37mWelcome to the Born2beroot's tester by jdetre42Angouleme" ; opt_sleep 3
+echo -e -n "\n\033[0;34;1mDémarrage du test"; opt_sleep 1; echo -e -n "." ; opt_sleep 1; echo -e -n "."; opt_sleep 1; echo -e "."
+echo -e -n "\n\033[0;34;1mVérification des partitions:"; opt_sleep 1; if [ $PARTITION = "OK" ]; then echo -e "					\033[1;42;37m OK "; else echo -e "					\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
+echo -e -n "\033[0;34;1mVérification des partitions bonus:"; opt_sleep 1; if [ $PARTITIONBONUS = "OK" ]; then echo -e "				\033[1;42;37m OK "; else echo -e "				\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
+echo -e -n "\033[0;34;1mVérification du Hostname:"; opt_sleep 1; if [ $HOSTNAME = "OK" ]; then echo -e "						\033[1;42;37m OK "; else echo -e "						\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
+echo -e -n "\033[0;34;1mVérification du groupe user42:"; opt_sleep 1; if [ $GROUPUSER42 = "OK" ]; then echo -e "					\033[1;42;37m OK "; else echo -e "					\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
+echo -e -n "\033[0;34;1mVérification du groupe sudo:"; opt_sleep 1; if [ $GROUPSUDO = "OK" ]; then echo -e "					\033[1;42;37m OK "; else echo -e "					\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
+echo -e -n "\033[0;34;1mVérification de la politique de mdp general:"; opt_sleep 1; if [ $REGLEEXPIR = "OK" ]; then echo -e "	\033[1;42;37m OK "; else echo -e "	\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
+echo -e -n "\033[0;34;1mVérification de la politique de mdp ROOT:"; opt_sleep 1; if [ $ROOTEXPIR = "OK" ]; then echo -e "		\033[1;42;37m OK "; else echo -e "		\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
+echo -e -n "\033[0;34;1mVérification de la politique de mdp USER:"; opt_sleep 1; if [ $USEREXPIR = "OK" ]; then echo -e "		\033[1;42;37m OK "; else echo -e "		\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
+echo -e -n "\033[0;34;1mVérification de la configuration de pw-quality:"; opt_sleep 1;  if [ $PWQUALITY = "OK" ]; then echo -e "	\033[1;42;37m OK "; else echo -e "	\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
+echo -e -n "\033[0;34;1mVérification du fichier sudoers:"; opt_sleep 1; if [ $SUDOERS = "OK" ]; then echo -e "				\033[1;42;37m OK "; else echo -e "				\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
+echo -e -n "\033[0;34;1mVérification de l'activation de SSH"; opt_sleep 1; if [ $SSHACTIVE = "OK" ]; then echo -e "				\033[1;42;37m OK "; else echo -e "				\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
+echo -e -n "\033[0;34;1mVérification du port utilsé par SSH:"; opt_sleep 1; if [ $SSH4242 = "OK" ]; then echo -e "			\033[1;42;37m OK "; else echo -e "			\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
+echo -e -n "\033[0;34;1mVérification de l'activation de UFW:"; opt_sleep 1; if [ $UFWACTIVE = "OK" ]; then echo -e "			\033[1;42;37m OK "; else echo -e "			\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
+echo -e -n "\033[0;34;1mVérification des ports autorisés:"; opt_sleep 1; if [ $UFW4242 = "OK" ]; then echo -e "				\033[1;42;37m OK "; else echo -e "				\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
+echo -e -n "\033[0;34;1mVérification de l'activation d'APPARMOR:"; opt_sleep 1; if [ $APPARMOR = "OK" ]; then echo -e "		\033[1;42;37m OK "; else echo -e "		\033[0;1;5;41;37m Failed... "; fi; opt_sleep 1;
+
+if [ $(echo -e $PARTITION$HOSTNAME$GROUPUSER42$GROUPSUDO$REGLEEXPIR$ROOTEXPIR$USEREXPIR$PWQUALITY$SUDOERS) = "OKOKOKOKOKOKOKOKOK" ]; then 
+	echo -e "\n\n\033[0;1;5;32mFelicitations! Vous avez passé 100% du test avec succès.\n\n"; 
+else 
+	echo -e "\n\n\033[0;1;31mOups, certaines choses sont à revoir ;).\n\n";
+fi
+echo -en "\033[0;m"
