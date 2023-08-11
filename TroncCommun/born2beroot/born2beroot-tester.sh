@@ -28,11 +28,11 @@ ROOTEXPIR3=$(if [ $(sudo chage root -l | grep warning | awk '{print $10}') -eq 7
 
 ROOTEXPIR=$(if [ $(echo $ROOTEXPIR1$ROOTEXPIR2$ROOTEXPIR3) = "OKOKOK" ]; then echo OK; else echo "\033[0;1;5;41;37mFailed..."; fi)
 
-USEREXPIR1=$(if [ $(sudo chage jdetre -l | grep Minimum | awk '{print $9}') -eq 2 ]; then echo OK ; else echo "\033[0;1;5;41;37mFailed...";fi)
+USEREXPIR1=$(if [ $(sudo chage $USER -l | grep Minimum | awk '{print $9}') -eq 2 ]; then echo OK ; else echo "\033[0;1;5;41;37mFailed...";fi)
 
-USEREXPIR2=$(if [ $(sudo chage jdetre -l | grep Maximum | awk '{print $9}') -eq 30 ]; then echo OK ; else echo "\033[0;1;5;41;37mFailed...";fi)
+USEREXPIR2=$(if [ $(sudo chage $USER -l | grep Maximum | awk '{print $9}') -eq 30 ]; then echo OK ; else echo "\033[0;1;5;41;37mFailed...";fi)
 
-USEREXPIR3=$(if [ $(sudo chage jdetre -l | grep warning | awk '{print $10}') -eq 7 ]; then echo OK ; else echo "\033[0;1;5;41;37mFailed...";fi)
+USEREXPIR3=$(if [ $(sudo chage $USER -l | grep warning | awk '{print $10}') -eq 7 ]; then echo OK ; else echo "\033[0;1;5;41;37mFailed...";fi)
 
 USEREXPIR=$(if [ $(echo $USEREXPIR1$USEREXPIR2$USEREXPIR3) = "OKOKOK" ]; then echo OK; else echo "\033[0;1;5;41;37mFailed..."; fi)
 
