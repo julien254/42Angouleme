@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/08 13:37:29 by julien            #+#    #+#             */
-/*   Updated: 2023/10/31 10:56:09 by judetre          ###   ########.fr       */
+/*   Created: 2023/08/03 18:47:04 by judetre           #+#    #+#             */
+/*   Updated: 2023/08/03 18:52:17 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
-{
-	size_t	i;
+#ifndef FT_H
+# define FT_H
 
-	i = 0;
-	if (s)
-	{
-		while (i < n)
-			*(char *)(s + i++) = '\0';
-	}
-}
+void	ft_putchar(char c);
+void	ft_swap(int *a, int *b);
+void	ft_putstr(char *str);
+int		ft_strlen(char *str);
+int		ft_strcmp(char *s1, char *s2);
+
+#endif

@@ -32,9 +32,10 @@ else
 	done
 	read -p "Which folder/file do you want to go ? " choice
 	path="${ways_array[choice - 1]}"
-	if [ -f "$path " ]; then
+	if [ -f "$path" ]; then
 		vim "$path"
 	else
+		echo $path
 		cd "$path"
 		exec zsh
 	fi

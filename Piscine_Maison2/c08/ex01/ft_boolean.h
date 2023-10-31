@@ -1,24 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_boolean.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/08 13:37:29 by julien            #+#    #+#             */
-/*   Updated: 2023/10/31 10:56:09 by judetre          ###   ########.fr       */
+/*   Created: 2023/08/03 18:52:36 by judetre           #+#    #+#             */
+/*   Updated: 2023/08/03 18:55:33 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	if (s)
-	{
-		while (i < n)
-			*(char *)(s + i++) = '\0';
-	}
-}
+#ifndef FT_BOOLEAN_H
+#define FT_BOOLEAN_H
+#endif
