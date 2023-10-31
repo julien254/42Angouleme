@@ -6,11 +6,11 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:48:05 by judetre           #+#    #+#             */
-/*   Updated: 2023/07/25 16:36:40 by judetre          ###   ########.fr       */
+/*   Updated: 2023/07/31 17:15:57 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <string.h>
-#include <stddef.h>
 #include <stdlib.h>
 
 int	ft_strlen(char *str)
@@ -29,7 +29,7 @@ char	*ft_strcpy(char *dest, char *src)
 
 	i = 0;
 	while (src[i])
-		{
+	{
 		dest[i] = src[i];
 		i++;
 	}
@@ -48,15 +48,4 @@ char	*ft_strdup(char *src)
 		return (NULL);
 	ft_strcpy(str, src);
 	return (str);
-}
-#include <stdio.h>
-int	main(int argc, char *argv[])
-{
-	(void)argc;
-	(void)argv;
-	char	*str;
-	str = ft_strdup("salut les amies");
-	printf("%s", str);
-	free(str);
-	return (0);
 }

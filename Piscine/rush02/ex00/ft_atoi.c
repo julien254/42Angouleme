@@ -6,7 +6,7 @@
 /*   By: cmieuzet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 13:26:35 by cmieuzet          #+#    #+#             */
-/*   Updated: 2022/01/30 15:34:40 by cmieuzet         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:50:58 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "biblio.h"
@@ -26,7 +26,7 @@ unsigned long long int	ft_atoi(char *str)
 		nb = nb + str[i] - '0';
 		i++;
 	}
-	if (nb <= 4294967295)
+//	if (nb <= 4294967295)
 		return (nb);
 	return (0);
 }

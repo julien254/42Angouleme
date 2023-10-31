@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/02 11:29:39 by judetre            #+#    #+#             */
-/*   Updated: 2023/07/28 12:06:33 by judetre          ###   ########.fr       */
+/*   Created: 2023/07/02 11:29:39 by judetre            #+#    #+#            */
+/*   Updated: 2023/07/31 17:19:58 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdlib.h>
@@ -26,7 +26,6 @@ int	strlen_2d(char **strs, int size)
 	int	i;
 	int	j;
 	int	count;
-
 
 	i = 0;
 	count = 0;
@@ -66,11 +65,12 @@ unsigned int	ft_strlcat(char *dest, char *src, unsigned int size)
 	return (i);
 }
 
-char *ft_strjoin(int size, char **strs, char *sep)
+char	*ft_strjoin(int size, char **strs, char *sep)
 {
 	char	*result;
 	int		len;
 	int		i;
+
 	if (size == 0 || strs == NULL || sep == NULL)
 	{
 		result = (char *)malloc(sizeof(char));
@@ -91,20 +91,5 @@ char *ft_strjoin(int size, char **strs, char *sep)
 		ft_strlcat(result, sep, len);
 		i++;
 	}
-	return(result);
-}
-
-int	main(int argc, char *argv[])
-{
-	(void)argc;
-	(void)argv;
-	char *strs[3];
-	char str1[100] = "lol1";
-	char str2[100] = "lol2";
-
-	strs[0] = str1;
-	strs[1] = NULL;
-	strs[2] = str2;
-	ft_strjoin(3 , strs, " ");
-	return (0);
+	return (result);
 }
