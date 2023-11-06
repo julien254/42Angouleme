@@ -25,12 +25,6 @@ typedef struct s_list
 	struct s_list	*next;
 }				t_list;
 
-typedef struct s_index
-{
-	size_t	i;
-	size_t	len;
-}				t_index;
-
 int		ft_isalnum(int c);
 int		ft_isalpha(int c);
 int		ft_isascii(int c);
