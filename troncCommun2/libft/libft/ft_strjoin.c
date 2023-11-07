@@ -6,7 +6,7 @@
 /*   By: judetre <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:12:38 by judetre           #+#    #+#             */
-/*   Updated: 2023/11/03 15:22:22 by judetre          ###   ########.fr       */
+/*   Updated: 2023/11/06 11:55:34 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*str;
 
+	if (!s1 || !s2)
+		return (NULL);
 	str = (char *)ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, 1);
 	if (!str)
 		return (NULL);

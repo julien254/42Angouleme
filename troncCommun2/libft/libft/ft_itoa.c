@@ -6,12 +6,11 @@
 /*   By: judetre <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:43:00 by judetre           #+#    #+#             */
-/*   Updated: 2023/11/03 15:44:08 by judetre          ###   ########.fr       */
+/*   Updated: 2023/11/06 11:40:43 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
 static int	ft_abs(int nbr)
 {

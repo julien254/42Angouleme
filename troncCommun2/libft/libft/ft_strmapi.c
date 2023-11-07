@@ -6,7 +6,7 @@
 /*   By: judetre <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:46:44 by judetre           #+#    #+#             */
-/*   Updated: 2023/11/03 17:35:34 by judetre          ###   ########.fr       */
+/*   Updated: 2023/11/06 11:51:04 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	char	*str;
 	size_t	i;
 
+	if (!s || !f)
+		return (NULL);
 	str = ft_strdup(s);
 	if (!str)
 		return (NULL);

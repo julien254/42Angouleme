@@ -6,7 +6,7 @@
 /*   By: judetre <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 16:40:36 by judetre           #+#    #+#             */
-/*   Updated: 2023/11/03 17:33:40 by judetre          ###   ########.fr       */
+/*   Updated: 2023/11/06 11:47:33 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 	size_t	i;
 	char	*str;
 
+	if (!s1)
+		return (NULL);
 	start = 0;
 	if (set[0] == '\0')
 		return (ft_strdup(s1));

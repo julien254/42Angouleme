@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:48:19 by judetre           #+#    #+#             */
-/*   Updated: 2023/10/31 11:48:23 by judetre          ###   ########.fr       */
+/*   Updated: 2023/11/06 11:45:53 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,6 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }				t_list;
-
-typedef struct s_index
-{
-	size_t	i;
-	size_t	len;
-}				t_index;
 
 int		ft_isalnum(int c);
 int		ft_isalpha(int c);
