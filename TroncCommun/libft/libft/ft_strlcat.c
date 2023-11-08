@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 16:12:26 by julien            #+#    #+#             */
-/*   Updated: 2022/04/09 02:26:11 by julien           ###   ########.fr       */
+/*   Updated: 2023/10/31 15:05:53 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	size_t	j;
 	size_t	dstlen;
 	size_t	srclen;
-
+	
+	if (!dst)
+		return (0);
 	dstlen = ft_strlen(dst);
 	srclen = ft_strlen(src);
 	i = dstlen;

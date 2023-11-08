@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: judetre <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/03 15:58:31 by judetre           #+#    #+#             */
-/*   Updated: 2023/11/03 15:58:35 by judetre          ###   ########.fr       */
+/*   Created: 2023/10/31 11:11:21 by judetre           #+#    #+#             */
+/*   Updated: 2023/11/03 17:35:38 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putchar_fd(char c, int fd)
+int	ft_isdigit(int c)
 {
-	write(fd, &c, 1);
+	return (c >= '0' && c <= '9');
 }

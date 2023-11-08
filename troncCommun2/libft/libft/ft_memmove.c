@@ -1,32 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: judetre <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/03 15:08:45 by judetre           #+#    #+#             */
-/*   Updated: 2023/11/04 16:00:05 by judetre          ###   ########.fr       */
+/*   Created: 2023/11/01 14:28:47 by judetre           #+#    #+#             */
+/*   Updated: 2023/11/03 17:33:24 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+static int	check_overlap(void *dest, const void *src, size_t n)
 {
-	char	*substr;
+	if (dest > src && dest <= src + n)
+		return (1);
+	else
+		return (0);
+}
+
+void	*ft_memmove(void *dest, const void *src, size_t n)
+{
 	size_t	i;
 
-	if (start > ft_strlen(s) + 1)
-		return ((char *)ft_calloc(1, 1));
-	if (ft_strlen(s) + 1 - start < len)
-		len = ft_strlen(s) - start;
-	substr = (char *)ft_calloc(len + 1, 1);
-	if (!substr)
+	if (src == NULL)
 		return (NULL);
-	i = 0;
-	while (s[start] && i < len)
-		substr[i++] = s[start++];
-	substr[i] = '\0';
-	return (substr);
+	if (check_overlap(dest, src, n))
+	{
+		i = n;
+		while (i-- != 0)
+			*(char *)(dest + i) = *(char *)(src + i);
+	}
+	else
+	{
+		i = 0;
+		while (i < n)
+		{
+			*(char *)(dest + i) = *(char *)(src + i);
+			i++;
+		}
+	}
+	return (dest);
 }

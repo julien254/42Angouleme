@@ -6,7 +6,7 @@
 /*   By: judetre <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:27:07 by judetre           #+#    #+#             */
-/*   Updated: 2023/11/03 15:29:29 by judetre          ###   ########.fr       */
+/*   Updated: 2023/11/06 12:03:45 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static int	count(const char *str, char c)
 
 	i = 0;
 	lock = 0;
+	if (!str)
+		return (0);
 	while (*str)
 	{
 		if (*str != c && lock == 0)
