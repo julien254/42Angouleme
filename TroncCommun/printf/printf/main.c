@@ -6,7 +6,7 @@
 /*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 08:34:16 by jdetre            #+#    #+#             */
-/*   Updated: 2023/11/06 17:27:02 by judetre          ###   ########.fr       */
+/*   Updated: 2023/11/07 15:20:44 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int argc, char *argv[])
 
 	(void)argc;
 	(void)argv;
-	printf("%d", ft_printf("ab%5%lool"));
+	ft_printf("ab%5%lool%");
 
 	/* printf("%d", printf(" %llx ", 9223372036854775807LL)); */
 	/* printf("%d", ft_printf(" %x ", 9223372036854775807LL)); */

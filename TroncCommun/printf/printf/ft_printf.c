@@ -6,7 +6,7 @@
 /*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 08:02:01 by jdetre            #+#    #+#             */
-/*   Updated: 2022/05/31 14:52:53 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/11/07 15:22:11 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
@@ -40,6 +40,8 @@ static int	ft_print_arg(va_list *ap, char const *str, size_t i)
 		len += ft_puthexa_fd(va_arg(*ap, unsigned int), 1, 1);
 	else if (str[i + 1] == 'p')
 		len += ft_putadd_fd(va_arg(*ap, size_t), 1);
+	else if (str[i + 1])
+		len += write(1, &str[i + 1], 1);
 	return (len);
 }
 
