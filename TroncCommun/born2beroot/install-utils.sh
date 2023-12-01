@@ -10,10 +10,11 @@ cd ~
 sudo groupadd user42
 sudo usermod -aG user42 judetre
 echo "Installation des composant essentiel ----->"
-sudo apt-get install -y build-essential python3.9 python3.9-dev libncurses-dev curl
+sudo apt-get install -y build-essential python3.11 python3.11-dev libncurses-dev curl
 echo "Installation des composant essentiel termine."
 echo "Installation de vim 8.2 avec python ----->"
 cd ~/42Angouleme/TroncCommun/born2beroot/vim/src/
+make
 sudo make install
 cd ~
 echo "Installation de vim 8.2 avec python termine."
@@ -25,6 +26,7 @@ sudo cp .vimrc /root/
 cp .vimrc ~/
 cp .zshrc ~/
 sudo cp .zshrc /root/
+sudo cp -r ~/.oh-my-zsh ~/
 sudo cp -r ~/.oh-my-zsh /root/
 cd ~
 echo "Configuration Zsh et vim termine"
