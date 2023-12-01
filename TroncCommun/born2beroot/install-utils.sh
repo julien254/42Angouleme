@@ -26,7 +26,6 @@ sudo cp .vimrc /root/
 cp .vimrc ~/
 cp .zshrc ~/
 sudo cp .zshrc /root/
-sudo cp -r ~/.oh-my-zsh ~/
 sudo cp -r ~/.oh-my-zsh /root/
 cd ~
 echo "Configuration Zsh et vim termine"
