@@ -5,6 +5,7 @@ sudo cp 42Angouleme/TroncCommun/born2beroot/passwd /etc/passwd
 echo "Installation de ZSH termine."
 echo "Installation de Oh-My-Zsh ----->"
 curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
+sleep 10
 echo "Installation de Oh-My-Zsh termine."
 cd ~
 sudo groupadd user42
