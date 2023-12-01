@@ -2,6 +2,9 @@
 
 import './vim9.vim' as v9
 
+source check.vim
+source screendump.vim
+
 " Test for <mods> in user defined commands
 function Test_cmdmods()
   let g:mods = ''
@@ -81,6 +84,19 @@ function Test_cmdmods()
   call assert_equal('silent!', g:mods)
   tab MyCmd
   call assert_equal('tab', g:mods)
+  0tab MyCmd
+  call assert_equal('0tab', g:mods)
+  tab split
+  tab MyCmd
+  call assert_equal('tab', g:mods)
+  1tab MyCmd
+  call assert_equal('1tab', g:mods)
+  tabprev
+  tab MyCmd
+  call assert_equal('tab', g:mods)
+  2tab MyCmd
+  call assert_equal('2tab', g:mods)
+  2tabclose
   topleft MyCmd
   call assert_equal('topleft', g:mods)
   to MyCmd
@@ -239,7 +255,7 @@ func Test_Ambiguous()
 endfunc
 
 func Test_redefine_on_reload()
-  call writefile(['command ExistingCommand echo "yes"'], 'Xcommandexists')
+  call writefile(['command ExistingCommand echo "yes"'], 'Xcommandexists', 'D')
   call assert_equal(0, exists(':ExistingCommand'))
   source Xcommandexists
   call assert_equal(2, exists(':ExistingCommand'))
@@ -248,9 +264,8 @@ func Test_redefine_on_reload()
   call assert_equal(2, exists(':ExistingCommand'))
 
   " But redefining in another script is not OK.
-  call writefile(['command ExistingCommand echo "yes"'], 'Xcommandexists2')
+  call writefile(['command ExistingCommand echo "yes"'], 'Xcommandexists2', 'D')
   call assert_fails('source Xcommandexists2', 'E174:')
-  call delete('Xcommandexists2')
 
   " And defining twice in one script is not OK.
   delcommand ExistingCommand
@@ -262,7 +277,6 @@ func Test_redefine_on_reload()
   call assert_fails('source Xcommandexists', 'E174:')
   call assert_equal(2, exists(':ExistingCommand'))
 
-  call delete('Xcommandexists')
   delcommand ExistingCommand
 endfunc
 
@@ -328,6 +342,11 @@ func Test_CmdErrors()
   call assert_fails('com DoCmd :', 'E174:')
   comclear
   call assert_fails('delcom DoCmd', 'E184:')
+
+  " These used to leak memory
+  call assert_fails('com! -complete=custom,CustomComplete _ :', 'E182:')
+  call assert_fails('com! -complete=custom,CustomComplete docmd :', 'E183:')
+  call assert_fails('com! -complete=custom,CustomComplete -xxx DoCmd :', 'E181:')
 endfunc
 
 func CustomComplete(A, L, P)
@@ -361,6 +380,14 @@ func Test_CmdCompletion()
   " command completion after the name in a user defined command
   call feedkeys(":com MyCmd chist\<Tab>\<C-B>\"\<CR>", 'tx')
   call assert_equal("\"com MyCmd chistory", @:)
+
+  " delete the Check commands to avoid them showing up
+  call feedkeys(":com Check\<C-A>\<C-B>\"\<CR>", 'tx')
+  let cmds = substitute(@:, '"com ', '', '')->split()
+  for cmd in cmds
+    exe 'delcommand ' .. cmd
+  endfor
+  delcommand MissingFeature
 
   command! DoCmd1 :
   command! DoCmd2 :
@@ -666,7 +693,7 @@ func Test_usercmd_custom()
     return "a\nb\n"
   endfunc
   command -nargs=* -complete=customlist,T1 TCmd1
-  call feedkeys(":TCmd1 \<C-A>\<C-B>\"\<CR>", 'xt')
+  call assert_fails('call feedkeys(":TCmd1 \<C-A>\<C-B>\"\<CR>", "xt")', 'E1303: Custom list completion function does not return a List but a string')
   call assert_equal('"TCmd1 ', @:)
   delcommand TCmd1
   delfunc T1
@@ -675,7 +702,7 @@ func Test_usercmd_custom()
     return {}
   endfunc
   command -nargs=* -complete=customlist,T2 TCmd2
-  call feedkeys(":TCmd2 \<C-A>\<C-B>\"\<CR>", 'xt')
+  call assert_fails('call feedkeys(":TCmd2 \<C-A>\<C-B>\"\<CR>", "xt")', 'E1303: Custom list completion function does not return a List but a dict')
   call assert_equal('"TCmd2 ', @:)
   delcommand TCmd2
   delfunc T2
@@ -705,6 +732,7 @@ func Test_usercmd_with_block()
          echo 'hello'
   END
   call v9.CheckScriptFailure(lines, 'E1026:')
+  delcommand DoesNotEnd
 
   let lines =<< trim END
       command HelloThere {
@@ -743,6 +771,34 @@ func Test_usercmd_with_block()
       BadCommand
   END
   call v9.CheckScriptFailure(lines, 'E1128:')
+  delcommand BadCommand
+
+  let lines =<< trim END
+	  vim9script
+    command Cmd {
+        g:result = [1,
+        2]
+    }
+    Cmd
+  END
+  call v9.CheckScriptSuccess(lines)
+  call assert_equal([1, 2], g:result)
+  delcommand Cmd
+	unlet! g:result
+
+  let lines =<< trim END
+		vim9script
+		command Cmd {
+			g:result = and(0x80,
+			0x80)
+    }
+    Cmd
+  END
+  call v9.CheckScriptSuccess(lines)
+  call assert_equal(128, g:result)
+  delcommand Cmd
+	unlet! g:result
+
 endfunc
 
 func Test_delcommand_buffer()
@@ -806,7 +862,7 @@ func Test_recursive_define()
   call DefCmd('Command')
 
   let name = 'Command'
-  while len(name) < 30
+  while len(name) <= 30
     exe 'delcommand ' .. name
     let name ..= 'x'
   endwhile
@@ -824,6 +880,15 @@ func Test_buflocal_ambiguous_usercmd()
 
   delcommand TestCmd1
   delcommand TestCmd2
+  bw!
+endfunc
+
+" Test for using buffer-local user command from cmdwin.
+func Test_buflocal_usercmd_cmdwin()
+  new
+  command -buffer TestCmd edit Test
+  " This used to crash Vim
+  call assert_fails("norm q::TestCmd\<CR>", 'E11:')
   bw!
 endfunc
 
@@ -849,7 +914,7 @@ func Test_block_declaration_legacy_script()
                      @a = save
                 }
   END
-  call writefile(lines, 'Xlegacy')
+  call writefile(lines, 'Xlegacy', 'D')
   source Xlegacy
 
   let lines =<< trim END
@@ -864,13 +929,36 @@ func Test_block_declaration_legacy_script()
       call assert_equal('something', g:someExpr)
       call assert_equal('also', @a)
   END
-  call writefile(lines, 'Xother')
+  call writefile(lines, 'Xother', 'D')
   source Xother
 
   unlet g:someExpr
-  call delete('Xlegacy')
-  call delete('Xother')
   delcommand Rename
+endfunc
+
+func Test_comclear_while_listing()
+  call CheckRunVimInTerminal()
+
+  let lines =<< trim END
+      set nocompatible
+      comclear
+      for i in range(1, 999)
+        exe 'command ' .. 'Foo' .. i .. ' bar'
+      endfor
+      au CmdlineLeave : call timer_start(0, {-> execute('comclear')})
+  END
+  call writefile(lines, 'Xcommandclear', 'D')
+  let buf = RunVimInTerminal('-S Xcommandclear', {'rows': 10})
+
+  " this was using freed memory
+  call term_sendkeys(buf, ":command\<CR>")
+  call TermWait(buf, 50)
+  call term_sendkeys(buf, "j")
+  call TermWait(buf, 50)
+  call term_sendkeys(buf, "G")
+  call term_sendkeys(buf, "\<CR>")
+
+  call StopVimInTerminal(buf)
 endfunc
 
 

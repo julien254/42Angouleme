@@ -3,6 +3,9 @@
 " undo-able pieces.  Do that by setting 'undolevels'.
 " Also tests :earlier and :later.
 
+source check.vim
+source screendump.vim
+
 func Test_undotree()
   new
 
@@ -88,6 +91,65 @@ func FillBuffer()
     " Set 'undolevels' to split undo.
     exe "setg ul=" . &g:ul
   endfor
+endfunc
+
+func Test_undotree_bufnr()
+  new
+  let buf1 = bufnr()
+
+  normal! Aabc
+  set ul=100
+
+  " Save undo tree without bufnr as ground truth for buffer 1
+  let d1 = undotree()
+
+  new
+  let buf2 = bufnr()
+
+  normal! Adef
+  set ul=100
+
+  normal! Aghi
+  set ul=100
+
+  " Save undo tree without bufnr as ground truth for buffer 2
+  let d2 = undotree()
+
+  " Check undotree() with bufnr argument
+  let d = undotree(buf1)
+  call assert_equal(d1, d)
+  call assert_notequal(d2, d)
+
+  let d = undotree(buf2)
+  call assert_notequal(d1, d)
+  call assert_equal(d2, d)
+
+  " Switch buffers and check again
+  wincmd p
+
+  let d = undotree(buf1)
+  call assert_equal(d1, d)
+
+  let d = undotree(buf2)
+  call assert_notequal(d1, d)
+  call assert_equal(d2, d)
+
+  " error cases
+  call assert_fails('call undotree(-1)', 'E158:')
+  call assert_fails('call undotree("nosuchbuf")', 'E158:')
+
+  " after creating a buffer nosuchbuf, undotree('nosuchbuf') should
+  " not error out
+  new nosuchbuf
+  let d = {'seq_last': 0, 'entries': [], 'time_cur': 0, 'save_last': 0, 'synced': 1, 'save_cur': 0, 'seq_cur': 0}
+  call assert_equal(d, undotree("nosuchbuf"))
+  " clean up
+  bw nosuchbuf
+
+  " Drop created windows
+  set ul&
+  new
+  only!
 endfunc
 
 func Test_global_local_undolevels()
@@ -335,6 +397,11 @@ func Test_insert_expr()
 endfunc
 
 func Test_undofile_earlier()
+  if has('win32')
+    " FIXME: This test is flaky on MS-Windows.
+    let g:test_is_flaky = 1
+  endif
+
   " Issue #1254
   " create undofile with timestamps older than Vim startup time.
   let t0 = localtime() - 43200
@@ -379,21 +446,18 @@ func Test_undofile_truncated()
 
   " try several sizes
   for size in range(20, 500, 33)
-    call writefile(contents[0:size], 'Xundofile')
+    call writefile(contents[0:size], 'Xundofile', 'D')
     call assert_fails('rundo Xundofile', 'E825:')
   endfor
 
   bwipe!
-  call delete('Xundofile')
 endfunc
 
 func Test_rundo_errors()
   call assert_fails('rundo XfileDoesNotExist', 'E822:')
 
-  call writefile(['abc'], 'Xundofile')
+  call writefile(['abc'], 'Xundofile', 'D')
   call assert_fails('rundo Xundofile', 'E823:')
-
-  call delete('Xundofile')
 endfunc
 
 func Test_undofile_next()
@@ -770,6 +834,43 @@ func Test_undo_mark()
   undo
   call assert_equal([0, 2, 1, 0], getpos("'["))
   call assert_equal([0, 2, 1, 0], getpos("']"))
+  bwipe!
+endfunc
+
+func Test_undo_after_write()
+  " use a terminal to make undo work like when text is typed
+  CheckRunVimInTerminal
+
+  let lines =<< trim END
+      edit Xtestfile.txt
+      set undolevels=100 undofile
+      imap . <Cmd>write<CR>
+      write
+  END
+  call writefile(lines, 'Xtest_undo_after_write', 'D')
+  let buf = RunVimInTerminal('-S Xtest_undo_after_write', #{rows: 6})
+
+  call term_sendkeys(buf, "Otest.\<CR>boo!!!\<Esc>")
+  sleep 100m
+  call term_sendkeys(buf, "u")
+  call VerifyScreenDump(buf, 'Test_undo_after_write_1', {})
+
+  call term_sendkeys(buf, "u")
+  call VerifyScreenDump(buf, 'Test_undo_after_write_2', {})
+
+  call StopVimInTerminal(buf)
+  call delete('Xtestfile.txt')
+  call delete('.Xtestfile.txt.un~')
+endfunc
+
+func Test_undo_range_normal()
+  new
+  call setline(1, ['asa', 'bsb'])
+  let &l:undolevels = &l:undolevels
+  %normal dfs
+  call assert_equal(['a', 'b'], getline(1, '$'))
+  undo
+  call assert_equal(['asa', 'bsb'], getline(1, '$'))
   bwipe!
 endfunc
 

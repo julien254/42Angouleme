@@ -74,8 +74,7 @@ tabstop_set(char_u *var, int **array)
 	if (n <= 0 || n > TABSTOP_MAX)
 	{
 	    semsg(_(e_invalid_argument_str), cp);
-	    vim_free(*array);
-	    *array = NULL;
+	    VIM_CLEAR(*array);
 	    return FAIL;
 	}
 	(*array)[t++] = n;
@@ -420,7 +419,7 @@ get_indent_buf(buf_T *buf, linenr_T lnum)
 {
 # ifdef FEAT_VARTABS
     return get_indent_str_vtab(ml_get_buf(buf, lnum, FALSE),
-			       (int)curbuf->b_p_ts, buf->b_p_vts_array, FALSE);
+			       (int)buf->b_p_ts, buf->b_p_vts_array, FALSE);
 # else
     return get_indent_str(ml_get_buf(buf, lnum, FALSE), (int)buf->b_p_ts, FALSE);
 # endif
@@ -872,6 +871,7 @@ briopt_check(win_T *wp)
     p = wp->w_p_briopt;
     while (*p != NUL)
     {
+	// Note: Keep this in sync with p_briopt_values
 	if (STRNCMP(p, "shift:", 6) == 0
 		 && ((p[6] == '-' && VIM_ISDIGIT(p[7])) || VIM_ISDIGIT(p[6])))
 	{
@@ -1161,7 +1161,7 @@ preprocs_left(void)
  * Return TRUE if the conditions are OK for smart indenting.
  */
     int
-may_do_si()
+may_do_si(void)
 {
     return curbuf->b_p_si
 	&& !curbuf->b_p_cin
@@ -1289,6 +1289,9 @@ change_indent(
     // for the following tricks we don't want list mode
     save_p_list = curwin->w_p_list;
     curwin->w_p_list = FALSE;
+#ifdef FEAT_PROP_POPUP
+    ignore_text_props = TRUE;
+#endif
     vc = getvcol_nolist(&curwin->w_cursor);
     vcol = vc;
 
@@ -1440,6 +1443,9 @@ change_indent(
 	    ++start_col;
 	}
     }
+#ifdef FEAT_PROP_POPUP
+    ignore_text_props = FALSE;
+#endif
 
     // For MODE_VREPLACE state, we also have to fix the replace stack.  In this
     // case it is always possible because we backspace over the whole line and
@@ -1900,7 +1906,7 @@ get_expr_indent(void)
     inde_copy = vim_strsave(curbuf->b_p_inde);
     if (inde_copy != NULL)
     {
-	indent = (int)eval_to_number(inde_copy);
+	indent = (int)eval_to_number(inde_copy, TRUE);
 	vim_free(inde_copy);
     }
 
@@ -1946,7 +1952,7 @@ lisp_match(char_u *p)
     {
 	(void)copy_option_part(&word, buf, LSIZE, ",");
 	len = (int)STRLEN(buf);
-	if (STRNCMP(buf, p, len) == 0 && p[len] == ' ')
+	if (STRNCMP(buf, p, len) == 0 && IS_WHITE_OR_NUL(p[len]))
 	    return TRUE;
     }
     return FALSE;
@@ -2182,12 +2188,28 @@ fixthisline(int (*get_the_indent)(void))
 {
     int amount = get_the_indent();
 
-    if (amount >= 0)
-    {
-	change_indent(INDENT_SET, amount, FALSE, 0, TRUE);
-	if (linewhite(curwin->w_cursor.lnum))
-	    did_ai = TRUE;	// delete the indent if the line stays empty
-    }
+    if (amount < 0)
+	return;
+
+    change_indent(INDENT_SET, amount, FALSE, 0, TRUE);
+    if (linewhite(curwin->w_cursor.lnum))
+	did_ai = TRUE;	// delete the indent if the line stays empty
+}
+
+/*
+ * Return TRUE if 'indentexpr' should be used for Lisp indenting.
+ * Caller may want to check 'autoindent'.
+ */
+    int
+use_indentexpr_for_lisp(void)
+{
+#ifdef FEAT_EVAL
+    return curbuf->b_p_lisp
+		&& *curbuf->b_p_inde != NUL
+		&& STRCMP(curbuf->b_p_lop, "expr:1") == 0;
+#else
+    return FALSE;
+#endif
 }
 
 /*
@@ -2197,12 +2219,16 @@ fixthisline(int (*get_the_indent)(void))
 fix_indent(void)
 {
     if (p_paste)
-	return;
+	return;  // no auto-indenting when 'paste' is set
     if (curbuf->b_p_lisp && curbuf->b_p_ai)
-	fixthisline(get_lisp_indent);
-    else
-	if (cindent_on())
+    {
+	if (use_indentexpr_for_lisp())
 	    do_c_expr_indent();
+	else
+	    fixthisline(get_lisp_indent);
+    }
+    else if (cindent_on())
+	do_c_expr_indent();
 }
 
 #if defined(FEAT_EVAL) || defined(PROTO)

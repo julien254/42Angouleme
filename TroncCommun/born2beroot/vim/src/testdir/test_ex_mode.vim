@@ -134,6 +134,28 @@ func Test_open_command_flush_line()
   bwipe!
 endfunc
 
+" FIXME: this doesn't fail without the fix but hangs
+func Skip_Test_open_command_state()
+  " Tricky script that failed because State was not set properly
+  let lines =<< trim END
+      !ls 
+      0scìi
+      so! Xsourced
+      set t_û0=0
+      v/-/o
+  END
+  call writefile(lines, 'XopenScript', '')
+
+  let sourced = ["!f\u0083\x02\<Esc>z=0"]
+  call writefile(sourced, 'Xsourced', 'b')
+
+  CheckRunVimInTerminal
+  let buf = RunVimInTerminal('-u NONE -i NONE -n -m -X -Z -e -s -S XopenScript -c qa!', #{rows: 6, wait_for_ruler: 0, no_clean: 1})
+  sleep 3
+
+  call StopVimInTerminal(buf)
+endfunc
+
 " Test for :g/pat/visual to run vi commands in Ex mode
 " This used to hang Vim before 8.2.0274.
 func Test_Ex_global()
@@ -217,6 +239,12 @@ func Test_ex_mode_errors()
 
   au! CmdLineEnter
   delfunc ExEnterFunc
+
+  au CmdlineEnter * :
+  call feedkeys("gQecho 1\r", 'xt')
+
+  au! CmdlineEnter
+
   quit
 endfunc
 
@@ -237,13 +265,12 @@ func Test_ex_mode_with_global()
     call writefile(['done'], 'Xdidexmode')
     qall!
   END
-  call writefile(lines, 'Xexmodescript')
+  call writefile(lines, 'Xexmodescript', 'D')
   call assert_equal(1, RunVim([], [], '-e -s -S Xexmodescript'))
   call assert_equal(['done'], readfile('Xdidexmode'))
 
   call delete('logfile')
   call delete('Xdidexmode')
-  call delete('Xexmodescript')
 endfunc
 
 func Test_ex_mode_count_overflow()
@@ -257,12 +284,11 @@ func Test_ex_mode_count_overflow()
     call writefile(['done'], 'Xdidexmode')
     qall!
   END
-  call writefile(lines, 'Xexmodescript')
+  call writefile(lines, 'Xexmodescript', 'D')
   call assert_equal(1, RunVim([], [], '-e -s -S Xexmodescript -c qa'))
   call assert_equal(['done'], readfile('Xdidexmode'))
 
   call delete('Xdidexmode')
-  call delete('Xexmodescript')
 endfunc
 
 func Test_ex_mode_large_indent()
@@ -281,10 +307,8 @@ func Test_empty_command_visual_mode()
       0norm0V:
       :qall!
   END
-  call writefile(lines, 'Xexmodescript')
+  call writefile(lines, 'Xexmodescript', 'D')
   call assert_equal(1, RunVim([], [], '-u NONE -e -s -S Xexmodescript'))
-
-  call delete('Xexmodescript')
 
   " This may cause a dialog to be displayed for an empty command, ignore it.
   call delete('guidialogfile')

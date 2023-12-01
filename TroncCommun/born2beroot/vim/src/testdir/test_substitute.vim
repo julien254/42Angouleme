@@ -2,6 +2,33 @@
 
 source shared.vim
 source check.vim
+source screendump.vim
+
+" NOTE: This needs to be the first test to be
+"       run in the file, since it depends on
+"       that the previous substitution atom
+"       was not yet set.
+"
+" recursive call of :s and sub-replace special
+" (did cause heap-use-after free in < v9.0.2121)
+func Test_aaaa_substitute_expr_recursive_special()
+  func R()
+    " FIXME: leaving out the 'n' flag leaks memory, why?
+    %s/./\='.'/gn
+  endfunc
+  new Xfoobar_UAF
+  put ='abcdef'
+  let bufnr = bufnr('%')
+  try
+    silent! :s/./~\=R()/0
+    "call assert_fails(':s/./~\=R()/0', 'E939:')
+    let @/='.'
+    ~g
+  catch /^Vim\%((\a\+)\)\=:E565:/
+  endtry
+  delfunc R
+  exe bufnr .. "bw!"
+endfunc
 
 func Test_multiline_subst()
   enew!
@@ -146,7 +173,6 @@ func Test_substitute_repeat()
   call feedkeys("Qsc\<CR>y", 'tx')
   bwipe!
 endfunc
-
 " Test %s/\n// which is implemented as a special case to use a
 " more efficient join rather than doing a regular substitution.
 func Test_substitute_join()
@@ -205,6 +231,7 @@ func Test_substitute_count()
   call assert_equal(['foo foo', 'foo foo', 'foo foo', 'bar foo', 'bar foo'],
         \           getline(1, '$'))
 
+  call assert_fails('s/./b/2147483647', 'E1510:')
   bwipe!
 endfunc
 
@@ -438,25 +465,31 @@ endfunc
 func SubReplacer(text, submatches)
   return a:text .. a:submatches[0] .. a:text
 endfunc
+func SubReplacerVar(text, ...)
+  return a:text .. a:1[0] .. a:text
+endfunc
+def SubReplacerVar9(text: string, ...args: list<list<string>>): string
+  return text .. args[0][0] .. text
+enddef
 func SubReplacer20(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, submatches)
   return a:t3 .. a:submatches[0] .. a:t11
 endfunc
 
 func Test_substitute_partial()
-   call assert_equal('1foo2foo3', substitute('123', '2', function('SubReplacer', ['foo']), 'g'))
+  call assert_equal('1foo2foo3', substitute('123', '2', function('SubReplacer', ['foo']), 'g'))
+  call assert_equal('1foo2foo3', substitute('123', '2', function('SubReplacerVar', ['foo']), 'g'))
+  call assert_equal('1foo2foo3', substitute('123', '2', function('SubReplacerVar9', ['foo']), 'g'))
 
-   " 19 arguments plus one is just OK
-   let Replacer = function('SubReplacer20', repeat(['foo'], 19))
-   call assert_equal('1foo2foo3', substitute('123', '2', Replacer, 'g'))
+  " 19 arguments plus one is just OK
+  let Replacer = function('SubReplacer20', repeat(['foo'], 19))
+  call assert_equal('1foo2foo3', substitute('123', '2', Replacer, 'g'))
 
-   " 20 arguments plus one is too many
-   let Replacer = function('SubReplacer20', repeat(['foo'], 20))
-   call assert_fails("call substitute('123', '2', Replacer, 'g')", 'E118:')
+  " 20 arguments plus one is too many
+  let Replacer = function('SubReplacer20', repeat(['foo'], 20))
+  call assert_fails("call substitute('123', '2', Replacer, 'g')", 'E118:')
 endfunc
 
 func Test_substitute_float()
-  CheckFeature float
-
   call assert_equal('number 1.23', substitute('number ', '$', { -> 1.23 }, ''))
   vim9 assert_equal('number 1.23', substitute('number ', '$', () => 1.23, ''))
 endfunc
@@ -684,8 +717,23 @@ func Test_sub_cmd_9()
   bw!
 endfunc
 
+func Test_sub_highlight_zero_match()
+  CheckRunVimInTerminal
+
+  let lines =<< trim END
+    call setline(1, ['one', 'two', 'three'])
+  END
+  call writefile(lines, 'XscriptSubHighlight', 'D')
+  let buf = RunVimInTerminal('-S XscriptSubHighlight', #{rows: 8, cols: 60})
+  call term_sendkeys(buf, ":%s/^/   /c\<CR>")
+  call VerifyScreenDump(buf, 'Test_sub_highlight_zer_match_1', {})
+
+  call term_sendkeys(buf, "\<Esc>")
+  call StopVimInTerminal(buf)
+endfunc
+
 func Test_nocatch_sub_failure_handling()
-  " normal error results in all replacements 
+  " normal error results in all replacements
   func Foo()
     foobar
   endfunc
@@ -838,7 +886,7 @@ func Test_sub_with_no_last_pat()
     call writefile(v:errors, 'Xresult')
     qall!
   [SCRIPT]
-  call writefile(lines, 'Xscript')
+  call writefile(lines, 'Xscript', 'D')
   if RunVim([], [], '--clean -S Xscript')
     call assert_equal([], readfile('Xresult'))
   endif
@@ -854,7 +902,6 @@ func Test_sub_with_no_last_pat()
     call assert_equal([], readfile('Xresult'))
   endif
 
-  call delete('Xscript')
   call delete('Xresult')
 endfunc
 
@@ -1053,13 +1100,12 @@ func Test_sub_open_cmdline_win()
     redir END
     qall!
   [SCRIPT]
-  call writefile(lines, 'Xscript')
+  call writefile(lines, 'Xscript', 'D')
   if RunVim([], [], '-u NONE -S Xscript')
     call assert_match('E565: Not allowed to change text or change window',
           \ readfile('Xresult')->join('XX'))
   endif
 
-  call delete('Xscript')
   call delete('Xresult')
 endfunc
 
@@ -1074,6 +1120,41 @@ func Test_sub_edit_scriptfile()
 
   delfunc EditScript
   bwipe!
+endfunc
+
+" This was editing another file from the expression.
+func Test_sub_expr_goto_other_file()
+  call writefile([''], 'Xfileone', 'D')
+  enew!
+  call setline(1, ['a', 'b', 'c', 'd',
+	\ 'Xfileone zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'])
+
+  func g:SplitGotoFile()
+    exe "sil! norm 0\<C-W>gf"
+    return ''
+  endfunc
+
+  $
+  s/\%')/\=g:SplitGotoFile()
+
+  delfunc g:SplitGotoFile
+  bwipe!
+endfunc
+
+func Test_recursive_expr_substitute()
+  " this was reading invalid memory
+  let lines =<< trim END
+      func Repl(g, n)
+        s
+        r%:s000
+      endfunc
+      next 0
+      let caught = 0
+      s/\%')/\=Repl(0, 0)
+      qall!
+  END
+  call writefile(lines, 'XexprSubst', 'D')
+  call RunVim([], [], '--clean -S XexprSubst')
 endfunc
 
 " Test for the 2-letter and 3-letter :substitute commands
@@ -1359,6 +1440,21 @@ func Test_substitute_short_cmd()
   bw!
 endfunc
 
+" Check handling expanding "~" resulting in extremely long text.
+" FIXME: disabled, it takes too long to run on CI
+"func Test_substitute_tilde_too_long()
+"  enew!
+"
+"  s/.*/ixxx
+"  s//~~~~~~~~~AAAAAAA@(
+"
+"  " Either fails with "out of memory" or "text too long".
+"  " This can take a long time.
+"  call assert_fails('sil! norm &&&&&&&&&', ['E1240:\|E342:'])
+"
+"  bwipe!
+"endfunc
+
 " This should be done last to reveal a memory leak when vim_regsub_both() is
 " called to evaluate an expression but it is not used in a second call.
 func Test_z_substitute_expr_leak()
@@ -1367,6 +1463,39 @@ func Test_z_substitute_expr_leak()
   endfunc
   silent! s/\%')/\=SubExpr()
   delfunc SubExpr
+endfunc
+
+func Test_substitute_expr_switch_win()
+  func R()
+    wincmd x
+    return 'XXXX'
+  endfunc
+  new Xfoobar
+  let bufnr = bufnr('%')
+  put ='abcdef'
+  silent! s/\%')/\=R()
+  call assert_fails(':%s/./\=R()/g', 'E565:')
+  delfunc R
+  exe bufnr .. "bw!"
+endfunc
+
+" recursive call of :s using test-replace special
+func Test_substitute_expr_recursive()
+  func Q()
+    %s/./\='foobar'/gn
+    return "foobar"
+  endfunc
+  func R()
+    %s/./\=Q()/g
+  endfunc
+  new Xfoobar_UAF
+  let bufnr = bufnr('%')
+  put ='abcdef'
+  silent! s/./\=R()/g
+  call assert_fails(':%s/./\=R()/g', 'E565:')
+  delfunc R
+  delfunc Q
+  exe bufnr .. "bw!"
 endfunc
 
 " vim: shiftwidth=2 sts=2 expandtab

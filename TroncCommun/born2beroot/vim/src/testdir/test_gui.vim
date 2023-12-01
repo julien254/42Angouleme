@@ -157,12 +157,12 @@ endfunc
 func Test_gui_read_stdin()
   CheckUnix
 
-  call writefile(['some', 'lines'], 'Xstdin')
+  call writefile(['some', 'lines'], 'Xstdin', 'D')
   let script =<< trim END
       call writefile(getline(1, '$'), 'XstdinOK')
       qa!
   END
-  call writefile(script, 'Xscript')
+  call writefile(script, 'Xscript', 'D')
 
   " Cannot use --not-a-term here, the "reading from stdin" message would not be
   " displayed.
@@ -176,9 +176,7 @@ func Test_gui_read_stdin()
   call system('cat Xstdin | ' .. vimcmd .. ' -f -g -S Xscript -')
   call assert_equal(['some', 'lines'], readfile('XstdinOK'))
 
-  call delete('Xstdin')
   call delete('XstdinOK')
-  call delete('Xscript')
 endfunc
 
 func Test_set_background()
@@ -582,6 +580,56 @@ func Test_set_guifontwide()
   endif
 endfunc
 
+func Test_expand_guifont()
+  if has('gui_win32')
+    let guifont_saved = &guifont
+    let guifontwide_saved = &guifontwide
+
+    " Test recalling existing option, and suggesting current font size
+    set guifont=Courier\ New:h11:cANSI
+    call assert_equal('Courier\ New:h11:cANSI', getcompletion('set guifont=', 'cmdline')[0])
+    call assert_equal('h11', getcompletion('set guifont=Lucida\ Console:', 'cmdline')[0])
+
+    " Test auto-completion working for font names
+    call assert_equal(['Courier\ New'], getcompletion('set guifont=Couri*ew$', 'cmdline'))
+    call assert_equal(['Courier\ New'], getcompletion('set guifontwide=Couri*ew$', 'cmdline'))
+
+    " Make sure non-monospace fonts are filtered out
+    call assert_equal([], getcompletion('set guifont=Arial', 'cmdline'))
+    call assert_equal([], getcompletion('set guifontwide=Arial', 'cmdline'))
+
+    " Test auto-completion working for font options
+    call assert_notequal(-1, index(getcompletion('set guifont=Courier\ New:', 'cmdline'), 'b'))
+    call assert_equal(['cDEFAULT'], getcompletion('set guifont=Courier\ New:cD*T', 'cmdline'))
+    call assert_equal(['qCLEARTYPE'], getcompletion('set guifont=Courier\ New:qC*TYPE', 'cmdline'))
+
+    let &guifontwide = guifontwide_saved
+    let &guifont     = guifont_saved
+  elseif has('gui_gtk')
+    let guifont_saved = &guifont
+    let guifontwide_saved = &guifontwide
+
+    " Test recalling default and existing option
+    set guifont=
+    call assert_equal('Monospace\ 10', getcompletion('set guifont=', 'cmdline')[0])
+    set guifont=Monospace\ 9
+    call assert_equal('Monospace\ 9', getcompletion('set guifont=', 'cmdline')[0])
+
+    " Test auto-completion working for font names
+    call assert_equal(['Monospace'], getcompletion('set guifont=Mono*pace$', 'cmdline'))
+    call assert_equal(['Monospace'], getcompletion('set guifontwide=Mono*pace$', 'cmdline'))
+
+    " Make sure non-monospace fonts are filtered out only in 'guifont'
+    call assert_equal([], getcompletion('set guifont=Sans$', 'cmdline'))
+    call assert_equal(['Sans'], getcompletion('set guifontwide=Sans$', 'cmdline'))
+
+    let &guifontwide = guifontwide_saved
+    let &guifont     = guifont_saved
+  else
+    call assert_equal([], getcompletion('set guifont=', 'cmdline'))
+  endif
+endfunc
+
 func Test_set_guiligatures()
   CheckX11BasedGui
 
@@ -720,8 +768,11 @@ func Test_set_guioptions()
 endfunc
 
 func Test_scrollbars()
-  new
+  " this test sometimes fails on CI
+  let g:test_is_flaky = 1
+
   " buffer with 200 lines
+  new
   call setline(1, repeat(['one', 'two'], 100))
   set guioptions+=rlb
 
@@ -732,12 +783,15 @@ func Test_scrollbars()
   call assert_equal(1, winline())
   call assert_equal(11, line('.'))
 
-  " scroll to move line 1 at top, cursor stays in line 11
-  let args = #{which: 'right', value: 0, dragging: 0}
-  call test_gui_event('scrollbar', args)
-  redraw
-  call assert_equal(11, winline())
-  call assert_equal(11, line('.'))
+  " FIXME: This test should also pass with Motif and 24 lines
+  if &lines > 24 || !has('gui_motif')
+    " scroll to move line 1 at top, cursor stays in line 11
+    let args = #{which: 'right', value: 0, dragging: 0}
+    call test_gui_event('scrollbar', args)
+    redraw
+    call assert_equal(11, winline())
+    call assert_equal(11, line('.'))
+  endif
 
   set nowrap
   call setline(11, repeat('x', 150))
@@ -853,33 +907,27 @@ endfunc
 " Test "vim -g" and also the GUIEnter autocommand.
 func Test_gui_dash_g()
   let cmd = GetVimCommand('Xscriptgui')
-  call writefile([""], "Xtestgui")
+  call writefile([""], "Xtestgui", 'D')
   let lines =<< trim END
 	au GUIEnter * call writefile(["insertmode: " . &insertmode], "Xtestgui")
 	au GUIEnter * qall
   END
-  call writefile(lines, 'Xscriptgui')
+  call writefile(lines, 'Xscriptgui', 'D')
   call system(cmd . ' -g')
   call WaitForAssert({-> assert_equal(['insertmode: 0'], readfile('Xtestgui'))})
-
-  call delete('Xscriptgui')
-  call delete('Xtestgui')
 endfunc
 
 " Test "vim -7" and also the GUIEnter autocommand.
 func Test_gui_dash_y()
   let cmd = GetVimCommand('Xscriptgui')
-  call writefile([""], "Xtestgui")
+  call writefile([""], "Xtestgui", 'D')
   let lines =<< trim END
 	au GUIEnter * call writefile(["insertmode: " . &insertmode], "Xtestgui")
 	au GUIEnter * qall
   END
-  call writefile(lines, 'Xscriptgui')
+  call writefile(lines, 'Xscriptgui', 'D')
   call system(cmd . ' -y')
   call WaitForAssert({-> assert_equal(['insertmode: 1'], readfile('Xtestgui'))})
-
-  call delete('Xscriptgui')
-  call delete('Xtestgui')
 endfunc
 
 " Test for "!" option in 'guioptions'. Use a terminal for running external
@@ -912,13 +960,17 @@ endfunc
 
 " Test GUI mouse events
 func Test_gui_mouse_event()
+  " Low level input isn't 100% reliable
+  let g:test_is_flaky = 1
+
   set mousemodel=extend
   call test_override('no_query_mouse', 1)
   new
   call setline(1, ['one two three', 'four five six'])
-
-  " place the cursor using left click in normal mode
   call cursor(1, 1)
+  redraw!
+
+  " place the cursor using left click and release in normal mode
   let args = #{button: 0, row: 2, col: 4, multiclick: 0, modifiers: 0}
   call test_gui_event('mouse', args)
   let args.button = 3
@@ -1183,10 +1235,21 @@ func Test_gui_mouse_event()
   call feedkeys("\<Esc>", 'Lx!')
   call assert_equal([0, 2, 7, 0], getpos('.'))
   call assert_equal('wo thrfour five sixteen', getline(2))
+
   set mouse&
   let &guioptions = save_guioptions
+  bw!
+  call test_override('no_query_mouse', 0)
+  set mousemodel&
+endfunc
 
-  " Test invalid parameters for test_gui_event()
+" Test invalid parameters for test_gui_event()
+func Test_gui_event_mouse_fails()
+  call test_override('no_query_mouse', 1)
+  new
+  call setline(1, ['one two three', 'four five six'])
+  set mousemodel=extend
+
   let args = #{row: 2, col: 4, multiclick: 0, modifiers: 0}
   call assert_false(test_gui_event('mouse', args))
   let args = #{button: 0, col: 4, multiclick: 0, modifiers: 0}
@@ -1274,7 +1337,7 @@ func Test_gui_mouse_move_event()
     let g:eventlist = g:eventlist[1 : ]
   endif
 
-  call assert_equal([#{row: 4, col: 31}, #{row: 11, col: 31}], g:eventlist)
+  call assert_equal([#{row: 3, col: 30}, #{row: 10, col: 30}], g:eventlist)
 
   " wiggle the mouse around within a screen cell, shouldn't trigger events
   call extend(args, #{cell: v:false})
@@ -1412,7 +1475,7 @@ func Test_gui_drop_files()
   %argdelete
   " pressing shift when dropping files should change directory
   let save_cwd = getcwd()
-  call mkdir('Xdropdir1')
+  call mkdir('Xdropdir1', 'R')
   call writefile([], 'Xdropdir1/Xfile1')
   call writefile([], 'Xdropdir1/Xfile2')
   let d = #{files: ['Xdropdir1/Xfile1', 'Xdropdir1/Xfile2'], row: 1, col: 1,
@@ -1441,7 +1504,6 @@ func Test_gui_drop_files()
   call assert_equal('', @%)
   %bw!
   %argdelete
-  call delete('Xdropdir1', 'rf')
 
   " drop files in the command line. The GUI drop files adds the file names to
   " the low level input buffer. So need to use a cmdline map and feedkeys()
@@ -1580,6 +1642,12 @@ func Test_gui_findrepl()
   call test_gui_event('findrepl', args)
   call assert_equal(['ONE two ONE', 'Twoo ONE two ONEo'], getline(1, '$'))
 
+  " Replace all instances with sub-replace specials
+  call cursor(1, 1)
+  let args = #{find_text: 'ONE', repl_text: '&~&', flags: 0x4, forward: 1}
+  call test_gui_event('findrepl', args)
+  call assert_equal(['&~& two &~&', 'Twoo &~& two &~&o'], getline(1, '$'))
+
   " Invalid arguments
   call assert_false(test_gui_event('findrepl', {}))
   let args = #{repl_text: 'a', flags: 1, forward: 1}
@@ -1601,12 +1669,15 @@ func Test_gui_CTRL_SHIFT_V()
 endfunc
 
 func Test_gui_dialog_file()
+  " make sure the file does not exist, otherwise a dialog makes Vim hang
+  call delete('Xdialfile')
+
   let lines =<< trim END
     file Xdialfile
     normal axxx
     confirm qa
   END
-  call writefile(lines, 'Xlines')
+  call writefile(lines, 'Xlines', 'D')
   let prefix = '!'
   if has('win32')
     let prefix = '!start '
@@ -1618,16 +1689,15 @@ func Test_gui_dialog_file()
 
   call delete('Xdialog')
   call delete('Xdialfile')
-  call delete('Xlines')
 endfunc
 
 " Test for sending low level key presses
 func SendKeys(keylist)
   for k in a:keylist
-    call test_gui_event("sendevent", #{event: "keydown", keycode: k})
+    call test_gui_event("key", #{event: "keydown", keycode: k})
   endfor
   for k in reverse(a:keylist)
-    call test_gui_event("sendevent", #{event: "keyup", keycode: k})
+    call test_gui_event("key", #{event: "keyup", keycode: k})
   endfor
 endfunc
 
@@ -1642,67 +1712,34 @@ func Test_gui_lowlevel_keyevent()
     call assert_equal(nr2char(kc - 64), ch)
   endfor
 
-  " Test for the various Ctrl and Shift key combinations.
-  let keytests = [
-    \ [[0x10, 0x21], "\<S-Pageup>", 2],
-    \ [[0x11, 0x21], "\<C-Pageup>", 4],
-    \ [[0x10, 0x22], "\<S-PageDown>", 2],
-    \ [[0x11, 0x22], "\<C-PageDown>", 4],
-    \ [[0x10, 0x23], "\<S-End>", 0],
-    \ [[0x11, 0x23], "\<C-End>", 0],
-    \ [[0x10, 0x24], "\<S-Home>", 0],
-    \ [[0x11, 0x24], "\<C-Home>", 0],
-    \ [[0x10, 0x25], "\<S-Left>", 0],
-    \ [[0x11, 0x25], "\<C-Left>", 0],
-    \ [[0x10, 0x26], "\<S-Up>", 0],
-    \ [[0x11, 0x26], "\<C-Up>", 4],
-    \ [[0x10, 0x27], "\<S-Right>", 0],
-    \ [[0x11, 0x27], "\<C-Right>", 0],
-    \ [[0x10, 0x28], "\<S-Down>", 0],
-    \ [[0x11, 0x28], "\<C-Down>", 4],
-    \ [[0x11, 0x30], "\<C-0>", 4],
-    \ [[0x11, 0x31], "\<C-1>", 4],
-    \ [[0x11, 0x32], "\<C-2>", 4],
-    \ [[0x11, 0x33], "\<C-3>", 4],
-    \ [[0x11, 0x34], "\<C-4>", 4],
-    \ [[0x11, 0x35], "\<C-5>", 4],
-    \ [[0x11, 0x36], "\<C-^>", 0],
-    \ [[0x11, 0x37], "\<C-7>", 4],
-    \ [[0x11, 0x38], "\<C-8>", 4],
-    \ [[0x11, 0x39], "\<C-9>", 4],
-    \ [[0x11, 0x60], "\<C-0>", 4],
-    \ [[0x11, 0x61], "\<C-1>", 4],
-    \ [[0x11, 0x62], "\<C-2>", 4],
-    \ [[0x11, 0x63], "\<C-3>", 4],
-    \ [[0x11, 0x64], "\<C-4>", 4],
-    \ [[0x11, 0x65], "\<C-5>", 4],
-    \ [[0x11, 0x66], "\<C-6>", 4],
-    \ [[0x11, 0x67], "\<C-7>", 4],
-    \ [[0x11, 0x68], "\<C-8>", 4],
-    \ [[0x11, 0x69], "\<C-9>", 4],
-    \ [[0x11, 0x6A], "\<C-*>", 4],
-    \ [[0x11, 0x6B], "\<C-+>", 4],
-    \ [[0x11, 0x6D], "\<C-->", 4],
-    \ [[0x11, 0x70], "\<C-F1>", 4],
-    \ [[0x11, 0x71], "\<C-F2>", 4],
-    \ [[0x11, 0x72], "\<C-F3>", 4],
-    \ [[0x11, 0x73], "\<C-F4>", 4],
-    \ [[0x11, 0x74], "\<C-F5>", 4],
-    \ [[0x11, 0x75], "\<C-F6>", 4],
-    \ [[0x11, 0x76], "\<C-F7>", 4],
-    \ [[0x11, 0x77], "\<C-F8>", 4],
-    \ [[0x11, 0x78], "\<C-F9>", 4],
-    \ ]
-
-  for [kcodes, kstr, kmod] in keytests
-    call SendKeys(kcodes)
-    let ch = getcharstr()
-    let mod = getcharmod()
-    call assert_equal(kstr, ch, $"key = {kstr}")
-    call assert_equal(kmod, mod)
-  endfor
+  " Testing more extensive windows keyboard handling
+  " is covered in test_mswin_event.vim
 
   bw!
+endfunc
+
+func Test_gui_macro_csi()
+  " Test for issue #11270
+  nnoremap <C-L> <Cmd>let g:triggered = 1<CR>
+  let @q = "\x9b\xfc\x04L"
+  norm @q
+  call assert_equal(1, g:triggered)
+  unlet g:triggered
+  nunmap <C-L>
+
+  " Test for issue #11057
+  inoremap <C-D>t bbb
+  call setline(1, "\t")
+  let @q = "i\x9b\xfc\x04D"
+  " The end of :normal is like a mapping timing out
+  norm @q
+  call assert_equal('', getline(1))
+  iunmap <C-D>t
+endfunc
+
+func Test_gui_csi_keytrans()
+  call assert_equal('<C-L>', keytrans("\x9b\xfc\x04L"))
+  call assert_equal('<C-D>', keytrans("\x9b\xfc\x04D"))
 endfunc
 
 " vim: shiftwidth=2 sts=2 expandtab

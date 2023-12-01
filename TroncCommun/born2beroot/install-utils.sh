@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Installation de ZSH"
-sudo apt-get install zsh -y
+sudo apt-get install zsh -ycp 
 sudo cp 42Angouleme/TroncCommun/born2beroot/passwd /etc/passwd
 echo "Installation de ZSH termine."
 echo "Installation de Oh-My-Zsh ----->"
@@ -8,11 +8,7 @@ curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | 
 echo "Installation de Oh-My-Zsh termine."
 cd ~
 sudo groupadd user42
-sudo usermod -aG user42 jdetre
-echo "Installation de Git ----->"
-sudo apt-get install git -y
-git clone https://github.com/julien254/42Angouleme.git
-echo "Installation de Git termine."
+sudo usermod -aG user42 judetre
 echo "Installation des composant essentiel ----->"
 sudo apt-get install -y build-essential python3.9 python3.9-dev libncurses-dev curl
 echo "Installation des composant essentiel termine."
@@ -32,4 +28,4 @@ sudo cp .zshrc /root/
 sudo cp -r ~/.oh-my-zsh /root/
 cd ~
 echo "Configuration Zsh et vim termine"
-echo "lancer vim et taper ':PlugInstall' pour finaliser l'installation des plugins. (Pour le compte utilisateur et le compte ROOT). Vous pouvew ensuite redemarrer le systeme pour aue tous les changements soient pris en compte."
+echo "lancer vim et taper ':PlugInstall' pour finaliser l'installation des plugins. (Pour le compte utilisateur et le compte ROOT). Vous pouvez ensuite redemarrer le systeme pour que tous les changements soient pris en compte."

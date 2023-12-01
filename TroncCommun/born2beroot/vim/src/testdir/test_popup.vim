@@ -16,7 +16,7 @@ func ListMonths()
   if !empty(entered)
     let mth = filter(mth, 'v:val=~"^".entered')
   endif
-  call complete(1, mth) 
+  call complete(1, mth)
   return ''
 endfunc
 
@@ -74,7 +74,7 @@ func Test_popup_complete()
   call feedkeys("aJu\<f5>\<c-p>l\<c-y>", 'tx')
   call assert_equal(["Jul"], getline(1,2))
   %d
-  
+
   " any-non printable, non-white character: Add this character and
   " reduce number of matches
   call feedkeys("aJu\<f5>\<c-p>l\<c-n>\<c-y>", 'tx')
@@ -96,7 +96,7 @@ func Test_popup_complete()
   call feedkeys("aJ\<f5>".repeat("\<c-n>",3)."\<c-l>\<esc>", 'tx')
   call assert_equal(["J"], getline(1,2))
   %d
-  
+
   " <c-l> - Insert one character from the current match
   call feedkeys("aJ\<f5>".repeat("\<c-n>",4)."\<c-l>\<esc>", 'tx')
   call assert_equal(["January"], getline(1,2))
@@ -758,7 +758,7 @@ func Test_popup_and_previewwindow_dump()
     call setline(1, map(repeat(["ab"], 10), "v:val .. v:key"))
     exec "norm! G\<C-E>\<C-E>"
   END
-  call writefile(lines, 'Xscript')
+  call writefile(lines, 'Xscript', 'D')
   let buf = RunVimInTerminal('-S Xscript', {})
 
   " wait for the script to finish
@@ -772,7 +772,6 @@ func Test_popup_and_previewwindow_dump()
 
   call term_sendkeys(buf, "\<Esc>u")
   call StopVimInTerminal(buf)
-  call delete('Xscript')
 endfunc
 
 func Test_balloon_split()
@@ -829,7 +828,7 @@ func Test_popup_position()
     123456789_123456789_123456789_b
                 123
   END
-  call writefile(lines, 'Xtest')
+  call writefile(lines, 'Xtest', 'D')
   let buf = RunVimInTerminal('Xtest', {})
   call term_sendkeys(buf, ":vsplit\<CR>")
 
@@ -857,14 +856,12 @@ func Test_popup_position()
   call term_sendkeys(buf, "jI123456789_\<Esc>")
   call term_sendkeys(buf, "GA\<C-N>")
   call VerifyScreenDump(buf, 'Test_popup_position_04', {'rows': 10})
-  
+
   call term_sendkeys(buf, "\<Esc>u")
   call StopVimInTerminal(buf)
-  call delete('Xtest')
 endfunc
 
 func Test_popup_command()
-  CheckScreendump
   CheckFeature menu
 
   menu Test.Foo Foo
@@ -872,25 +869,30 @@ func Test_popup_command()
   call assert_fails('popup Test.Foo.X', 'E327:')
   call assert_fails('popup Foo', 'E337:')
   unmenu Test.Foo
+endfunc
+
+func Test_popup_command_dump()
+  CheckFeature menu
+  CheckScreendump
 
   let script =<< trim END
     func StartTimer()
       call timer_start(100, {-> ChangeMenu()})
     endfunc
     func ChangeMenu()
-      nunmenu PopUp.&Paste
+      aunmenu PopUp.&Paste
       nnoremenu 1.40 PopUp.&Paste :echomsg "pasted"<CR>
       echomsg 'changed'
     endfunc
   END
-  call writefile(script, 'XtimerScript')
+  call writefile(script, 'XtimerScript', 'D')
 
   let lines =<< trim END
 	one two three four five
 	and one two Xthree four five
 	one more two three four five
   END
-  call writefile(lines, 'Xtest')
+  call writefile(lines, 'Xtest', 'D')
   let buf = RunVimInTerminal('-S XtimerScript Xtest', {})
   call term_sendkeys(buf, ":source $VIMRUNTIME/menu.vim\<CR>")
   call term_sendkeys(buf, "/X\<CR>:popup PopUp\<CR>")
@@ -908,7 +910,7 @@ func Test_popup_command()
 
   " Set a timer to change a menu entry while it's displayed.  The text should
   " not change but the command does.  Making the screendump also verifies that
-  " "changed" shows up, which means the timer triggered
+  " "changed" shows up, which means the timer triggered.
   call term_sendkeys(buf, "/X\<CR>:call StartTimer() | popup PopUp\<CR>")
   call VerifyScreenDump(buf, 'Test_popup_command_04', {})
 
@@ -916,9 +918,16 @@ func Test_popup_command()
   call term_sendkeys(buf, "jj\<CR>")
   call VerifyScreenDump(buf, 'Test_popup_command_05', {})
 
+  call term_sendkeys(buf, "\<Esc>")
+
+  " Add a window toolbar to the window and check the :popup menu position.
+  call term_sendkeys(buf, ":nnoremenu WinBar.TEST :\<CR>")
+  call term_sendkeys(buf, "/X\<CR>:popup PopUp\<CR>")
+  call VerifyScreenDump(buf, 'Test_popup_command_06', {})
+
+  call term_sendkeys(buf, "\<Esc>")
+
   call StopVimInTerminal(buf)
-  call delete('Xtest')
-  call delete('XtimerScript')
 endfunc
 
 func Test_popup_complete_backwards()
@@ -1013,7 +1022,7 @@ func Test_popup_complete_info_01()
   inoremap <buffer><F6> <C-R>=s:complTestEval()<CR>
   call writefile([
         \ 'dummy	dummy.txt	1',
-        \], 'Xdummy.txt')
+        \], 'Xdummy.txt', 'D')
   setlocal tags=Xdummy.txt
   setlocal dictionary=Xdummy.txt
   setlocal thesaurus=Xdummy.txt
@@ -1046,7 +1055,7 @@ func Test_popup_complete_info_01()
     call assert_equal(mode_name, getline('.'))
     %d
   endfor
-  call delete('Xdummy.txt')
+
   bwipe!
 endfunc
 
@@ -1156,11 +1165,11 @@ func Test_CompleteChanged()
   bw!
 endfunc
 
-function! GetPumPosition()
+func GetPumPosition()
   call assert_true( pumvisible() )
   let g:pum_pos = pum_getpos()
   return ''
-endfunction
+endfunc
 
 func Test_pum_getpos()
   new
@@ -1194,7 +1203,7 @@ func Test_pum_rightleft()
     vim
     victory
   END
-  call writefile(lines, 'Xtest1')
+  call writefile(lines, 'Xtest1', 'D')
   let buf = RunVimInTerminal('--cmd "set rightleft" Xtest1', {})
   call term_sendkeys(buf, "Go\<C-P>")
   call VerifyScreenDump(buf, 'Test_pum_rightleft_01', {'rows': 8})
@@ -1209,7 +1218,7 @@ func Test_pum_rightleft()
     one	three
     four
   END
-  call writefile(lines, 'Xtest2')
+  call writefile(lines, 'Xtest2', 'D')
   call term_sendkeys(buf, "\<Esc>:e! Xtest2\<CR>")
   call TermWait(buf, 30)
   call term_sendkeys(buf, "Goone\<C-X>\<C-L>")
@@ -1222,8 +1231,6 @@ func Test_pum_rightleft()
   call WaitForAssert({-> assert_match('\s*eerht     eno', Screenline(4))})
 
   call StopVimInTerminal(buf)
-  call delete('Xtest1')
-  call delete('Xtest2')
 endfunc
 
 " Test for a popup menu with a scrollbar
@@ -1234,7 +1241,7 @@ func Test_pum_scrollbar()
     two
     three
   END
-  call writefile(lines, 'Xtest1')
+  call writefile(lines, 'Xtest1', 'D')
   let buf = RunVimInTerminal('--cmd "set pumheight=2" Xtest1', {})
   call TermWait(buf)
   call term_sendkeys(buf, "Go\<C-P>\<C-P>\<C-P>")
@@ -1250,7 +1257,68 @@ func Test_pum_scrollbar()
   endif
 
   call StopVimInTerminal(buf)
-  call delete('Xtest1')
+endfunc
+
+" Test default highlight groups for popup menu
+func Test_pum_highlights_default()
+  CheckScreendump
+  let lines =<< trim END
+    func CompleteFunc( findstart, base )
+      if a:findstart
+        return 0
+      endif
+      return {
+            \ 'words': [
+            \ { 'word': 'aword1', 'menu': 'extra text 1', 'kind': 'W', },
+            \ { 'word': 'aword2', 'menu': 'extra text 2', 'kind': 'W', },
+            \ { 'word': 'aword3', 'menu': 'extra text 3', 'kind': 'W', },
+            \]}
+    endfunc
+    set completeopt=menu
+    set completefunc=CompleteFunc
+  END
+  call writefile(lines, 'Xscript', 'D')
+  let buf = RunVimInTerminal('-S Xscript', {})
+  call TermWait(buf)
+  call term_sendkeys(buf, "iaw\<C-X>\<C-u>")
+  call TermWait(buf, 50)
+  call VerifyScreenDump(buf, 'Test_pum_highlights_01', {})
+  call term_sendkeys(buf, "\<C-E>\<Esc>u")
+  call TermWait(buf)
+  call StopVimInTerminal(buf)
+endfunc
+
+" Test custom highlight groups for popup menu
+func Test_pum_highlights_custom()
+  CheckScreendump
+  let lines =<< trim END
+    func CompleteFunc( findstart, base )
+      if a:findstart
+        return 0
+      endif
+      return {
+            \ 'words': [
+            \ { 'word': 'aword1', 'menu': 'extra text 1', 'kind': 'W', },
+            \ { 'word': 'aword2', 'menu': 'extra text 2', 'kind': 'W', },
+            \ { 'word': 'aword3', 'menu': 'extra text 3', 'kind': 'W', },
+            \]}
+    endfunc
+    set completeopt=menu
+    set completefunc=CompleteFunc
+    hi PmenuKind      ctermfg=1 ctermbg=225
+    hi PmenuKindSel   ctermfg=1 ctermbg=7
+    hi PmenuExtra     ctermfg=243 ctermbg=225
+    hi PmenuExtraSel  ctermfg=0 ctermbg=7
+  END
+  call writefile(lines, 'Xscript', 'D')
+  let buf = RunVimInTerminal('-S Xscript', {})
+  call TermWait(buf)
+  call term_sendkeys(buf, "iaw\<C-X>\<C-u>")
+  call TermWait(buf, 50)
+  call VerifyScreenDump(buf, 'Test_pum_highlights_02', {})
+  call term_sendkeys(buf, "\<C-E>\<Esc>u")
+  call TermWait(buf)
+  call StopVimInTerminal(buf)
 endfunc
 
 " vim: shiftwidth=2 sts=2 expandtab

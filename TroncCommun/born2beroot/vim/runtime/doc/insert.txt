@@ -1,4 +1,4 @@
-*insert.txt*    For Vim version 9.0.  Last change: 2022 Apr 06
+*insert.txt*    For Vim version 9.0.  Last change: 2022 Sep 30
 
 
 		  VIM REFERENCE MANUAL    by Bram Moolenaar
@@ -127,7 +127,11 @@ CTRL-R {register}				*i_CTRL-R*
 			'/'	the last search pattern
 			':'	the last command-line
 			'.'	the last inserted text
+							*i_CTRL-R_-*
 			'-'	the last small (less than a line) delete
+				register. This is repeatable using |.| since
+				it remembers the register to put instead of
+				the literal text to insert.
 							*i_CTRL-R_=*
 			'='	the expression register: you are prompted to
 				enter an expression (see |expression|)
@@ -667,7 +671,7 @@ When the popup menu is displayed there are a few more special keys, see
 |popupmenu-keys|.
 
 Note: The keys that are valid in CTRL-X mode are not mapped.  This allows for
-":map ^F ^X^F" to work (where ^F is CTRL-F and ^X is CTRL-X).  The key that
+`:map <C-F> <C-X><C-F>` to work (assuming "<" is not in 'cpo').  The key that
 ends CTRL-X mode (any key that is not a valid CTRL-X mode command) is mapped.
 Also, when doing completion with 'complete' mappings apply as usual.
 
@@ -677,11 +681,12 @@ buffer text cannot be changed.  Mappings that somehow invoke ":normal i.."
 will generate an E565 error.
 
 The following mappings are suggested to make typing the completion commands
-a bit easier (although they will hide other commands): >
-    :inoremap ^] ^X^]
-    :inoremap ^F ^X^F
-    :inoremap ^D ^X^D
-    :inoremap ^L ^X^L
+a bit easier (although they will hide other commands; this requires "<" is not
+in 'cpo'): >
+    :inoremap <C-]> <C-X><C-]>
+    :inoremap <C-F> <C-X><C-F>
+    :inoremap <C-D> <C-X><C-D>
+    :inoremap <C-L> <C-X><C-L>
 
 As a special case, typing CTRL-R to perform register insertion (see
 |i_CTRL-R|) will not exit CTRL-X mode.  This is primarily to allow the use of
@@ -876,7 +881,7 @@ Groß): >
 
     func Thesaur(findstart, base)
       if a:findstart
-    	return searchpos('\<', 'bnW', line('.'))[1] - 1
+	return searchpos('\<', 'bnW', line('.'))[1] - 1
       endif
       let res = []
       let h = ''
@@ -891,7 +896,7 @@ Groß): >
       endfor
       return res
     endfunc
-    
+
     if exists('+thesaurusfunc')
       set thesaurusfunc=Thesaur
     endif
@@ -1117,8 +1122,8 @@ cursor column will be replaced with the matches.  If the returned value is
 larger than the cursor column, the cursor column is used.
 
 Negative return values:
-   -2 	To cancel silently and stay in completion mode.
-   -3 	To cancel silently and leave completion mode.
+   -2	To cancel silently and stay in completion mode.
+   -3	To cancel silently and leave completion mode.
    Another negative value: completion starts at the cursor column
 
 On the second invocation the arguments are:
@@ -1175,7 +1180,7 @@ items:
 			item with the same word is already present.
 	empty		when non-zero this match will be added even when it is
 			an empty string
-	user_data 	custom data which is associated with the item and
+	user_data	custom data which is associated with the item and
 			available in |v:completed_item|; it can be any type;
 			defaults to an empty string
 

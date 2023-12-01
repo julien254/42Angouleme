@@ -361,6 +361,13 @@ func Test_badd_options()
   close
   close
   bwipe! SomeNewBuffer
+
+  badd +3 XbaddFile
+  call writefile(range(6), 'XbaddFile', 'D')
+  buf XbaddFile
+  call assert_equal([0, 3, 1, 0], getpos('.'))
+
+  bwipe! XbaddFile
 endfunc
 
 func Test_balt()
@@ -375,6 +382,7 @@ endfunc
 func Test_buffer_scheme()
   CheckMSWindows
 
+  set noswapfile
   set noshellslash
   %bwipe!
   let bufnames = [
@@ -397,6 +405,7 @@ func Test_buffer_scheme()
   endfor
 
   set shellslash&
+  set swapfile&
 endfunc
 
 " this was using a NULL pointer after failing to use the pattern

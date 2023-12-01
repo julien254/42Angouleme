@@ -15,14 +15,14 @@ func Test_ins_complete()
   set ff=unix
   call writefile(["test11\t36Gepeto\t/Tag/",
 	      \ "asd\ttest11file\t36G",
-	      \ "Makefile\tto\trun"], 'Xtestfile')
+	      \ "Makefile\tto\trun"], 'Xtestfile', 'D')
   call writefile(['', 'start of testfile',
 	      \ 'ru',
 	      \ 'run1',
 	      \ 'run2',
 	      \ 'STARTTEST',
 	      \ 'ENDTEST',
-	      \ 'end of testfile'], 'Xtestdata')
+	      \ 'end of testfile'], 'Xtestdata', 'D')
   set ff&
 
   enew!
@@ -99,10 +99,8 @@ func Test_ins_complete()
   call assert_equal('asd', getline('.'))
 
   %bw!
-  call delete('Xtestfile')
   call delete('Xtest11.one')
   call delete('Xtest11.two')
-  call delete('Xtestdata')
   set cpt& cot& def& tags& tagbsearch& hidden&
   cd ..
   call delete('Xcpldir', 'rf')
@@ -111,13 +109,11 @@ endfunc
 func Test_ins_complete_invalid_byte()
   if has('unix') && executable('base64')
     " this weird command was causing an illegal memory access
-    call writefile(['bm9ybTlvMDCAMM4Dbw4OGA4ODg=='], 'Xinvalid64')
+    call writefile(['bm9ybTlvMDCAMM4Dbw4OGA4ODg=='], 'Xinvalid64', 'D')
     call system('base64 -d Xinvalid64 > Xinvalid')
-    call writefile(['qa!'], 'Xexit')
+    call writefile(['qa!'], 'Xexit', 'D')
     call RunVim([], [], " -i NONE -n -X -Z -e -m -s -S Xinvalid -S Xexit")
-    call delete('Xinvalid64')
     call delete('Xinvalid')
-    call delete('Xexit')
   endif
 endfunc
 
@@ -168,7 +164,7 @@ func Test_omni_autoload()
   let save_rtp = &rtp
   set rtp=Xruntime/some
   let dir = 'Xruntime/some/autoload'
-  call mkdir(dir, 'p')
+  call mkdir(dir, 'pR')
 
   let lines =<< trim END
       vim9script
@@ -190,7 +186,6 @@ func Test_omni_autoload()
   call feedkeys("i\<C-X>\<C-O>\<Esc>", 'xt')
 
   bwipe!
-  call delete('Xruntime', 'rf')
   set omnifunc=
   let &rtp = save_rtp
 endfunc
@@ -241,7 +236,7 @@ func s:CompleteDone_CompleteFuncDict( findstart, base )
 	      \ 'menu': 'extra text',
 	      \ 'info': 'words are cool',
 	      \ 'kind': 'W',
-	      \ 'user_data': 'test'
+	      \ 'user_data': ['one', 'two']
 	    \ }
 	  \ ]
 	\ }
@@ -257,7 +252,7 @@ func s:CompleteDone_CheckCompletedItemDict(pre)
   call assert_equal( 'extra text',     v:completed_item[ 'menu' ] )
   call assert_equal( 'words are cool', v:completed_item[ 'info' ] )
   call assert_equal( 'W',              v:completed_item[ 'kind' ] )
-  call assert_equal( 'test',           v:completed_item[ 'user_data' ] )
+  call assert_equal( ['one', 'two'],   v:completed_item[ 'user_data' ] )
 
   if a:pre
     call assert_equal('function', complete_info().mode)
@@ -290,7 +285,7 @@ func Test_CompleteDoneDict()
   execute "normal a\<C-X>\<C-U>\<C-Y>"
   set completefunc&
 
-  call assert_equal('test', v:completed_item[ 'user_data' ])
+  call assert_equal(['one', 'two'], v:completed_item[ 'user_data' ])
   call assert_true(s:called_completedone)
 
   let s:called_completedone = 0
@@ -310,7 +305,6 @@ func s:CompleteDone_CompleteFuncDictNoUserData(findstart, base)
 	      \ 'menu': 'extra text',
 	      \ 'info': 'words are cool',
 	      \ 'kind': 'W',
-	      \ 'user_data': ['one', 'two'],
 	    \ }
 	  \ ]
 	\ }
@@ -322,7 +316,7 @@ func s:CompleteDone_CheckCompletedItemDictNoUserData()
   call assert_equal( 'extra text',     v:completed_item[ 'menu' ] )
   call assert_equal( 'words are cool', v:completed_item[ 'info' ] )
   call assert_equal( 'W',              v:completed_item[ 'kind' ] )
-  call assert_equal( ['one', 'two'],   v:completed_item[ 'user_data' ] )
+  call assert_equal( '',               v:completed_item[ 'user_data' ] )
 
   let s:called_completedone = 1
 endfunc
@@ -334,7 +328,7 @@ func Test_CompleteDoneDictNoUserData()
   execute "normal a\<C-X>\<C-U>\<C-Y>"
   set completefunc&
 
-  call assert_equal(['one', 'two'], v:completed_item[ 'user_data' ])
+  call assert_equal('', v:completed_item[ 'user_data' ])
   call assert_true(s:called_completedone)
 
   let s:called_completedone = 0
@@ -418,6 +412,54 @@ func Test_completefunc_info()
   set completefunc&
 endfunc
 
+" Test that mouse scrolling/movement should not interrupt completion.
+func Test_mouse_scroll_move_during_completion()
+  new
+  com! -buffer TestCommand1 echo 'TestCommand1'
+  com! -buffer TestCommand2 echo 'TestCommand2'
+  call setline(1, ['', '', '', '', ''])
+  call cursor(5, 1)
+
+  " Without completion menu scrolling can move text.
+  set completeopt-=menu wrap
+  call feedkeys("ccT\<C-X>\<C-V>\<ScrollWheelDown>\<C-V>", 'tx')
+  call assert_equal('TestCommand2', getline('.'))
+  call assert_notequal(1, winsaveview().topline)
+  call feedkeys("ccT\<C-X>\<C-V>\<ScrollWheelUp>\<C-V>", 'tx')
+  call assert_equal('TestCommand2', getline('.'))
+  call assert_equal(1, winsaveview().topline)
+  set nowrap
+  call feedkeys("ccT\<C-X>\<C-V>\<ScrollWheelRight>\<C-V>", 'tx')
+  call assert_equal('TestCommand2', getline('.'))
+  call assert_notequal(0, winsaveview().leftcol)
+  call feedkeys("ccT\<C-X>\<C-V>\<ScrollWheelLeft>\<C-V>", 'tx')
+  call assert_equal('TestCommand2', getline('.'))
+  call assert_equal(0, winsaveview().leftcol)
+  call feedkeys("ccT\<C-X>\<C-V>\<MouseMove>\<C-V>", 'tx')
+  call assert_equal('TestCommand2', getline('.'))
+
+  " With completion menu scrolling cannot move text.
+  set completeopt+=menu wrap
+  call feedkeys("ccT\<C-X>\<C-V>\<ScrollWheelDown>\<C-V>", 'tx')
+  call assert_equal('TestCommand2', getline('.'))
+  call assert_equal(1, winsaveview().topline)
+  call feedkeys("ccT\<C-X>\<C-V>\<ScrollWheelUp>\<C-V>", 'tx')
+  call assert_equal('TestCommand2', getline('.'))
+  call assert_equal(1, winsaveview().topline)
+  set nowrap
+  call feedkeys("ccT\<C-X>\<C-V>\<ScrollWheelRight>\<C-V>", 'tx')
+  call assert_equal('TestCommand2', getline('.'))
+  call assert_equal(0, winsaveview().leftcol)
+  call feedkeys("ccT\<C-X>\<C-V>\<ScrollWheelLeft>\<C-V>", 'tx')
+  call assert_equal('TestCommand2', getline('.'))
+  call assert_equal(0, winsaveview().leftcol)
+  call feedkeys("ccT\<C-X>\<C-V>\<MouseMove>\<C-V>", 'tx')
+  call assert_equal('TestCommand2', getline('.'))
+
+  bwipe!
+  set completeopt& wrap&
+endfunc
+
 " Check that when using feedkeys() typeahead does not interrupt searching for
 " completions.
 func Test_compl_feedkeys()
@@ -433,7 +475,7 @@ endfunc
 func Test_ins_completeslash()
   CheckMSWindows
 
-  call mkdir('Xcpldir')
+  call mkdir('Xcpldir', 'R')
   let orig_shellslash = &shellslash
   set cpt&
   new
@@ -466,7 +508,6 @@ func Test_ins_completeslash()
   exe "normal oXcp\<C-X>\<C-F>"
   call assert_equal('Xcpldir/', getline('.'))
   %bw!
-  call delete('Xcpldir', 'rf')
 
   set noshellslash
   set completeslash=slash
@@ -487,7 +528,7 @@ func Test_pum_stopped_by_timer()
     endfunc
   END
 
-  call writefile(lines, 'Xpumscript')
+  call writefile(lines, 'Xpumscript', 'D')
   let buf = RunVimInTerminal('-S Xpumscript', #{rows: 12})
   call term_sendkeys(buf, ":call StartCompl()\<CR>")
   call TermWait(buf, 200)
@@ -495,7 +536,6 @@ func Test_pum_stopped_by_timer()
   call VerifyScreenDump(buf, 'Test_pum_stopped_by_timer', {})
 
   call StopVimInTerminal(buf)
-  call delete('Xpumscript')
 endfunc
 
 func Test_complete_stopinsert_startinsert()
@@ -520,7 +560,7 @@ func Test_pum_with_folds_two_tabs()
     call feedkeys("0fa", 'xt')
   END
 
-  call writefile(lines, 'Xpumscript')
+  call writefile(lines, 'Xpumscript', 'D')
   let buf = RunVimInTerminal('-S Xpumscript', #{rows: 10})
   call TermWait(buf, 50)
   call term_sendkeys(buf, "a\<C-N>")
@@ -528,7 +568,6 @@ func Test_pum_with_folds_two_tabs()
 
   call term_sendkeys(buf, "\<Esc>")
   call StopVimInTerminal(buf)
-  call delete('Xpumscript')
 endfunc
 
 func Test_pum_with_preview_win()
@@ -545,17 +584,15 @@ func Test_pum_with_preview_win()
       set completeopt+=longest
   END
 
-  call writefile(lines, 'Xpreviewscript')
+  call writefile(lines, 'Xpreviewscript', 'D')
   let buf = RunVimInTerminal('-S Xpreviewscript', #{rows: 12})
-  call TermWait(buf, 50)
   call term_sendkeys(buf, "Gi\<C-X>\<C-O>")
-  call TermWait(buf, 100)
+  call TermWait(buf, 200)
   call term_sendkeys(buf, "\<C-N>")
   call VerifyScreenDump(buf, 'Test_pum_with_preview_win', {})
 
   call term_sendkeys(buf, "\<Esc>")
   call StopVimInTerminal(buf)
-  call delete('Xpreviewscript')
 endfunc
 
 func Test_scrollbar_on_wide_char()
@@ -567,13 +604,12 @@ func Test_scrollbar_on_wide_char()
                         \ '              呃呃呃'])
     call setline(5, range(10)->map({i, v -> 'aa' .. v .. 'bb'}))
   END
-  call writefile(lines, 'Xwidescript')
+  call writefile(lines, 'Xwidescript', 'D')
   let buf = RunVimInTerminal('-S Xwidescript', #{rows: 10})
   call term_sendkeys(buf, "A\<C-N>")
   call VerifyScreenDump(buf, 'Test_scrollbar_on_wide_char', {})
 
   call StopVimInTerminal(buf)
-  call delete('Xwidescript')
 endfunc
 
 " Test for inserting the tag search pattern in insert mode
@@ -583,14 +619,14 @@ func Test_ins_compl_tag_sft()
         \ "first\tXfoo\t/^int first() {}$/",
         \ "second\tXfoo\t/^int second() {}$/",
         \ "third\tXfoo\t/^int third() {}$/"],
-        \ 'Xtags')
+        \ 'Xtags', 'D')
   set tags=Xtags
   let code =<< trim [CODE]
     int first() {}
     int second() {}
     int third() {}
   [CODE]
-  call writefile(code, 'Xfoo')
+  call writefile(code, 'Xfoo', 'D')
 
   enew
   set showfulltag
@@ -598,8 +634,6 @@ func Test_ins_compl_tag_sft()
   call assert_equal('int second() {}', getline(1))
   set noshowfulltag
 
-  call delete('Xtags')
-  call delete('Xfoo')
   set tags&
   %bwipe!
 endfunc
@@ -699,6 +733,27 @@ func Test_recursive_complete_func()
   bw!
 endfunc
 
+" Test for using complete() with completeopt+=longest
+func Test_complete_with_longest()
+  new
+  inoremap <buffer> <f3> <cmd>call complete(1, ["iaax", "iaay", "iaaz"])<cr>
+
+  " default: insert first match
+  set completeopt&
+  call setline(1, ['i'])
+  exe "normal Aa\<f3>\<esc>"
+  call assert_equal('iaax', getline(1))
+
+  " with longest: insert longest prefix
+  set completeopt+=longest
+  call setline(1, ['i'])
+  exe "normal Aa\<f3>\<esc>"
+  call assert_equal('iaa', getline(1))
+  set completeopt&
+  bwipe!
+endfunc
+
+
 " Test for completing words following a completed word in a line
 func Test_complete_wrapscan()
   " complete words from another buffer
@@ -763,7 +818,7 @@ func Test_complete_add_onechar()
   setlocal complete=.
   call setline(1, ['workhorse', 'workload'])
   normal Go
-  exe "normal aWOR\<C-P>\<bs>\<bs>\<bs>\<bs>\<bs>\<bs>\<C-L>r\<C-L>\<C-L>"
+  exe "normal aWOR\<C-P>\<bs>\<bs>\<bs>\<bs>\<bs>\<bs>\<C-L>\<C-L>\<C-L>"
   call assert_equal('workh', getline(3))
   set ignorecase& backspace&
   close!
@@ -958,8 +1013,8 @@ endfunc
 
 " Test for completing words from unloaded buffers
 func Test_complete_from_unloadedbuf()
-  call writefile(['abc'], "Xfile1")
-  call writefile(['def'], "Xfile2")
+  call writefile(['abc'], "Xfile1", 'D')
+  call writefile(['def'], "Xfile2", 'D')
   edit Xfile1
   edit Xfile2
   new | close
@@ -971,15 +1026,14 @@ func Test_complete_from_unloadedbuf()
   call assert_equal('abc', getline(1))
   exe "normal! od\<C-P>"
   call assert_equal('def', getline(2))
+
   set complete&
   %bw!
-  call delete("Xfile1")
-  call delete("Xfile2")
 endfunc
 
 " Test for completing whole lines from unloaded buffers
 func Test_complete_wholeline_unloadedbuf()
-  call writefile(['a line1', 'a line2', 'a line3'], "Xfile1")
+  call writefile(['a line1', 'a line2', 'a line3'], "Xfile1", 'D')
   edit Xfile1
   enew
   set complete=u
@@ -990,15 +1044,15 @@ func Test_complete_wholeline_unloadedbuf()
   bdel Xfile1
   exe "normal! ia\<C-X>\<C-L>\<C-P>"
   call assert_equal('a', getline(1))
+
   set complete&
   %bw!
-  call delete("Xfile1")
 endfunc
 
 " Test for completing words from unlisted buffers
 func Test_complete_from_unlistedbuf()
-  call writefile(['abc'], "Xfile1")
-  call writefile(['def'], "Xfile2")
+  call writefile(['abc'], "Xfile1", 'D')
+  call writefile(['def'], "Xfile2", 'D')
   edit Xfile1
   edit Xfile2
   new | close
@@ -1009,15 +1063,14 @@ func Test_complete_from_unlistedbuf()
   call assert_equal('abc', getline(1))
   exe "normal! od\<C-P>"
   call assert_equal('def', getline(2))
+
   set complete&
   %bw!
-  call delete("Xfile1")
-  call delete("Xfile2")
 endfunc
 
 " Test for completing whole lines from unlisted buffers
 func Test_complete_wholeline_unlistedbuf()
-  call writefile(['a line1', 'a line2', 'a line3'], "Xfile1")
+  call writefile(['a line1', 'a line2', 'a line3'], "Xfile1", 'D')
   edit Xfile1
   enew
   set complete=U
@@ -1028,9 +1081,9 @@ func Test_complete_wholeline_unlistedbuf()
   bdel Xfile1
   exe "normal! ia\<C-X>\<C-L>\<C-P>"
   call assert_equal('a line2', getline(1))
+
   set complete&
   %bw!
-  call delete("Xfile1")
 endfunc
 
 " Test for adding a multibyte character using CTRL-L in completion mode
@@ -1226,14 +1279,14 @@ func Test_complete_unreadable_thesaurus_file()
   CheckUnix
   CheckNotRoot
 
-  call writefile(['about', 'above'], 'Xunrfile')
+  call writefile(['about', 'above'], 'Xunrfile', 'D')
   call setfperm('Xunrfile', '---r--r--')
   new
   set complete=sXfile
   exe "normal! ia\<C-P>"
   call assert_equal('a', getline(1))
+
   bw!
-  call delete('Xunrfile')
   set complete&
 endfunc
 
@@ -1252,7 +1305,7 @@ endfunc
 " A mapping is not used for the key after CTRL-X.
 func Test_no_mapping_for_ctrl_x_key()
   new
-  inoremap <C-K> <Cmd>let was_mapped = 'yes'<CR>
+  inoremap <buffer> <C-K> <Cmd>let was_mapped = 'yes'<CR>
   setlocal dictionary=README.txt
   call feedkeys("aexam\<C-X>\<C-K> ", 'xt')
   call assert_equal('example ', getline(1))
@@ -2144,10 +2197,165 @@ endfunc
 
 func Test_ins_complete_end_of_line()
   " this was reading past the end of the line
-  new  
+  new
   norm 8oý 
   sil! norm o
 
+  bwipe!
+endfunc
+
+func s:Tagfunc(t,f,o)
+  bwipe!
+  return []
+endfunc
+
+" This was using freed memory, since 'complete' was in a wiped out buffer.
+" Also using a window that was closed.
+func Test_tagfunc_wipes_out_buffer()
+  new
+  set complete=.,t,w,b,u,i
+  se tagfunc=s:Tagfunc
+  sil norm i
+
+  bwipe!
+endfunc
+
+func Test_ins_complete_popup_position()
+  CheckScreendump
+
+  let lines =<< trim END
+      vim9script
+      set nowrap
+      setline(1, ['one', 'two', 'this is line ', 'four'])
+      prop_type_add('test', {highlight: 'Error'})
+      prop_add(3, 0, {
+          text_align: 'above',
+          text: 'The quick brown fox jumps over the lazy dog',
+          type: 'test'
+      })
+  END
+  call writefile(lines, 'XinsPopup', 'D')
+  let buf = RunVimInTerminal('-S XinsPopup', #{rows: 10})
+
+  call term_sendkeys(buf, "3GA\<C-N>")
+  call VerifyScreenDump(buf, 'Test_ins_complete_popup_position_1', {})
+
+  call StopVimInTerminal(buf)
+endfunc
+
+func GetCompleteInfo()
+  let g:compl_info = complete_info()
+  return ''
+endfunc
+
+func Test_completion_restart()
+  new
+  set complete=. completeopt=menuone backspace=2
+  call setline(1, 'workhorse workhorse')
+  exe "normal $a\<C-N>\<BS>\<BS>\<C-R>=GetCompleteInfo()\<CR>"
+  call assert_equal(1, len(g:compl_info['items']))
+  call assert_equal('workhorse', g:compl_info['items'][0]['word'])
+  set complete& completeopt& backspace&
+  bwipe!
+endfunc
+
+func Test_complete_info_index()
+  new
+  call setline(1, ["aaa", "bbb", "ccc", "ddd", "eee", "fff"])
+  inoremap <buffer><F5> <C-R>=GetCompleteInfo()<CR>
+
+  " Ensure 'index' in complete_info() is coherent with the 'items' array.
+
+  set completeopt=menu,preview
+  " Search forward
+  call feedkeys("Go\<C-X>\<C-N>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("aaa", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  call feedkeys("Go\<C-X>\<C-N>\<C-N>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("bbb", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  call feedkeys("Go\<C-X>\<C-N>\<C-N>\<C-N>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("ccc", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  call feedkeys("Go\<C-X>\<C-N>\<C-N>\<C-N>\<C-N>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("ddd", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  call feedkeys("Go\<C-X>\<C-N>\<C-N>\<C-N>\<C-N>\<C-N>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("eee", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  call feedkeys("Go\<C-X>\<C-N>\<C-N>\<C-N>\<C-N>\<C-N>\<C-N>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("fff", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  " Search forward: unselected item
+  call feedkeys("Go\<C-X>\<C-N>\<C-N>\<C-N>\<C-N>\<C-N>\<C-N>\<C-N>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal(6 , len(g:compl_info['items']))
+  call assert_equal(-1 , g:compl_info['selected'])
+
+  " Search backward
+  call feedkeys("Go\<C-X>\<C-P>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("fff", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  call feedkeys("Go\<C-X>\<C-P>\<C-P>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("eee", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  call feedkeys("Go\<C-X>\<C-P>\<C-P>\<C-P>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("ddd", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  call feedkeys("Go\<C-X>\<C-P>\<C-P>\<C-P>\<C-P>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("ccc", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  call feedkeys("Go\<C-X>\<C-P>\<C-P>\<C-P>\<C-P>\<C-P>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("bbb", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  call feedkeys("Go\<C-X>\<C-P>\<C-P>\<C-P>\<C-P>\<C-P>\<C-P>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("aaa", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  " search backwards: unselected item
+  call feedkeys("Go\<C-X>\<C-P>\<C-P>\<C-P>\<C-P>\<C-P>\<C-P>\<C-P>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal(6 , len(g:compl_info['items']))
+  call assert_equal(-1 , g:compl_info['selected'])
+
+  " switch direction: forwards, then backwards
+  call feedkeys("Go\<C-X>\<C-N>\<C-P>\<C-P>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("fff", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  " switch direction: forwards, then backwards, then forwards again
+  call feedkeys("Go\<C-X>\<C-N>\<C-P>\<C-P>\<F5>\<Esc>_dd", 'tx')
+  call feedkeys("Go\<C-X>\<C-N>\<C-N>\<C-P>\<C-P>\<C-N>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("aaa", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+
+  " switch direction: backwards, then forwards
+  call feedkeys("Go\<C-X>\<C-P>\<C-N>\<C-N>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("aaa", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  " switch direction: backwards, then forwards, then backwards again
+  call feedkeys("Go\<C-X>\<C-P>\<C-P>\<C-N>\<C-N>\<C-P>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("fff", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+
+  " Add 'noselect', check that 'selected' is -1 when nothing is selected.
+  set completeopt+=noselect
+  " Search forward.
+  call feedkeys("Go\<C-X>\<C-N>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal(-1, g:compl_info['selected'])
+
+  " Search backward.
+  call feedkeys("Go\<C-X>\<C-P>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal(-1, g:compl_info['selected'])
+
+  call feedkeys("Go\<C-X>\<C-N>\<C-P>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal(0, g:compl_info['selected'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  call assert_equal("fff", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call feedkeys("Go\<C-X>\<C-N>\<C-N>\<C-N>\<C-N>\<C-N>\<C-N>\<C-N>\<C-N>\<C-N>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal("aaa", g:compl_info['items'][g:compl_info['selected']]['word'])
+  call assert_equal(6 , len(g:compl_info['items']))
+  call feedkeys("Go\<C-X>\<C-N>\<F5>\<Esc>_dd", 'tx')
+  call assert_equal(-1, g:compl_info['selected'])
+  call assert_equal(6 , len(g:compl_info['items']))
+
+  set completeopt&
   bwipe!
 endfunc
 

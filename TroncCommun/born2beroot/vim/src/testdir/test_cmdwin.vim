@@ -1,8 +1,6 @@
 " Tests for editing the command line.
 
 source check.vim
-CheckFeature cmdwin
-
 source screendump.vim
 
 func Test_getcmdwintype()
@@ -70,10 +68,9 @@ func Test_cmdwin_restore()
     call setline(1, range(30))
     2split
   [SCRIPT]
-  call writefile(lines, 'XTest_restore')
+  call writefile(lines, 'XTest_restore', 'D')
 
   let buf = RunVimInTerminal('-S XTest_restore', {'rows': 12})
-  call TermWait(buf, 50)
   call term_sendkeys(buf, "q:")
   call VerifyScreenDump(buf, 'Test_cmdwin_restore_1', {})
 
@@ -90,19 +87,32 @@ func Test_cmdwin_restore()
 
   " clean up
   call StopVimInTerminal(buf)
-  call delete('XTest_restore')
 endfunc
 
 func Test_cmdwin_no_terminal()
-  CheckFeature terminal
-  CheckNotMSWindows
+  CheckScreendump
 
   let buf = RunVimInTerminal('', {'rows': 12})
-  call TermWait(buf, 50)
   call term_sendkeys(buf, ":set cmdheight=2\<CR>")
   call term_sendkeys(buf, "q:")
   call term_sendkeys(buf, ":let buf = term_start(['/bin/echo'], #{hidden: 1})\<CR>")
   call VerifyScreenDump(buf, 'Test_cmdwin_no_terminal', {})
+  call term_sendkeys(buf, ":q\<CR>")
+  call StopVimInTerminal(buf)
+endfunc
+
+func Test_cmdwin_wrong_command()
+  CheckScreendump
+
+  let buf = RunVimInTerminal('', {'rows': 12})
+  call term_sendkeys(buf, "q:")
+  call term_sendkeys(buf, "als\<Esc>")
+  call term_sendkeys(buf, "\<C-W>k")
+  call VerifyScreenDump(buf, 'Test_cmdwin_wrong_command_1', {})
+
+  call term_sendkeys(buf, "\<C-C>")
+  call VerifyScreenDump(buf, 'Test_cmdwin_wrong_command_2', {})
+
   call term_sendkeys(buf, ":q\<CR>")
   call StopVimInTerminal(buf)
 endfunc
@@ -186,7 +196,7 @@ func Test_cmdwin_interrupted()
   let lines =<< trim [SCRIPT]
     au WinNew * smile
   [SCRIPT]
-  call writefile(lines, 'XTest_cmdwin')
+  call writefile(lines, 'XTest_cmdwin', 'D')
 
   let buf = RunVimInTerminal('-S XTest_cmdwin', {'rows': 18})
   " open cmdwin
@@ -201,7 +211,6 @@ func Test_cmdwin_interrupted()
 
   " clean up
   call StopVimInTerminal(buf)
-  call delete('XTest_cmdwin')
 endfunc
 
 " Test for recursively getting multiple command line inputs
@@ -350,6 +359,22 @@ func Test_compl_in_cmdwin()
   set wildmenu& wildchar&
 endfunc
 
+func Test_cmdwin_cmd_completion()
+  set wildmenu wildchar=<Tab>
+  com! -nargs=* -complete=command SomeOne echo 'one'
+  com! -nargs=* -complete=command SomeTwo echo 'two'
+  call feedkeys("q:aSome\<Tab>\<Home>\"\<CR>", 'tx')
+  call assert_equal('"SomeOne', @:)
+  call feedkeys("q:aSome\<Tab>\<Tab>\<Home>\"\<CR>", 'tx')
+  call assert_equal('"SomeTwo', @:)
+  call feedkeys("q:aSome\<Tab>\<Tab>\<S-Tab>\<Home>\"\<CR>", 'tx')
+  call assert_equal('"SomeOne', @:)
+
+  delcom SomeOne
+  delcom SomeTwo
+  set wildmenu& wildchar&
+endfunc
+
 func Test_cmdwin_ctrl_bsl()
   " Using CTRL-\ CTRL-N in cmd window should close the window
   call feedkeys("q:\<C-\>\<C-N>", 'xt')
@@ -380,5 +405,69 @@ func Test_normal_escape()
   call assert_equal('" bar', @:)
 endfunc
 
+" This was using a pointer to a freed buffer
+func Test_cmdwin_freed_buffer_ptr()
+  " this does not work on MS-Windows because renaming an open file fails
+  CheckNotMSWindows
+
+  au BufEnter * next 0| file 
+  edit 0
+  silent! norm q/
+
+  au! BufEnter
+  bwipe!
+endfunc
+
+" This was resulting in a window with negative width.
+" The test doesn't reproduce the illegal memory access though...
+func Test_cmdwin_split_often()
+  let lines = &lines
+  let columns = &columns
+  set t_WS=
+
+  try
+    set encoding=iso8859
+    set ruler
+    winsize 0 0
+    noremap 0 H
+    sil norm 0000000q:
+  catch /E36:/
+  endtry
+
+  bwipe!
+  set encoding=utf8
+  let &lines = lines
+  let &columns = columns
+endfunc
+
+func Test_cmdwin_restore_heights()
+  set showtabline=0 cmdheight=2 laststatus=0
+  call feedkeys("q::set cmdheight=1\<CR>:q\<CR>", 'ntx')
+  call assert_equal(&lines - 1, winheight(0))
+
+  set showtabline=2 cmdheight=3
+  call feedkeys("q::set showtabline=0\<CR>:q\<CR>", 'ntx')
+  call assert_equal(&lines - 3, winheight(0))
+
+  set cmdheight=1 laststatus=2
+  call feedkeys("q::set laststatus=0\<CR>:q\<CR>", 'ntx')
+  call assert_equal(&lines - 1, winheight(0))
+
+  set laststatus=2
+  call feedkeys("q::set laststatus=1\<CR>:q\<CR>", 'ntx')
+  call assert_equal(&lines - 1, winheight(0))
+
+  set laststatus=2
+  belowright vsplit
+  wincmd _
+  let restcmds = winrestcmd()
+  call feedkeys("q::set laststatus=1\<CR>:q\<CR>", 'ntx')
+  " As we have 2 windows, &ls = 1 should still have a statusline on the last
+  " window. As such, the number of available rows hasn't changed and the window
+  " sizes should be restored.
+  call assert_equal(restcmds, winrestcmd())
+
+  set cmdheight& showtabline& laststatus&
+endfunc
 
 " vim: shiftwidth=2 sts=2 expandtab

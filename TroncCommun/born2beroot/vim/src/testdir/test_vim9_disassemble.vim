@@ -309,13 +309,11 @@ def s:ScriptFuncPush()
   var localbool = true
   var localspec = v:none
   var localblob = 0z1234
-  if has('float')
-    var localfloat = 1.234
-  endif
+  var localfloat = 1.234
 enddef
 
 def Test_disassemble_push()
-  mkdir('Xdisdir/autoload', 'p')
+  mkdir('Xdisdir/autoload', 'pR')
   var save_rtp = &rtp
   exe 'set rtp^=' .. getcwd() .. '/Xdisdir'
 
@@ -342,12 +340,11 @@ def Test_disassemble_push()
   END
   v9.CheckScriptSuccess(lines)
 
-  delete('Xdisdir', 'rf')
   &rtp = save_rtp
 enddef
 
 def Test_disassemble_import_autoload()
-  writefile(['vim9script'], 'XimportAL.vim')
+  writefile(['vim9script'], 'XimportAL.vim', 'D')
 
   var lines =<< trim END
       vim9script
@@ -382,8 +379,6 @@ def Test_disassemble_import_autoload()
             res)
   END
   v9.CheckScriptSuccess(lines)
-
-  delete('XimportAL.vim')
 enddef
 
 def s:ScriptFuncStore()
@@ -493,6 +488,8 @@ if has('job')
     var Pp = null_partial
     var jj = null_job
     var cc = null_channel
+    var oo = null_object
+    var nc = null_class
   enddef
 
   def Test_disassemble_assign_null()
@@ -528,6 +525,14 @@ if has('job')
 
           'var cc = null_channel\_s*' ..
           '\d\+ PUSHCHANNEL 0\_s*' ..
+          '\d\+ STORE $\d\_s*' ..
+
+          'var oo = null_object\_s*' ..
+          '\d\+ PUSHOBJ null\_s*' ..
+          '\d\+ STORE $\d\_s*' ..
+
+          'var nc = null_class\_s*' ..
+          '\d\+ PUSHCLASS null\_s*' ..
           '\d\+ STORE $\d\_s*' ..
 
           '\d\+ RETURN void',
@@ -974,6 +979,85 @@ def Test_disassemble_closure_arg()
         '\d CONCAT size 2\_s*' ..
         '\d RETURN',
          lres)
+enddef
+
+def s:ClosureInLoop()
+  for i in range(5)
+    var ii = i
+    continue
+    break
+    if g:val
+      return
+    endif
+    g:Ref = () => ii
+    continue
+    break
+    if g:val
+      return
+    endif
+  endfor
+enddef
+
+" Mainly check that ENDLOOP is only produced after a closure was created.
+def Test_disassemble_closure_in_loop()
+  var res = execute('disass s:ClosureInLoop')
+  assert_match('<SNR>\d\+_ClosureInLoop\_s*' ..
+        'for i in range(5)\_s*' ..
+        '\d\+ STORE -1 in $0\_s*' ..
+        '\d\+ PUSHNR 5\_s*' ..
+        '\d\+ BCALL range(argc 1)\_s*' ..
+        '\d\+ FOR $0 -> \d\+\_s*' ..
+        '\d\+ STORE $2\_s*' ..
+
+        'var ii = i\_s*' ..
+        '\d\+ LOAD $2\_s*' ..
+        '\d\+ STORE $3\_s*' ..
+
+        'continue\_s*' ..
+        '\d\+ JUMP -> \d\+\_s*' ..
+
+        'break\_s*' ..
+        '\d\+ JUMP -> \d\+\_s*' ..
+
+        'if g:val\_s*' ..
+        '\d\+ LOADG g:val\_s*' ..
+        '\d\+ COND2BOOL\_s*' ..
+        '\d\+ JUMP_IF_FALSE -> \d\+\_s*' ..
+
+        '  return\_s*' ..
+        '\d\+ PUSHNR 0\_s*' ..
+        '\d\+ RETURN\_s*' ..
+
+        'endif\_s*' ..
+        'g:Ref = () => ii\_s*' ..
+        '\d\+ FUNCREF <lambda>4 vars  $3-$3\_s*' ..
+        '\d\+ STOREG g:Ref\_s*' ..
+
+        'continue\_s*' ..
+        '\d\+ ENDLOOP ref $1 save $3-$3 depth 0\_s*' ..
+        '\d\+ JUMP -> \d\+\_s*' ..
+
+        'break\_s*' ..
+        '\d\+ ENDLOOP ref $1 save $3-$3 depth 0\_s*' ..
+        '\d\+ JUMP -> \d\+\_s*' ..
+
+         'if g:val\_s*' ..
+        '\d\+ LOADG g:val\_s*' ..
+        '\d\+ COND2BOOL\_s*' ..
+        '\d\+ JUMP_IF_FALSE -> \d\+\_s*' ..
+
+        '  return\_s*' ..
+        '\d\+ PUSHNR 0\_s*' ..
+        '\d\+ ENDLOOP ref $1 save $3-$3 depth 0\_s*' ..
+        '\d\+ RETURN\_s*' ..
+
+        'endif\_s*' ..
+        'endfor\_s*' ..
+        '\d\+ ENDLOOP ref $1 save $3-$3 depth 0\_s*' ..
+        '\d\+ JUMP -> \d\+\_s*' ..
+        '\d\+ DROP\_s*' ..
+        '\d\+ RETURN void',
+        res)
 enddef
 
 def EchoArg(arg: string): string
@@ -1466,17 +1550,20 @@ def Test_disassemble_for_loop()
         '\d NEWLIST size 0\_s*' ..
         '\d SETTYPE list<number>\_s*' ..
         '\d STORE $0\_s*' ..
+
         'for i in range(3)\_s*' ..
         '\d STORE -1 in $1\_s*' ..
         '\d PUSHNR 3\_s*' ..
         '\d BCALL range(argc 1)\_s*' ..
         '\d FOR $1 -> \d\+\_s*' ..
-        '\d STORE $2\_s*' ..
+        '\d STORE $3\_s*' ..
+
         'res->add(i)\_s*' ..
         '\d LOAD $0\_s*' ..
-        '\d LOAD $2\_s*' ..
+        '\d LOAD $3\_s*' ..
         '\d\+ LISTAPPEND\_s*' ..
         '\d\+ DROP\_s*' ..
+
         'endfor\_s*' ..
         '\d\+ JUMP -> \d\+\_s*' ..
         '\d\+ DROP',
@@ -1498,21 +1585,25 @@ def Test_disassemble_for_loop_eval()
         'var res = ""\_s*' ..
         '\d PUSHS ""\_s*' ..
         '\d STORE $0\_s*' ..
+
         'for str in eval(''\["one", "two"\]'')\_s*' ..
         '\d STORE -1 in $1\_s*' ..
         '\d PUSHS "\["one", "two"\]"\_s*' ..
         '\d BCALL eval(argc 1)\_s*' ..
         '\d FOR $1 -> \d\+\_s*' ..
-        '\d STORE $2\_s*' ..
+        '\d STORE $3\_s*' ..
+
         'res ..= str\_s*' ..
         '\d\+ LOAD $0\_s*' ..
-        '\d\+ LOAD $2\_s*' ..
+        '\d\+ LOAD $3\_s*' ..
         '\d 2STRING_ANY stack\[-1\]\_s*' ..
         '\d\+ CONCAT size 2\_s*' ..
         '\d\+ STORE $0\_s*' ..
+
         'endfor\_s*' ..
         '\d\+ JUMP -> 5\_s*' ..
         '\d\+ DROP\_s*' ..
+
         'return res\_s*' ..
         '\d\+ LOAD $0\_s*' ..
         '\d\+ RETURN',
@@ -1539,12 +1630,14 @@ def Test_disassemble_for_loop_unpack()
         '\d\+ NEWLIST size 2\_s*' ..
         '\d\+ FOR $0 -> 16\_s*' ..
         '\d\+ UNPACK 2\_s*' ..
-        '\d\+ STORE $1\_s*' ..
         '\d\+ STORE $2\_s*' ..
+        '\d\+ STORE $3\_s*' ..
+
         'echo x1 x2\_s*' ..
-        '\d\+ LOAD $1\_s*' ..
         '\d\+ LOAD $2\_s*' ..
+        '\d\+ LOAD $3\_s*' ..
         '\d\+ ECHO 2\_s*' ..
+
         'endfor\_s*' ..
         '\d\+ JUMP -> 8\_s*' ..
         '\d\+ DROP\_s*' ..
@@ -1576,32 +1669,43 @@ def Test_disassemble_for_loop_continue()
         '2 PUSHNR 2\_s*' ..
         '3 NEWLIST size 2\_s*' ..
         '4 FOR $0 -> 22\_s*' ..
-        '5 STORE $1\_s*' ..
+        '5 STORE $2\_s*' ..
+
         'try\_s*' ..
         '6 TRY catch -> 17, endtry -> 20\_s*' ..
+
         'echo "ok"\_s*' ..
         '7 PUSHS "ok"\_s*' ..
         '8 ECHO 1\_s*' ..
+
         'try\_s*' ..
         '9 TRY catch -> 13, endtry -> 15\_s*' ..
+
         'echo "deeper"\_s*' ..
         '10 PUSHS "deeper"\_s*' ..
         '11 ECHO 1\_s*' ..
+
         'catch\_s*' ..
         '12 JUMP -> 15\_s*' ..
         '13 CATCH\_s*' ..
+
         'continue\_s*' ..
         '14 TRY-CONTINUE 2 levels -> 4\_s*' ..
+
         'endtry\_s*' ..
         '15 ENDTRY\_s*' ..
+
         'catch\_s*' ..
         '16 JUMP -> 20\_s*' ..
         '17 CATCH\_s*' ..
+
         'echo "not ok"\_s*' ..
         '18 PUSHS "not ok"\_s*' ..
         '19 ECHO 1\_s*' ..
+
         'endtry\_s*' ..
         '20 ENDTRY\_s*' ..
+
         'endfor\_s*' ..
         '21 JUMP -> 4\_s*' ..
         '\d\+ DROP\_s*' ..
@@ -1643,13 +1747,11 @@ def s:Computing()
   anyres = g:number / 7
   anyres = g:number % 7
 
-  if has('float')
-    var fl = 3.0
-    var flres = fl + 7.0
-    flres = fl - 7.0
-    flres = fl * 7.0
-    flres = fl / 7.0
-  endif
+  var fl = 3.0
+  var flres = fl + 7.0
+  flres = fl - 7.0
+  flres = fl * 7.0
+  flres = fl / 7.0
 enddef
 
 def Test_disassemble_computing()
@@ -1684,24 +1786,22 @@ def Test_disassemble_computing()
         'anyres = g:number % 7.*' ..
         '\d OPANY %.*',
         instr)
-  if has('float')
-    assert_match('Computing.*' ..
-        'var fl = 3.0.*' ..
-        '\d PUSHF 3.0.*' ..
-        '\d STORE $3.*' ..
-        'var flres = fl + 7.0.*' ..
-        '\d LOAD $3.*' ..
-        '\d PUSHF 7.0.*' ..
-        '\d OPFLOAT +.*' ..
-        '\d STORE $4.*' ..
-        'flres = fl - 7.0.*' ..
-        '\d OPFLOAT -.*' ..
-        'flres = fl \* 7.0.*' ..
-        '\d OPFLOAT \*.*' ..
-        'flres = fl / 7.0.*' ..
-        '\d OPFLOAT /.*',
-        instr)
-  endif
+  assert_match('Computing.*' ..
+      'var fl = 3.0.*' ..
+      '\d PUSHF 3.0.*' ..
+      '\d STORE $3.*' ..
+      'var flres = fl + 7.0.*' ..
+      '\d LOAD $3.*' ..
+      '\d PUSHF 7.0.*' ..
+      '\d OPFLOAT +.*' ..
+      '\d STORE $4.*' ..
+      'flres = fl - 7.0.*' ..
+      '\d OPFLOAT -.*' ..
+      'flres = fl \* 7.0.*' ..
+      '\d OPFLOAT \*.*' ..
+      'flres = fl / 7.0.*' ..
+      '\d OPFLOAT /.*',
+      instr)
 enddef
 
 def s:AddListBlob()
@@ -1995,7 +2095,7 @@ def Test_disassemble_return_bool()
         '8 COND2BOOL\_s*' ..
         '9 STORE $3\_s*' ..
         'return name\_s*' ..
-        '\d\+ LOAD $3\_s*' ..   
+        '\d\+ LOAD $3\_s*' ..
         '\d\+ RETURN',
         instr)
   assert_equal(true, InvertBool())
@@ -2079,19 +2179,17 @@ def Test_disassemble_compare()
         ['77 isnot g:xx', 'COMPAREANY isnot'],
         ]
   var floatDecl = ''
-  if has('float')
-    cases->extend([
-        ['1.1 == aFloat', 'COMPAREFLOAT =='],
-        ['1.1 != aFloat', 'COMPAREFLOAT !='],
-        ['1.1 > aFloat', 'COMPAREFLOAT >'],
-        ['1.1 < aFloat', 'COMPAREFLOAT <'],
-        ['1.1 >= aFloat', 'COMPAREFLOAT >='],
-        ['1.1 <= aFloat', 'COMPAREFLOAT <='],
-        ['1.1 =~ aFloat', 'COMPAREFLOAT =\~'],
-        ['1.1 !~ aFloat', 'COMPAREFLOAT !\~'],
-        ])
-    floatDecl = 'var aFloat = 2.2'
-  endif
+  cases->extend([
+      ['1.1 == aFloat', 'COMPAREFLOAT =='],
+      ['1.1 != aFloat', 'COMPAREFLOAT !='],
+      ['1.1 > aFloat', 'COMPAREFLOAT >'],
+      ['1.1 < aFloat', 'COMPAREFLOAT <'],
+      ['1.1 >= aFloat', 'COMPAREFLOAT >='],
+      ['1.1 <= aFloat', 'COMPAREFLOAT <='],
+      ['1.1 =~ aFloat', 'COMPAREFLOAT =\~'],
+      ['1.1 !~ aFloat', 'COMPAREFLOAT !\~'],
+      ])
+  floatDecl = 'var aFloat = 2.2'
 
   var nr = 1
   for case in cases
@@ -2276,6 +2374,7 @@ def s:Echomsg()
   echoerr 'went' .. 'wrong'
   var local = 'window'
   echowin 'in' local
+  :5echowin 'five'
 enddef
 
 def Test_disassemble_echomsg()
@@ -2298,6 +2397,9 @@ def Test_disassemble_echomsg()
         '\d\+ PUSHS "in"\_s*' ..
         '\d\+ LOAD $0\_s*' ..
         '\d\+ ECHOWINDOW 2\_s*' ..
+        ":5echowin 'five'\\_s*" ..
+        '\d\+ PUSHS "five"\_s*' ..
+        '\d\+ ECHOWINDOW 1 (5 sec)\_s*' ..
         '\d\+ RETURN void',
         res)
 enddef
@@ -2345,7 +2447,7 @@ def Test_vim9script_forward_func()
     enddef
     g:res_FuncOne = execute('disass FuncOne')
   END
-  writefile(lines, 'Xdisassemble')
+  writefile(lines, 'Xdisassemble', 'D')
   source Xdisassemble
 
   # check that the first function calls the second with DCALL
@@ -2355,7 +2457,6 @@ def Test_vim9script_forward_func()
         '\d RETURN',
         g:res_FuncOne)
 
-  delete('Xdisassemble')
   unlet g:res_FuncOne
 enddef
 
@@ -2478,7 +2579,8 @@ def Test_silent_for()
         '\d NEWLIST size 1\_s*' ..
         '\d CMDMOD_REV\_s*' ..
         '5 FOR $0 -> 8\_s*' ..
-        '\d STORE $1\_s*' ..
+        '\d STORE $2\_s*' ..
+
         'endfor\_s*' ..
         '\d JUMP -> 5\_s*' ..
         '8 DROP\_s*' ..
@@ -2499,7 +2601,7 @@ def Test_silent_while()
         '\d LOADG g:not\_s*' ..
         '\d COND2BOOL\_s*' ..
         '\d CMDMOD_REV\_s*' ..
-        '\d JUMP_IF_FALSE -> 6\_s*' ..
+        '\d WHILE $0 -> 6\_s*' ..
 
         'endwhile\_s*' ..
         '\d JUMP -> 0\_s*' ..
@@ -2691,17 +2793,17 @@ def Test_debug_for()
           '4 STORE -1 in $0\_s*' ..
           '5 PUSHNR 0\_s*' ..
           '6 NEWLIST size 1\_s*' ..
-          '7 DEBUG line 2-2 varcount 2\_s*' ..
+          '7 DEBUG line 2-2 varcount 3\_s*' ..
           '8 FOR $0 -> 15\_s*' ..
-          '9 STORE $1\_s*' ..
+          '9 STORE $2\_s*' ..
 
           'echo a\_s*' ..
-          '10 DEBUG line 3-3 varcount 2\_s*' ..
-          '11 LOAD $1\_s*' ..
+          '10 DEBUG line 3-3 varcount 3\_s*' ..
+          '11 LOAD $2\_s*' ..
           '12 ECHO 1\_s*' ..
 
           'endfor\_s*' ..
-          '13 DEBUG line 4-4 varcount 2\_s*' ..
+          '13 DEBUG line 4-4 varcount 3\_s*' ..
           '14 JUMP -> 7\_s*' ..
           '15 DROP\_s*' ..
           '16 RETURN void*',
@@ -2805,51 +2907,50 @@ def Test_disassemble_nextcmd()
 enddef
 
 def Test_disassemble_after_reload()
-    var lines =<< trim END
-        vim9script
-        if exists('g:ThisFunc')
-          finish
-        endif
-        var name: any
-        def g:ThisFunc(): number
-          g:name = name
-          return 0
-        enddef
-        def g:ThatFunc(): number
-          name = g:name
-          return 0
-        enddef
-    END
-    lines->writefile('Xreload.vim')
+  var lines =<< trim END
+      vim9script
+      if exists('g:ThisFunc')
+        finish
+      endif
+      var name: any
+      def g:ThisFunc(): number
+        g:name = name
+        return 0
+      enddef
+      def g:ThatFunc(): number
+        name = g:name
+        return 0
+      enddef
+  END
+  lines->writefile('Xreload.vim', 'D')
 
-    source Xreload.vim
-    g:ThisFunc()
-    g:ThatFunc()
+  source Xreload.vim
+  g:ThisFunc()
+  g:ThatFunc()
 
-    source Xreload.vim
-    var res = execute('disass g:ThisFunc')
-    assert_match('ThisFunc\_s*' ..
-          'g:name = name\_s*' ..
-          '\d LOADSCRIPT \[deleted\] from .*/Xreload.vim\_s*' ..
-          '\d STOREG g:name\_s*' ..
-          'return 0\_s*' ..
-          '\d PUSHNR 0\_s*' ..
-          '\d RETURN\_s*',
-          res)
+  source Xreload.vim
+  var res = execute('disass g:ThisFunc')
+  assert_match('ThisFunc\_s*' ..
+        'g:name = name\_s*' ..
+        '\d LOADSCRIPT \[deleted\] from .*/Xreload.vim\_s*' ..
+        '\d STOREG g:name\_s*' ..
+        'return 0\_s*' ..
+        '\d PUSHNR 0\_s*' ..
+        '\d RETURN\_s*',
+        res)
 
-    res = execute('disass g:ThatFunc')
-    assert_match('ThatFunc\_s*' ..
-          'name = g:name\_s*' ..
-          '\d LOADG g:name\_s*' ..
-          '\d STORESCRIPT \[deleted\] in .*/Xreload.vim\_s*' ..
-          'return 0\_s*' ..
-          '\d PUSHNR 0\_s*' ..
-          '\d RETURN\_s*',
-          res)
+  res = execute('disass g:ThatFunc')
+  assert_match('ThatFunc\_s*' ..
+        'name = g:name\_s*' ..
+        '\d LOADG g:name\_s*' ..
+        '\d STORESCRIPT \[deleted\] in .*/Xreload.vim\_s*' ..
+        'return 0\_s*' ..
+        '\d PUSHNR 0\_s*' ..
+        '\d RETURN\_s*',
+        res)
 
-    delete('Xreload.vim')
-    delfunc g:ThisFunc
-    delfunc g:ThatFunc
+  delfunc g:ThisFunc
+  delfunc g:ThatFunc
 enddef
 
 def s:MakeString(x: number): string
@@ -2877,7 +2978,7 @@ def BitShift()
   var a = 1 << 2
   var b = 8 >> 1
   var c = a << b
-  var d = b << a
+  var d = b >> a
 enddef
 
 def Test_disassemble_bitshift()
@@ -2892,10 +2993,10 @@ def Test_disassemble_bitshift()
                '3 LOAD $1\_s*' ..
                '4 OPNR <<\_s*' ..
                '5 STORE $2\_s*' ..
-               'var d = b << a\_s*' ..
+               'var d = b >> a\_s*' ..
                '6 LOAD $1\_s*' ..
                '7 LOAD $0\_s*' ..
-               '8 OPNR <<\_s*' ..
+               '8 OPNR >>\_s*' ..
                '9 STORE $3\_s*' ..
                '10 RETURN void', instr)
 enddef
@@ -2913,6 +3014,271 @@ def Test_disassemble_defer()
         '\d DEFER 1 args\_s*' ..
         '\d RETURN\_s*',
         instr)
+enddef
+
+def Test_disassemble_class_function()
+  var lines =<< trim END
+      vim9script
+
+      class Cl
+          static def Fc(): string
+            return "x"
+          enddef
+      endclass
+
+      g:instr = execute('disassemble Cl.Fc')
+  END
+  v9.CheckScriptSuccess(lines)
+  assert_match('Fc\_s*' ..
+        'return "x"\_s*' ..
+        '\d PUSHS "x"\_s*' ..
+        '\d RETURN\_s*',
+        g:instr)
+
+  lines =<< trim END
+      vim9script
+
+      class Cl
+          def Fo(): string
+            return "y"
+          enddef
+      endclass
+
+      g:instr = execute('disassemble Cl.Fo')
+  END
+  v9.CheckScriptSuccess(lines)
+  assert_match('Fo\_s*' ..
+        'return "y"\_s*' ..
+        '\d PUSHS "y"\_s*' ..
+        '\d RETURN\_s*',
+        g:instr)
+
+  unlet g:instr
+enddef
+
+" Disassemble instructions for using an interface with static and regular member
+" variables.
+def Test_disassemble_interface_static_member()
+  var lines =<< trim END
+    vim9script
+    interface I
+      this.o_var: number
+      this.o_var2: number
+    endinterface
+
+    class C implements I
+      public static s_var: number
+      this.o_var: number
+      public static s_var2: number
+      this.o_var2: number
+    endclass
+
+    def F1(i: I)
+      var x: number
+      x = i.o_var
+      x = i.o_var2
+    enddef
+
+    def F2(o: C)
+      var x: number
+      x = o.o_var
+      x = o.o_var2
+    enddef
+
+    g:instr1 = execute('disassemble F1')
+    g:instr2 = execute('disassemble F2')
+  END
+  v9.CheckScriptSuccess(lines)
+  assert_match('<SNR>\d*_F1\_s*' ..
+    'var x: number\_s*' ..
+    'x = i.o_var\_s*' ..
+    '0 LOAD arg\[-1\]\_s*' ..
+    '1 ITF_MEMBER 0 on I\_s*' ..
+    '2 STORE $0\_s*' ..
+    'x = i.o_var2\_s*' ..
+    '3 LOAD arg\[-1\]\_s*' ..
+    '4 ITF_MEMBER 1 on I\_s*' ..
+    '5 STORE $0\_s*' ..
+    '6 RETURN void\_s*',
+    g:instr1)
+  assert_match('<SNR>\d*_F2\_s*' ..
+    'var x: number\_s*' ..
+    'x = o.o_var\_s*' ..
+    '0 LOAD arg\[-1\]\_s*' ..
+    '1 OBJ_MEMBER 0\_s*' ..
+    '2 STORE $0\_s*' ..
+    'x = o.o_var2\_s*' ..
+    '3 LOAD arg\[-1\]\_s*' ..
+    '4 OBJ_MEMBER 1\_s*' ..
+    '5 STORE $0\_s*' ..
+    '6 RETURN void',
+    g:instr2)
+
+  unlet g:instr1
+  unlet g:instr2
+enddef
+
+" Disassemble instructions for loading and storing class variables
+def Test_disassemble_class_variable()
+  var lines =<< trim END
+    vim9script
+
+    class A
+      public static val = 10
+      def Foo(): number
+        val = 20
+        return val
+      enddef
+    endclass
+
+    g:instr = execute('disassemble A.Foo')
+  END
+  v9.CheckScriptSuccess(lines)
+  assert_match('Foo\_s*' ..
+    'val = 20\_s*' ..
+    '0 PUSHNR 20\_s*' ..
+    '1 STORE CLASSMEMBER A.val\_s*' ..
+    'return val\_s*' ..
+    '2 LOAD CLASSMEMBER A.val\_s*' ..
+    '3 RETURN', g:instr)
+
+  unlet g:instr
+enddef
+
+" Disassemble instructions for METHODCALL
+def Test_disassemble_methodcall()
+  var lines =<< trim END
+    vim9script
+    interface A
+      def Foo()
+    endinterface
+    def Bar(a: A)
+      a.Foo()
+    enddef
+    g:instr = execute('disassemble Bar')
+  END
+  v9.CheckScriptSuccess(lines)
+  assert_match('<SNR>\d*_Bar\_s*' ..
+    'a.Foo()\_s*' ..
+    '0 LOAD arg\[-1\]\_s*' ..
+    '1 METHODCALL A.Foo(argc 0)\_s*' ..
+    '2 DROP\_s*' ..
+    '3 RETURN void', g:instr)
+
+  unlet g:instr
+enddef
+
+" Disassemble instructions for ISN_JUMP_IF_ARG_NOT_SET
+def Test_disassemble_ifargnotset()
+  var lines =<< trim END
+    vim9script
+    class A
+      this.val: number = 10
+    endclass
+    g:instr = execute('disassemble A.new')
+  END
+  v9.CheckScriptSuccess(lines)
+  assert_match('new\_s*' ..
+    '0 NEW A size \d\+\_s*' ..
+    '1 PUSHNR 10\_s*' ..
+    '2 STORE_THIS 0\_s*' ..
+    'ifargisset 0 this.val = val\_s*' ..
+    '3 JUMP_IF_ARG_NOT_SET arg\[-1\] -> 8\_s*' ..
+    '4 LOAD arg\[-1\]\_s*' ..
+    '5 PUSHNR 0\_s*' ..
+    '6 LOAD $0\_s*' ..
+    '7 STOREINDEX object\_s*' ..
+    '8 RETURN object', g:instr)
+
+  unlet g:instr
+enddef
+
+" Disassemble instructions for ISN_COMPARECLASS and ISN_COMPAREOBJECT
+def Test_disassemble_compare_class_object()
+  var lines =<< trim END
+    vim9script
+    class A
+    endclass
+    class B
+    endclass
+    def Foo(a: A, b: B)
+      if A == B
+      endif
+      if a == b
+      endif
+    enddef
+    g:instr = execute('disassemble Foo')
+  END
+  v9.CheckScriptSuccess(lines)
+  assert_match('<SNR>\d*_Foo\_s*' ..
+    'if A == B\_s*' ..
+    '0 LOADSCRIPT A-0 from .*\_s*' ..
+    '1 LOADSCRIPT B-1 from .*\_s*' ..
+    '2 COMPARECLASS ==\_s*' ..
+    '3 JUMP_IF_FALSE -> 4\_s*' ..
+    'endif\_s*' ..
+    'if a == b\_s*' ..
+    '4 LOAD arg\[-2\]\_s*' ..
+    '5 LOAD arg\[-1\]\_s*' ..
+    '6 COMPAREOBJECT ==\_s*' ..
+    '7 JUMP_IF_FALSE -> 8\_s*' ..
+    'endif\_s*' ..
+    '8 RETURN void', g:instr)
+  unlet g:instr
+enddef
+
+" Disassemble instructions for ISN_CHECKTYPE with a float|number
+def Test_checktype_float()
+  var lines =<< trim END
+    vim9script
+    def Foo()
+      var f: float = 0.0
+      var a: any
+      f += a
+    enddef
+    g:instr = execute('disassemble Foo')
+  END
+  v9.CheckScriptSuccess(lines)
+  assert_match('<SNR>\d*_Foo\_s*' ..
+    'var f: float = 0.0\_s*' ..
+    '0 PUSHF 0.0\_s*' ..
+    '1 STORE $0\_s*' ..
+    'var a: any\_s*' ..
+    'f += a\_s*' ..
+    '2 LOAD $0\_s*' ..
+    '3 LOAD $1\_s*' ..
+    '4 CHECKTYPE float|number stack\[-1\]\_s*' ..
+    '5 OPANY +\_s*' ..
+    '6 STORE $0\_s*' ..
+    '7 RETURN void', g:instr)
+  unlet g:instr
+enddef
+
+" Disassemble instructions for ISN_FUNCREF with a class
+def Test_funcref_with_class()
+  var lines =<< trim END
+    vim9script
+    class A
+      def Foo()
+      enddef
+    endclass
+    class B extends A
+      def Foo()
+      enddef
+    endclass
+    def Bar(a: A)
+      defer a.Foo()
+    enddef
+    g:instr = execute('disassemble Bar')
+  END
+  v9.CheckScriptSuccess(lines)
+  assert_match('<SNR>\d*_Bar\_s*' ..
+    'defer a.Foo()\_s*' ..
+    '0 LOAD arg\[-1\]\_s*' ..
+    '1 FUNCREF A.Foo\_s*' ..
+    '2 DEFER 0 args\_s*' ..
+    '3 RETURN void', g:instr)
+  unlet g:instr
 enddef
 
 " vim: ts=8 sw=2 sts=2 expandtab tw=80 fdm=marker

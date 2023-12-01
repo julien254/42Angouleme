@@ -93,7 +93,7 @@ func Test_tagfunc()
   delf NullTagFunc
 
   bwipe!
-  set tags& tfu& cpt& 
+  set tags& tfu& cpt&
   call delete('Xfile1')
 endfunc
 
@@ -105,7 +105,7 @@ func Test_tagfunc_settagstack()
     return [{'name' : 'mytag', 'filename' : 'Xtest', 'cmd' : '1'}]
   endfunc
   set tagfunc=Mytagfunc1
-  call writefile([''], 'Xtest')
+  call writefile([''], 'Xtest', 'D')
   call assert_fails('tag xyz', 'E986:')
 
   func Mytagfunc2(pat, flags, info)
@@ -115,7 +115,6 @@ func Test_tagfunc_settagstack()
   set tagfunc=Mytagfunc2
   call assert_fails('tag xyz', 'E986:')
 
-  call delete('Xtest')
   set tagfunc&
   delfunc Mytagfunc1
   delfunc Mytagfunc2

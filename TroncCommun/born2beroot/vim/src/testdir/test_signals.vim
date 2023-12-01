@@ -117,7 +117,7 @@ func Test_signal_TSTP()
     au VimSuspend * call writefile(["VimSuspend triggered"], "XautoOut1", "as")
     au VimResume * call writefile(["VimResume triggered"], "XautoOut2", "as")
   END
-  call writefile(lines, 'XsetupAucmd')
+  call writefile(lines, 'XsetupAucmd', 'D')
 
   let buf = RunVimInTerminal('-S XsetupAucmd Xsig_TERM', {'rows': 6})
   let pid_vim = term_getjob(buf)->job_info().process
@@ -133,7 +133,7 @@ func Test_signal_TSTP()
   sleep 100m
 
   " We resume after the suspend.  Sleep a bit for the signal to take effect,
-  " also when running under valgrind. 
+  " also when running under valgrind.
   exe 'silent !kill -s CONT ' .. pid_vim
   call WaitForAssert({-> assert_true(filereadable('XautoOut2'))})
   sleep 10m
@@ -147,7 +147,6 @@ func Test_signal_TSTP()
 
   %bwipe!
   call delete('.Xsig_TERM.swp')
-  call delete('XsetupAucmd')
   call delete('XautoOut1')
   call delete('XautoOut2')
 endfunc
@@ -176,7 +175,7 @@ func Test_deadly_signal_TERM()
     au VimLeave * call writefile(["VimLeave triggered"], "XautoOut", "as")
     au VimLeavePre * call writefile(["VimLeavePre triggered"], "XautoOut", "as")
   END
-  call writefile(lines, 'XsetupAucmd')
+  call writefile(lines, 'XsetupAucmd', 'D')
 
   let buf = RunVimInTerminal('-S XsetupAucmd Xsig_TERM', {'rows': 6})
   let pid_vim = term_getjob(buf)->job_info().process
@@ -200,7 +199,6 @@ func Test_deadly_signal_TERM()
 
   %bwipe!
   call delete('.Xsig_TERM.swp')
-  call delete('XsetupAucmd')
   call delete('XautoOut')
 endfunc
 

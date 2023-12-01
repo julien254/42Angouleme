@@ -25,7 +25,7 @@ func Test_conceal_two_windows()
     exe "normal /here\r"
   [CODE]
 
-  call writefile(code, 'XTest_conceal')
+  call writefile(code, 'XTest_conceal', 'D')
   " Check that cursor line is concealed
   let buf = RunVimInTerminal('-S XTest_conceal', {})
   call VerifyScreenDump(buf, 'Test_conceal_two_windows_01', {})
@@ -109,7 +109,6 @@ func Test_conceal_two_windows()
 
   " clean up
   call StopVimInTerminal(buf)
-  call delete('XTest_conceal')
 endfunc
 
 func Test_conceal_with_cursorline()
@@ -126,7 +125,7 @@ func Test_conceal_with_cursorline()
     normal M
   [CODE]
 
-  call writefile(code, 'XTest_conceal_cul')
+  call writefile(code, 'XTest_conceal_cul', 'D')
   let buf = RunVimInTerminal('-S XTest_conceal_cul', {})
   call VerifyScreenDump(buf, 'Test_conceal_cul_01', {})
 
@@ -138,7 +137,38 @@ func Test_conceal_with_cursorline()
 
   " clean up
   call StopVimInTerminal(buf)
-  call delete('XTest_conceal_cul')
+endfunc
+
+func Test_conceal_with_cursorcolumn()
+  CheckScreendump
+
+  " Check that cursorcolumn and colorcolumn don't get broken in presence of
+  " wrapped lines containing concealed text
+  let code =<< trim [CODE]
+    let lines = ["one one one |hidden| one one one one one one one one",
+          \ "two two two two |hidden| here two two",
+          \ "three |hidden| three three three three three three three three"]
+    call setline(1, lines)
+    set wrap linebreak
+    set showbreak=\ >>>\ 
+    syntax match test /|hidden|/ conceal
+    set conceallevel=2
+    set concealcursor=
+    exe "normal /here\r"
+    set cursorcolumn
+    set colorcolumn=50
+  [CODE]
+
+  call writefile(code, 'XTest_conceal_cuc', 'D')
+  let buf = RunVimInTerminal('-S XTest_conceal_cuc', {'rows': 10, 'cols': 40})
+  call VerifyScreenDump(buf, 'Test_conceal_cuc_01', {})
+
+  " move cursor to the end of line (the cursor jumps to the next screen line)
+  call term_sendkeys(buf, "$")
+  call VerifyScreenDump(buf, 'Test_conceal_cuc_02', {})
+
+  " clean up
+  call StopVimInTerminal(buf)
 endfunc
 
 func Test_conceal_resize_term()
@@ -150,7 +180,7 @@ func Test_conceal_resize_term()
     syn region CommentCodeSpan matchgroup=Comment start=/`/ end=/`/ concealends
     normal fb
   [CODE]
-  call writefile(code, 'XTest_conceal_resize')
+  call writefile(code, 'XTest_conceal_resize', 'D')
   let buf = RunVimInTerminal('-S XTest_conceal_resize', {'rows': 6})
   call VerifyScreenDump(buf, 'Test_conceal_resize_01', {})
 
@@ -159,7 +189,32 @@ func Test_conceal_resize_term()
 
   " clean up
   call StopVimInTerminal(buf)
-  call delete('XTest_conceal_resize')
+endfunc
+
+func Test_conceal_linebreak()
+  CheckScreendump
+
+  let code =<< trim [CODE]
+      vim9script
+      &wrap = true
+      &conceallevel = 2
+      &concealcursor = 'nc'
+      &linebreak = true
+      &showbreak = '+ '
+      var line: string = 'a`a`a`a`'
+          .. 'a'->repeat(&columns - 15)
+          .. ' b`b`'
+          .. 'b'->repeat(&columns - 10)
+          .. ' cccccc'
+      ['x'->repeat(&columns), '', line]->setline(1)
+      syntax region CodeSpan matchgroup=Delimiter start=/\z(`\+\)/ end=/\z1/ concealends
+  [CODE]
+  call writefile(code, 'XTest_conceal_linebreak', 'D')
+  let buf = RunVimInTerminal('-S XTest_conceal_linebreak', {'rows': 8})
+  call VerifyScreenDump(buf, 'Test_conceal_linebreak_1', {})
+
+  " clean up
+  call StopVimInTerminal(buf)
 endfunc
 
 " Tests for correct display (cursor column position) with +conceal and
@@ -247,7 +302,7 @@ func Test_conceal_cursor_pos()
     :q!
 
   [CODE]
-  call writefile(code, 'XTest_conceal_curpos')
+  call writefile(code, 'XTest_conceal_curpos', 'D')
 
   if RunVim([], [], '-s XTest_conceal_curpos')
     call assert_equal([
@@ -258,7 +313,6 @@ func Test_conceal_cursor_pos()
   endif
 
   call delete('Xconceal_curpos.out')
-  call delete('XTest_conceal_curpos')
 endfunc
 
 func Test_conceal_eol()
@@ -293,13 +347,68 @@ func Test_conceal_mouse_click()
   redraw
   call assert_equal(['conceal  click here '], ScreenLines(1, 20))
 
+  " click on the space between "this" and "click" puts cursor there
+  call test_setmouse(1, 9)
+  call feedkeys("\<LeftMouse>", "tx")
+  call assert_equal([0, 1, 13, 0, 13], getcurpos())
   " click on 'h' of "here" puts cursor there
   call test_setmouse(1, 16)
   call feedkeys("\<LeftMouse>", "tx")
   call assert_equal([0, 1, 20, 0, 20], getcurpos())
+  " click on 'e' of "here" puts cursor there
+  call test_setmouse(1, 19)
+  call feedkeys("\<LeftMouse>", "tx")
+  call assert_equal([0, 1, 23, 0, 23], getcurpos())
+  " click after end of line puts cursor on 'e' without 'virtualedit'
+  call test_setmouse(1, 20)
+  call feedkeys("\<LeftMouse>", "tx")
+  call assert_equal([0, 1, 23, 0, 24], getcurpos())
+  call test_setmouse(1, 21)
+  call feedkeys("\<LeftMouse>", "tx")
+  call assert_equal([0, 1, 23, 0, 25], getcurpos())
+  call test_setmouse(1, 22)
+  call feedkeys("\<LeftMouse>", "tx")
+  call assert_equal([0, 1, 23, 0, 26], getcurpos())
+  call test_setmouse(1, 31)
+  call feedkeys("\<LeftMouse>", "tx")
+  call assert_equal([0, 1, 23, 0, 35], getcurpos())
+  call test_setmouse(1, 32)
+  call feedkeys("\<LeftMouse>", "tx")
+  call assert_equal([0, 1, 23, 0, 36], getcurpos())
+
+  set virtualedit=all
+  redraw
+  " click on the space between "this" and "click" puts cursor there
+  call test_setmouse(1, 9)
+  call feedkeys("\<LeftMouse>", "tx")
+  call assert_equal([0, 1, 13, 0, 13], getcurpos())
+  " click on 'h' of "here" puts cursor there
+  call test_setmouse(1, 16)
+  call feedkeys("\<LeftMouse>", "tx")
+  call assert_equal([0, 1, 20, 0, 20], getcurpos())
+  " click on 'e' of "here" puts cursor there
+  call test_setmouse(1, 19)
+  call feedkeys("\<LeftMouse>", "tx")
+  call assert_equal([0, 1, 23, 0, 23], getcurpos())
+  " click after end of line puts cursor there without 'virtualedit'
+  call test_setmouse(1, 20)
+  call feedkeys("\<LeftMouse>", "tx")
+  call assert_equal([0, 1, 24, 0, 24], getcurpos())
+  call test_setmouse(1, 21)
+  call feedkeys("\<LeftMouse>", "tx")
+  call assert_equal([0, 1, 24, 1, 25], getcurpos())
+  call test_setmouse(1, 22)
+  call feedkeys("\<LeftMouse>", "tx")
+  call assert_equal([0, 1, 24, 2, 26], getcurpos())
+  call test_setmouse(1, 31)
+  call feedkeys("\<LeftMouse>", "tx")
+  call assert_equal([0, 1, 24, 11, 35], getcurpos())
+  call test_setmouse(1, 32)
+  call feedkeys("\<LeftMouse>", "tx")
+  call assert_equal([0, 1, 24, 12, 36], getcurpos())
 
   bwipe!
-  set mouse&
+  set mouse& virtualedit&
 endfunc
 
 " vim: shiftwidth=2 sts=2 expandtab

@@ -22,10 +22,10 @@ func Test_AAA_python3_setup()
     import sys
     import re
 
-    py33_type_error_pattern = re.compile('^__call__\(\) takes (\d+) positional argument but (\d+) were given$')
+    py33_type_error_pattern = re.compile(r'^__call__\(\) takes (\d+) positional argument but (\d+) were given$')
     py37_exception_repr = re.compile(r'([^\(\),])(\)+)$')
-    py39_type_error_pattern = re.compile('\w+\.([^(]+\(\) takes)')
-    py310_type_error_pattern = re.compile('takes (\d+) positional argument but (\d+) were given')
+    py39_type_error_pattern = re.compile(r'\w+\.([^(]+\(\) takes)')
+    py310_type_error_pattern = re.compile(r'takes (\d+) positional argument but (\d+) were given')
 
     def emsg(ei):
       return ei[0].__name__ + ':' + repr(ei[1].args)
@@ -286,16 +286,14 @@ endfunc
 " Test vim.eval() with various types.
 func Test_python3_vim_val()
   call assert_equal("\n8",             execute('py3 print(vim.eval("3+5"))'))
-  if has('float')
-    call assert_equal("\n3.140000",    execute('py3 print(vim.eval("1.01+2.13"))'))
-    call assert_equal("\n0.000000",    execute('py3 print(vim.eval("0.0/(1.0/0.0)"))'))
-    call assert_equal("\n0.000000",    execute('py3 print(vim.eval("0.0/(1.0/0.0)"))'))
-    call assert_equal("\n-0.000000",   execute('py3 print(vim.eval("0.0/(-1.0/0.0)"))'))
-    " Commented out: output of infinity and nan depend on platforms.
-    " call assert_equal("\ninf",         execute('py3 print(vim.eval("1.0/0.0"))'))
-    " call assert_equal("\n-inf",        execute('py3 print(vim.eval("-1.0/0.0"))'))
-    " call assert_equal("\n-nan",        execute('py3 print(vim.eval("0.0/0.0"))'))
-  endif
+  call assert_equal("\n3.140000",    execute('py3 print(vim.eval("1.01+2.13"))'))
+  call assert_equal("\n0.000000",    execute('py3 print(vim.eval("0.0/(1.0/0.0)"))'))
+  call assert_equal("\n0.000000",    execute('py3 print(vim.eval("0.0/(1.0/0.0)"))'))
+  call assert_equal("\n-0.000000",   execute('py3 print(vim.eval("0.0/(-1.0/0.0)"))'))
+  " Commented out: output of infinity and nan depend on platforms.
+  " call assert_equal("\ninf",         execute('py3 print(vim.eval("1.0/0.0"))'))
+  " call assert_equal("\n-inf",        execute('py3 print(vim.eval("-1.0/0.0"))'))
+  " call assert_equal("\n-nan",        execute('py3 print(vim.eval("0.0/0.0"))'))
   call assert_equal("\nabc",           execute('py3 print(vim.eval("\"abc\""))'))
   call assert_equal("\n['1', '2']",    execute('py3 print(vim.eval("[1, 2]"))'))
   call assert_equal("\n{'1': '2'}",    execute('py3 print(vim.eval("{1:2}"))'))
@@ -377,6 +375,7 @@ func Test_python3_opt_reset_local_to_global()
         \ ['include', 'ginc', 'linc', ''],
         \ ['dict', 'gdict', 'ldict', ''],
         \ ['thesaurus', 'gtsr', 'ltsr', ''],
+        \ ['thesaurusfunc', 'Gtsrfu', 'Ltsrfu', ''],
         \ ['formatprg', 'gfprg', 'lfprg', ''],
         \ ['errorformat', '%f:%l:%m', '%s-%l-%m', ''],
         \ ['grepprg', 'ggprg', 'lgprg', ''],
@@ -410,9 +409,13 @@ func Test_python3_opt_reset_local_to_global()
   " Set the global and window-local option values and then clear the
   " window-local option value.
   let wopts = [
+        \ ['fillchars', 'fold:>', 'fold:+', ''],
+        \ ['listchars', 'tab:>>', 'tab:--', ''],
         \ ['scrolloff', 5, 10, -1],
+        \ ['showbreak', '>>', '++', ''],
         \ ['sidescrolloff', 6, 12, -1],
-        \ ['statusline', '%<%f', '%<%F', '']]
+        \ ['statusline', '%<%f', '%<%F', ''],
+        \ ['virtualedit', 'block', 'insert', '']]
   for opt in wopts
     py3 << trim
       pyopt = vim.bindeval("opt")
@@ -540,6 +543,24 @@ func Test_python3_window()
         \ 'Vim(py3):vim.error: attempt to refer to deleted window')
   call assert_match('<window object (deleted)', py3eval("repr(w)"))
   %bw!
+endfunc
+
+" This was causing trouble because "curbuf" was not matching curwin->w_buffer
+func Test_python3_window_set_height()
+  enew!
+  call setline(1, ['aaa', 'bbb', 'ccc'])
+  call cursor(2, 1)
+  set foldmethod=expr
+  new
+  wincmd w
+  python3 vim.windows[0].height = 5
+  call assert_equal(5, winheight(1))
+
+  call feedkeys('j', 'xt')
+  call assert_equal(3, getpos('.')[1])
+
+  bwipe!
+  bwipe!
 endfunc
 
 " Test for the python List object
@@ -879,7 +900,6 @@ func Test_python3_function_call()
 endfunc
 
 func Test_python3_float()
-  CheckFeature float
   let l = [0.0]
   py3 l = vim.bindeval('l')
   py3 l.extend([0.0])
@@ -982,9 +1002,7 @@ func Test_python3_pyeval()
   py3 v = vim.eval('test_null_function()')
   call assert_equal(v:none, py3eval('v'))
 
-  if has('float')
-    call assert_equal(0.0, py3eval('0.0'))
-  endif
+  call assert_equal(0.0, py3eval('0.0'))
 
   " Evaluate an invalid values
   call AssertException(['let v = py3eval(''"\0"'')'], 'E859:')
@@ -4049,7 +4067,7 @@ func Test_python3_fold_hidden_buffer()
   endfunc
 
   call setline(1, repeat([''], 15) + repeat(['from'], 3))
-  eval repeat(['x'], 17)->writefile('Xa.txt')
+  eval repeat(['x'], 17)->writefile('Xa.txt', 'D')
   split Xa.txt
   py3 import vim
   py3 b = vim.current.buffer
@@ -4057,7 +4075,6 @@ func Test_python3_fold_hidden_buffer()
   hide
   py3 b[:] = aaa
 
-  call delete('Xa.txt')
   set fdm& fde&
   delfunc Fde
   bwipe! Xa.txt
@@ -4083,7 +4100,7 @@ func Test_python3_hidden_buf_mod_does_not_mess_up_display()
         norm! Gzb
         call feedkeys(":call Func()\r", 'n')
   END
-  call writefile(lines, testfile)
+  call writefile(lines, testfile, 'D')
 
   let rows = 10
   let bufnr = term_start([GetVimProg(), '--clean', '-S', testfile], {'term_rows': rows})
@@ -4095,8 +4112,8 @@ func Test_python3_hidden_buf_mod_does_not_mess_up_display()
 
   call term_sendkeys(bufnr, ":qall!\<CR>")
   call WaitForAssert({-> assert_equal('dead', job_status(term_getjob(bufnr)))})
+
   exe bufnr . 'bwipe!'
-  call delete(testfile)
 endfunc
 
 " vim: shiftwidth=2 sts=2 expandtab

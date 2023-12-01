@@ -1,7 +1,7 @@
 
 " Test for the :scriptnames command
 func Test_scriptnames()
-  call writefile(['let did_load_script = 123'], 'Xscripting')
+  call writefile(['let did_load_script = 123'], 'Xscripting', 'D')
   source Xscripting
   call assert_equal(123, g:did_load_script)
 
@@ -22,7 +22,6 @@ func Test_scriptnames()
   call assert_equal('Xscripting', expand('%:t'))
 
   bwipe
-  call delete('Xscripting')
 
   let msgs = execute('messages')
   scriptnames
@@ -47,7 +46,7 @@ func Test_getscriptinfo()
     def Xscript_def_func2()
     enddef
   END
-  call writefile(lines, 'X22script91')
+  call writefile(lines, 'X22script91', 'D')
   source X22script91
   let l = getscriptinfo()
   call assert_match('X22script91$', l[-1].name)
@@ -92,8 +91,16 @@ func Test_getscriptinfo()
   call assert_fails("echo getscriptinfo('foobar')", 'E1206:')
 
   call assert_fails("echo getscriptinfo({'sid': []})", 'E745:')
+  call assert_fails("echo getscriptinfo({'sid': {}})", 'E728:')
+  call assert_fails("echo getscriptinfo({'sid': 0})", 'E475:')
+  call assert_fails("echo getscriptinfo({'sid': -1})", 'E475:')
+  call assert_fails("echo getscriptinfo({'sid': -999})", 'E475:')
 
-  call delete('X22script91')
+  echo getscriptinfo({'sid': '1'})
+  call assert_fails("vim9cmd echo getscriptinfo({'sid': '1'})", 'E1030:')
+
+  let max_sid = max(map(getscriptinfo(), { k, v -> v.sid }))
+  call assert_equal([], getscriptinfo({'sid': max_sid + 1}))
 endfunc
 
 " vim: shiftwidth=2 sts=2 expandtab

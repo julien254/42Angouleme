@@ -8,7 +8,7 @@ source view_util.vim
 " file name.
 func Test_cpo_a()
   let save_cpo = &cpo
-  call writefile(['one'], 'XfileCpoA')
+  call writefile(['one'], 'XfileCpoA', 'D')
   " Wipe out all the buffers, so that the alternate file is empty
   edit Xfoo | %bw
   set cpo-=a
@@ -20,7 +20,6 @@ func Test_cpo_a()
   read XfileCpoA
   call assert_equal('XfileCpoA', @#)
   close!
-  call delete('XfileCpoA')
   let &cpo = save_cpo
 endfunc
 
@@ -68,15 +67,20 @@ endfunc
 func Test_cpo_B()
   let save_cpo = &cpo
   new
+  imap <buffer> x<Bslash>k Test
   set cpo-=B
   iabbr <buffer> abc ab\<BS>d
   exe "normal iabc "
   call assert_equal('ab<BS>d ', getline(1))
+  call feedkeys(":imap <buffer> x\<C-A>\<C-B>\"\<CR>", 'tx')
+  call assert_equal('"imap <buffer> x\\k', @:)
   %d
   set cpo+=B
   iabbr <buffer> abc ab\<BS>d
   exe "normal iabc "
   call assert_equal('abd ', getline(1))
+  call feedkeys(":imap <buffer> x\<C-A>\<C-B>\"\<CR>", 'tx')
+  call assert_equal('"imap <buffer> x\k', @:)
   close!
   let &cpo = save_cpo
 endfunc
@@ -99,21 +103,20 @@ endfunc
 " Test for the 'C' flag in 'cpo' (line continuation)
 func Test_cpo_C()
   let save_cpo = &cpo
-  call writefile(['let l = [', '\ 1,', '\ 2]'], 'XfileCpoC')
+  call writefile(['let l = [', '\ 1,', '\ 2]'], 'XfileCpoC', 'D')
   set cpo-=C
   source XfileCpoC
   call assert_equal([1, 2], g:l)
   set cpo+=C
   call assert_fails('source XfileCpoC', ['E697:', 'E10:'])
-  call delete('XfileCpoC')
   let &cpo = save_cpo
 endfunc
 
 " Test for the 'd' flag in 'cpo' (tags relative to the current file)
 func Test_cpo_d()
   let save_cpo = &cpo
-  call mkdir('XdirCpoD')
-  call writefile(["one\tXfile1\t/^one$/"], 'tags')
+  call mkdir('XdirCpoD', 'R')
+  call writefile(["one\tXfile1\t/^one$/"], 'tags', 'D')
   call writefile(["two\tXfile2\t/^two$/"], 'XdirCpoD/tags')
   set tags=./tags
   set cpo-=d
@@ -121,9 +124,8 @@ func Test_cpo_d()
   call assert_equal('two', taglist('.*')[0].name)
   set cpo+=d
   call assert_equal('one', taglist('.*')[0].name)
+
   %bw!
-  call delete('tags')
-  call delete('XdirCpoD', 'rf')
   set tags&
   let &cpo = save_cpo
 endfunc
@@ -195,7 +197,8 @@ func Test_cpo_f()
   set cpo+=f
   read test_cpoptions.vim
   call assert_equal('test_cpoptions.vim', @%)
-  close!
+
+  bwipe!
   let &cpo = save_cpo
 endfunc
 
@@ -415,24 +418,23 @@ func Test_cpo_O()
   let save_cpo = &cpo
   new XfileCpoO
   call setline(1, 'one')
-  call writefile(['two'], 'XfileCpoO')
+  call writefile(['two'], 'XfileCpoO', 'D')
   set cpo-=O
   call assert_fails('write', 'E13:')
   set cpo+=O
   write
   call assert_equal(['one'], readfile('XfileCpoO'))
   close!
-  call delete('XfileCpoO')
   let &cpo = save_cpo
 endfunc
 
-" Test for the 'p' flag in 'cpo' is in the test_lispwords.vim file.
+" Test for the 'p' flag in 'cpo' is in the test_lispindent.vim file.
 
 " Test for the 'P' flag in 'cpo' (appending to a file sets the current file
 " name)
 func Test_cpo_P()
   let save_cpo = &cpo
-  call writefile([], 'XfileCpoP')
+  call writefile([], 'XfileCpoP', 'D')
   new
   call setline(1, 'one')
   set cpo+=F
@@ -442,8 +444,8 @@ func Test_cpo_P()
   set cpo+=P
   write >> XfileCpoP
   call assert_equal('XfileCpoP', @%)
-  close!
-  call delete('XfileCpoP')
+
+  bwipe!
   let &cpo = save_cpo
 endfunc
 
@@ -635,7 +637,7 @@ endfunc
 " Test for the 'Z' flag in 'cpo' (write! resets 'readonly')
 func Test_cpo_Z()
   let save_cpo = &cpo
-  call writefile([], 'XfileCpoZ')
+  call writefile([], 'XfileCpoZ', 'D')
   new XfileCpoZ
   setlocal readonly
   set cpo-=Z
@@ -646,7 +648,6 @@ func Test_cpo_Z()
   write!
   call assert_equal(1, &readonly)
   close!
-  call delete('XfileCpoZ')
   let &cpo = save_cpo
 endfunc
 
@@ -723,7 +724,7 @@ endfunc
 " flag)
 func Test_cpo_plus()
   let save_cpo = &cpo
-  call writefile([], 'XfileCpoPlus')
+  call writefile([], 'XfileCpoPlus', 'D')
   new XfileCpoPlus
   call setline(1, 'foo')
   write X1
@@ -732,7 +733,6 @@ func Test_cpo_plus()
   write X2
   call assert_equal(0, &modified)
   close!
-  call delete('XfileCpoPlus')
   call delete('X1')
   call delete('X2')
   let &cpo = save_cpo
@@ -835,7 +835,7 @@ endfunc
 " Test for the '&' flag in 'cpo'. The swap file is kept when a buffer is still
 " loaded and ':preserve' is used.
 func Test_cpo_ampersand()
-  call writefile(['one'], 'XfileCpoAmp')
+  call writefile(['one'], 'XfileCpoAmp', 'D')
   let after =<< trim [CODE]
     set cpo+=&
     preserve
@@ -845,7 +845,6 @@ func Test_cpo_ampersand()
     call assert_equal(1, filereadable('.XfileCpoAmp.swp'))
     call delete('.XfileCpoAmp.swp')
   endif
-  call delete('XfileCpoAmp')
 endfunc
 
 " Test for the '\' flag in 'cpo' (backslash in a [] range in a search pattern)
