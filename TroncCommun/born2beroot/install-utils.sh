@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Installation de ZSH"
-sudo apt-get install zsh -ycp 
+sudo apt-get install zsh -y
 sudo cp 42Angouleme/TroncCommun/born2beroot/passwd /etc/passwd
 echo "Installation de ZSH termine."
 echo "Installation de Oh-My-Zsh ----->"
