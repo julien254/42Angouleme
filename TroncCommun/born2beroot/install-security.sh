@@ -9,6 +9,7 @@ curl https://raw.githubusercontent.com/julien254/42Angouleme/main/TroncCommun/bo
 service ssh restart
 echo "Installation et configuration du serveur SSH termine."
 echo "Installation de fail2ban..."
+apt install rsyslog -y
 apt install fail2ban -y
 systemctl start fail2ban
 systemctl enable fail2ban
