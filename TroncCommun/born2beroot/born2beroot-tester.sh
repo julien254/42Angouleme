@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 echo Quel est votre nom user ?
 read USER
 
@@ -24,17 +24,17 @@ REGLEEXPIR3=$(if [ $(cat /etc/login.defs | grep PASS_WARN_AGE | grep 7 | awk '{p
 
 REGLEEXPIR=$(if [ $(echo -e $REGLEEXPIR1$REGLEEXPIR2$REGLEEXPIR3) = "OKOKOK" ]; then echo -e OK; else echo -e "KO"; fi)
 
-ROOTEXPIR1=$(if [ $(sudo chage root -l | grep Minimum | awk '{print $9}') -eq 2 ]; then echo -e OK ; else echo -e "KO";fi)
+ROOTEXPIR1=$(if [ $(sudo chage root -l | grep minimal | awk '{print $9}') -eq 2 ]; then echo -e OK ; else echo -e "KO";fi)
 
-ROOTEXPIR2=$(if [ $(sudo chage root -l | grep Maximum | awk '{print $9}') -eq 30 ]; then echo -e OK ; else echo -e "KO";fi)
+ROOTEXPIR2=$(if [ $(sudo chage root -l | grep maximal | awk '{print $9}') -eq 30 ]; then echo -e OK ; else echo -e "KO";fi)
 
 ROOTEXPIR3=$(if [ $(sudo chage root -l | grep warning | awk '{print $10}') -eq 7 ]; then echo -e OK ; else echo -e "KO";fi)
 
 ROOTEXPIR=$(if [ $(echo -e $ROOTEXPIR1$ROOTEXPIR2$ROOTEXPIR3) = "OKOKOK" ]; then echo -e OK; else echo -e "KO"; fi)
 
-USEREXPIR1=$(if [ $(sudo chage $USER -l | grep Minimum | awk '{print $9}') -eq 2 ]; then echo -e OK ; else echo -e "KO";fi)
+USEREXPIR1=$(if [ $(sudo chage $USER -l | grep minimal | awk '{print $9}') -eq 2 ]; then echo -e OK ; else echo -e "KO";fi)
 
-USEREXPIR2=$(if [ $(sudo chage $USER -l | grep Maximum | awk '{print $9}') -eq 30 ]; then echo -e OK ; else echo -e "KO";fi)
+USEREXPIR2=$(if [ $(sudo chage $USER -l | grep maximal | awk '{print $9}') -eq 30 ]; then echo -e OK ; else echo -e "KO";fi)
 
 USEREXPIR3=$(if [ $(sudo chage $USER -l | grep warning | awk '{print $10}') -eq 7 ]; then echo -e OK ; else echo -e "KO";fi)
 
