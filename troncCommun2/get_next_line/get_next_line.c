@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 10:24:02 by jdetre            #+#    #+#             */
-/*   Updated: 2023/12/04 17:17:20 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/12/04 22:15:21 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,21 +104,3 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-
-/*int	main(int argc, char *argv[])
-{
-	int		fd;
-	char	*line = "";
-
-	(void)argc;
-	(void)argv;
-//	getchar();
-	fd = open("41_no_nl", O_RDONLY);
-	while (line)
-	{
-		line = get_next_line(fd);
-		printf("%s", line);
-		free(line);
-	}
-	return (0);
-}*/

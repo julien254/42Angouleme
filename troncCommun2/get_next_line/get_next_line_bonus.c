@@ -6,13 +6,13 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 10:24:02 by jdetre            #+#    #+#             */
-/*   Updated: 2023/12/04 21:19:54 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/12/04 22:14:29 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-int	set_good_fd(int fd, t_save *save)
+int	set_struct_save(int fd, t_save *save)
 {
 	int	i;
 
@@ -21,6 +21,12 @@ int	set_good_fd(int fd, t_save *save)
 		i++;
 	if (save->fd[i] == 0)
 		save->fd[i] = fd;
+	if (i == 0)
+	{
+		while (i < 200)
+			save->read_size[i++] = 1;
+		i = 0;
+	}
 	return (i);
 }
 
@@ -93,13 +99,13 @@ char	*get_residue(char *line)
 
 char	*get_next_line(int fd)
 {
-	static t_save	save = {{0}, {NULL}, {0}, {[0 ... 199] = 1}};
+	static t_save	save;
 	char			*line;
 	int				current_fd;
 
 	if (read(fd, NULL, 0) == -1)
 		return (NULL);
-	current_fd = set_good_fd(fd, &save);
+	current_fd = set_struct_save(fd, &save);
 	save.size_residue[current_fd] = ft_strlen(save.residue[current_fd]);
 	if (save.residue[current_fd] && if_is_endline(save.residue[current_fd]))
 	{
@@ -110,38 +116,9 @@ char	*get_next_line(int fd)
 	}
 	line = read_while_noendline(fd, &save, current_fd);
 	if (line == NULL)
-	return (NULL);
+		return (NULL);
 	save.residue[current_fd] = get_residue(line);
 	if (save.read_size[current_fd] == 0 && line[0] == 0)
 		line = free_all(line, save.residue[current_fd]);
 	return (line);
 }
-
-/*int	main(int argc, char *argv[])
-{
-	int		fd;
-	int		fd2;
-	int		fd3;
-	char	*line = "";
-
-	(void)argc;
-	(void)argv;
-	//	getchar();
-	fd = open("41_no_nl", O_RDONLY);
-	fd2 = open("test", O_RDONLY);
-	fd3 = open("test2", O_RDONLY);
-
-	while (line)
-	{
-		line = get_next_line(fd);
-		printf("%s", line);
-		free(line);
-		line = get_next_line(fd2);
-		printf("%s", line);
-		free(line);
-		line = get_next_line(fd3);
-		printf("%s", line);
-		free(line);
-	}
-	return (0);
-}*/
