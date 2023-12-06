@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 10:24:02 by jdetre            #+#    #+#             */
-/*   Updated: 2023/12/04 22:14:29 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/12/06 19:02:41 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ char	*read_while_noendline(int fd, t_save *save, int current_fd)
 		if (multiplier == 1)
 			save->residue[current_fd] = NULL;
 		save->read_size[current_fd] = read(fd, buffer_tmp, BUFFER_SIZE);
+		if (save->read_size <= 0)
+			return (free_all(buffer_tmp, buffer));
 		buffer_tmp[save->read_size[current_fd]] = 0;
 		ft_strlcat(buffer, buffer_tmp);
 	}
@@ -103,8 +105,6 @@ char	*get_next_line(int fd)
 	char			*line;
 	int				current_fd;
 
-	if (read(fd, NULL, 0) == -1)
-		return (NULL);
 	current_fd = set_struct_save(fd, &save);
 	save.size_residue[current_fd] = ft_strlen(save.residue[current_fd]);
 	if (save.residue[current_fd] && if_is_endline(save.residue[current_fd]))
@@ -118,7 +118,7 @@ char	*get_next_line(int fd)
 	if (line == NULL)
 		return (NULL);
 	save.residue[current_fd] = get_residue(line);
-	if (save.read_size[current_fd] == 0 && line[0] == 0)
+	if (save.read_size[current_fd] <= 0 && line[0] == 0)
 		line = free_all(line, save.residue[current_fd]);
 	return (line);
 }
