@@ -1,0 +1,13 @@
+
+
+				LANCER GDB ET VALGRIND
+				
+				
+Pour lancer gdb avec valgrind il faut rajouter au debut de ton code la fonction getchar();
+pour bloquer le processus temps que l'on a pas appuier sur ENTRER
+
+Lancer la commande : valgrind --vgdb=full --track-origins=yes --leak-check=full ./a.out
+
+Ouvrir un nouveau terminal et taper la commande suivante : gdb ./a.out
+
+Enfin taper la commande suivante dans gdb : target extended-remote | vgdb
