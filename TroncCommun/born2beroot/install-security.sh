@@ -11,6 +11,7 @@ echo "Installation et configuration du serveur SSH termine."
 echo "Installation de fail2ban..."
 apt install rsyslog -y
 apt install fail2ban -y
+cp 42Angouleme/troncCommun2/born2beroot/jail.local /etc/pam.d/jail.local
 systemctl start fail2ban
 systemctl enable fail2ban
 systemctl status fail2ban
