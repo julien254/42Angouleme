@@ -1,0 +1,81 @@
+Hostname : /etc/hostname, /etc/hosts
+
+afficher le hostname courant : hostnamectl status
+
+changer le hostname : hostnamectl set-hostname new-hostname
+
+lister les partitions : lsblk
+
+fichier sudoer : sudo visudo
+
+ZSH par defaut : chsh -s /bin/zsh
+
+Fichier config pwquality : /etc/pam.d/common-passwd
+
+Fichier config expiration MDP : /etc/login.defs
+
+
+
+						UFW (firewall)
+
+
+
+activer ufw :					sudo ufw enable
+
+activer le service ufw :		sudo systemctl start ufw
+
+redemarrer le service ufw : 	sudo systemctl restart ufw
+
+status du firewall : 			sudo systemctl status ufw
+
+ouvrir un port : 				sudo ufw allow "numero ou nom du port"
+
+afficher les ports ave numero:	sudo ufw status numbered 
+
+fermer un port : 				sudo ufw delete allow "numero ou nom du port"
+										ou
+				 				sudo ufw delete "nombre associer port(1,2,3,...)"
+
+
+						SSH Serveur
+
+
+
+Fichier de configuration ssh (port etc..) : /etc/ssh/sshd_config
+
+redemarrer le serveur ssh :					sudo service ssh restart
+
+address localhost pour connection ssh :		127.0.0.1 -p 4242
+
+
+						Gestion user et group
+
+
+creer un user : 					sudo adduser user (ou useradd user)
+supprimer un user : 				sudo userdel -r user 
+
+afficher les groupes : 				getent group
+creer un group :					groupadd name-group
+ajouter utilisateur au groupes :	usermod -aG user group (ou gpasswd -d pour l'enlever)
+supprimer un groupe :				groupdel name-group
+
+
+						CRON
+
+
+creer une nouvelle tab :			crontab -e (connecte en root)
+emplacement du fichier crontab :	/var/spool/cron/crontabs/
+
+
+						FAIL2BAN
+
+voir les tentatives de connections :
+sudo fail2ban-client status
+sudo fail2ban-client status sshd
+sudo tail -f /var/log/fail2ban.log
+
+						COMMANDE BASH
+
+
+afficher l'heure : 							uptime
+afficher l'heure du dernier demarrage :		uptime -s
