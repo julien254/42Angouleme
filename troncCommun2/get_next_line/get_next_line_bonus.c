@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 10:24:02 by jdetre            #+#    #+#             */
-/*   Updated: 2023/12/06 19:02:41 by judetre          ###   ########.fr       */
+/*   Updated: 2023/12/11 18:03:18 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*read_while_noendline(int fd, t_save *save, int current_fd)
 		if (multiplier == 1)
 			save->residue[current_fd] = NULL;
 		save->read_size[current_fd] = read(fd, buffer_tmp, BUFFER_SIZE);
-		if (save->read_size <= 0)
+		if (save->read_size[current_fd] <= 0)
 			return (free_all(buffer_tmp, buffer));
 		buffer_tmp[save->read_size[current_fd]] = 0;
 		ft_strlcat(buffer, buffer_tmp);

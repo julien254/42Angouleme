@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 10:24:02 by jdetre            #+#    #+#             */
-/*   Updated: 2023/12/04 17:56:24 by jdetre           ###   ########.fr       */
+/*   Updated: 2023/12/11 18:01:31 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char	*ft_strdup(char *src)
 char	*free_all(char *line, char *residue)
 {
 	free(line);
-	free(residue);
+	if (residue)
+		return (residue);
 	return (NULL);
 }
