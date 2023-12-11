@@ -26,9 +26,9 @@ cat 42Angouleme/troncCommun2/born2beroot/login.defs > /etc/login.defs
 chage -M 30 root
 chage -m 2 root
 chage -W 7 root
-chage -M 30 jdetre
-chage -m 2 jdetre
-chage -W 7 jdetre
+chage -M 30 judetre
+chage -m 2 judetre
+chage -W 7 judetre
 echo "Configuration termine."
 echo "Si vous n'avez pas lance le script en tant qu'utilisateur root, veillez recommencer l'installation."
 echo "N'oubliez pas de configurer la redirection de port si vous utiliser une VM dans les parametres de celle-ci."
