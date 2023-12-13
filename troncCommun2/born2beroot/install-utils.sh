@@ -2,6 +2,7 @@
 echo "Installation de ZSH"
 sudo apt-get install zsh -y
 sudo chsh -s /bin/zsh
+chsh -s /bin/zsh
 echo "Installation de ZSH termine."
 echo "Installation de Oh-My-Zsh ----->"
 curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
