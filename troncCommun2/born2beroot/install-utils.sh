@@ -1,7 +1,8 @@
 #!/bin/bash
 echo "Installation de ZSH"
 sudo apt-get install zsh -y
-sudo cp 42Angouleme/troncCommun2/born2beroot/passwd /etc/passwd
+sudo chsh -s /bin/zsh
+chsh -s /bin/zsh
 echo "Installation de ZSH termine."
 echo "Installation de Oh-My-Zsh ----->"
 curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
@@ -28,6 +29,5 @@ cp .vimrc ~/
 cp .zshrc ~/
 sudo cp .zshrc /root/
 sudo cp -r ~/.oh-my-zsh /root/
-cd ~
 echo "Configuration Zsh et vim termine"
 echo "lancer vim et taper ':PlugInstall' pour finaliser l'installation des plugins. (Pour le compte utilisateur et le compte ROOT). Vous pouvez ensuite redemarrer le systeme pour que tous les changements soient pris en compte."
