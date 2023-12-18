@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:34:52 by julien            #+#    #+#             */
-/*   Updated: 2022/10/16 12:25:28 by jdetre           ###   ########.fr       */
+/*   Updated: 2022/09/22 16:17:16 by julien           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+
 
 typedef struct s_ind
 {

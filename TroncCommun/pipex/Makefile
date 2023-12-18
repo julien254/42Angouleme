@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2022/09/22 16:37:59 by julien           ###   ########.fr        #
+#    Updated: 2023/12/18 18:20:58 by jdetre           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME_BONUS	=	pipex_bonus
 
 CC			=	gcc
 
-CFLAGS		=	-Wall -Wextra -Werror -I.
+CFLAGS		=	-g -Wall -Wextra -Werror -I.
 
 SRCS		=	pipex.c						\
 				pipex_utils.c				\
