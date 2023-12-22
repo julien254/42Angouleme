@@ -13,9 +13,7 @@ endif
 
 colorscheme atlantis
 syntax on
-set list " Affiche les caracteres non imprimable
 set mouse=a " Rend la souris utilisable dans vim
-setlocal nolist "Set les differents symbole pour le caracteres non imprimable$
 set nu " Affiche les numeros des lignes
 set tabstop=4    " --
 set shiftwidth=4 " ----- regle la tabulation sur 4 et la regle pour adapter le texte au tabulation presente

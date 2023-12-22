@@ -6,7 +6,7 @@
 /*   By: judetre <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:02:14 by judetre           #+#    #+#             */
-/*   Updated: 2023/11/28 14:02:20 by judetre          ###   ########.fr       */
+/*   Updated: 2023/12/21 12:40:10 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	ft_print_arg(va_list *ap, char const *str, size_t i)
 	return (len);
 }
 
-void	print_str(t_ind *index, const char *str)
+static void	print_str(t_ind *index, const char *str)
 {
 	if (!index->ifarg)
 		index->count += write(1, str, index->i);

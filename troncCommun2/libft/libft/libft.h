@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:48:19 by judetre           #+#    #+#             */
-/*   Updated: 2023/11/06 11:45:53 by judetre          ###   ########.fr       */
+/*   Updated: 2023/12/22 18:13:02 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdint.h>
+# include <stdarg.h>
+# include <fcntl.h>
+
+/****************** Basic Function ****************/
 
 typedef struct s_list
 {
@@ -54,10 +58,10 @@ char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
-void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *s, int fd);
-void	ft_putendl_fd(char *s, int fd);
-void	ft_putnbr_fd(int n, int fd);
+int		ft_putchar_fd(char c, int fd);
+int		ft_putstr_fd(char *s, int fd);
+int		ft_putendl_fd(char *s, int fd);
+int		ft_putnbr_fd(int n, int fd);
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *neW);
 int		ft_lstsize(t_list *lst);
@@ -67,4 +71,50 @@ void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+int		ft_count_line(char *str);
+char	**ft_cpy_tab2d(char **tab2d);
+int		ft_line_size(char *str);
+int		ft_line_size_max(char *str);
+int		ft_putadd_fd(size_t hexa, int fd);
+int		ft_puthexa_fd(unsigned int nbr, int fd, int uppercase);
+int		ft_puthexa_ll_fd(size_t nbr, int fd, int uppercase);
+int		ft_puttab2_fd(char **tab, int fd);
+int		ft_put_u_nbr_fd(unsigned int n, int fd);
+char	*ft_recover_fd(char *file);
+char	*ft_strjoin_malloc(char *s1, char *s2);
+int		ft_tab2dlen(char **tab);
+
+/***************** PRINTF ***************/
+
+typedef struct s_ind
+{
+	size_t	i;
+	size_t	lastindex;
+	size_t	count;
+	int		ifarg;
+}				t_ind;
+
+int		ft_printf(const char *str, ...);
+
+/**************** GET_NEXT_LINE **********/
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
+typedef struct s_save
+{
+	int		fd[200];
+	char	*residue[200];
+	int		size_residue[200];
+	ssize_t	read_size[200];
+}				t_save;
+
+char	*get_next_line(int fd);
+int		ft_strlen_gnl(char *str);
+void	ft_strlcat_gnl(char *dst, char *src);
+int		if_is_endline_gnl(char *str);
+char	*ft_strdup_gnl(char *src);
+char	*free_all_gnl(char *line, char *residue);
+
 #endif
