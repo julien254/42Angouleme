@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 00:16:55 by julien            #+#    #+#             */
-/*   Updated: 2022/09/14 13:32:41 by julien           ###   ########.fr       */
+/*   Updated: 2023/12/25 22:59:37 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ char	*ft_recover_fd(char *file)
 	char	*buffertmp;
 	char	*bufferfinal;
 
+	bufferfinal = NULL;
 	if (check_files_infile(file) == 0)
 	{
 		fd = open(file, O_RDONLY);

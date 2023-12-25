@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2022/09/22 16:35:20 by julien           ###   ########.fr        #
+#    Updated: 2023/12/25 22:57:27 by jdetre           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,8 +55,6 @@ SRCS		=	ft_atoi.c					\
 				ft_tolower.c				\
 				ft_toupper.c				\
 				ft_printf.c					\
-				get_next_line_bonus.c		\
-				get_next_line_utils_bonus.c	\
 				ft_puthexa_fd.c 			\
 				ft_put_u_nbr_fd.c			\
 				ft_putadd_fd.c				\
