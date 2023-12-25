@@ -5,14 +5,14 @@
 #                                                     +:+ +:+         +:+      #
 #    By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/12/25 23:56:00 by jdetre            #+#    #+#              #
-#    Updated: 2023/12/25 23:56:05 by jdetre           ###   ########.fr        #
+#    Created: 2023/12/25 23:55:06 by jdetre            #+#    #+#              #
+#    Updated: 2023/12/25 23:58:24 by jdetre           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	
+NAME		=	pipex
 
-NAME_BONUS	=	
+NAME_BONUS	=	pipex_bonus
 
 CC			=	gcc
 
@@ -22,7 +22,7 @@ INCLUDE		=	-I.
 
 LIB			=	-L./libft -lft
 
-SRCS		=	
+SRCS		=	pipex.c
 
 SRCS_BONUS	=	
 

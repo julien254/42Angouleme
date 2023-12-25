@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: judetre <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/11/06 11:44:55 by judetre           #+#    #+#              #
-#    Updated: 2023/12/22 18:42:29 by jdetre           ###   ########.fr        #
+#    Created: 2023/12/25 23:42:02 by jdetre            #+#    #+#              #
+#    Updated: 2023/12/25 23:45:16 by jdetre           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,7 +70,10 @@ SRCS		=	ft_atoi.c			\
 				ft_lstlast.c     	\
 				ft_lstmap.c      	\
 				ft_lstnew.c      	\
-				ft_lstsize.c     	
+				ft_lstsize.c     	\
+				ft_printf.c			\
+				get_next_line.c		\
+				get_next_line_utils.c
 
 OBJS		= ${SRCS:.c=.o}
 
