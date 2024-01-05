@@ -1,19 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/11 14:45:36 by judetre           #+#    #+#             */
-/*   Updated: 2023/12/11 14:46:42 by judetre          ###   ########.fr       */
+/*   Created: 2024/01/05 05:45:25 by judetre           #+#    #+#             */
+/*   Updated: 2024/01/05 08:38:28 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "get_next_line.h"
-int	main(int argc, char *argv[])
+#include "libft.h"
+
+void	ft_free(int nbptr, ...)
 {
-	(void)argc;
-	(void)argv;
-	get_next_line(32);
-	return (0);
+	va_list	args;
+	int		i;
+
+	i = 0;
+	while (i <= nbptr)
+	{
+		free(va_arg(args, void *));
+		i++;
+	}
 }

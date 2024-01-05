@@ -1,21 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tab2dlen.c                                      :+:      :+:    :+:   */
+/*   ft_free_2d.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/06 18:34:43 by julien            #+#    #+#             */
-/*   Updated: 2024/01/05 06:18:34 by judetre          ###   ########.fr       */
+/*   Created: 2024/01/05 05:45:25 by judetre           #+#    #+#             */
+/*   Updated: 2024/01/05 08:38:03 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_tab2dlen(char **tab)
+#include "libft.h"
+
+void	ft_free_2d(char **tab2d)
 {
-	int	i;
+	int		i;
 
 	i = 0;
-	while (tab[i])
+	while (tab2d[i])
+	{
+		free(tab2d[i]);
 		i++;
-	return (i);
+	}
+	free(tab2d);
 }

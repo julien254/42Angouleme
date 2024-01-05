@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tab2dlen.c                                      :+:      :+:    :+:   */
+/*   open.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/06 18:34:43 by julien            #+#    #+#             */
-/*   Updated: 2024/01/05 06:18:34 by judetre          ###   ########.fr       */
+/*   Created: 2024/01/05 09:22:14 by judetre           #+#    #+#             */
+/*   Updated: 2024/01/05 10:52:25 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_tab2dlen(char **tab)
-{
-	int	i;
+#include "pipex.h"
 
-	i = 0;
-	while (tab[i])
-		i++;
-	return (i);
+int	open_infile(char *file)
+{
+	int	fd;
+
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+		perror("Infile");
+	return (fd);
 }

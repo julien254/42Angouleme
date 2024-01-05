@@ -6,7 +6,7 @@
 #    By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/25 23:55:06 by jdetre            #+#    #+#              #
-#    Updated: 2023/12/25 23:58:24 by jdetre           ###   ########.fr        #
+#    Updated: 2024/01/05 09:35:12 by judetre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ INCLUDE		=	-I.
 
 LIB			=	-L./libft -lft
 
-SRCS		=	pipex.c
+SRCS		=	pipex.c			\
+				open.c
 
 SRCS_BONUS	=	
 
