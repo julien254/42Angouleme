@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 01:30:01 by julien            #+#    #+#             */
-/*   Updated: 2022/09/22 15:52:45 by julien           ###   ########.fr       */
+/*   Updated: 2023/12/27 18:27:41 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ typedef struct s_var
 	int		infile;
 	int		outfile;
 	int		here_doc;
-	int		i;
 	int		argc;
 	char	*cmd;
 	char	**cmd_arg;
