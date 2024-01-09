@@ -6,7 +6,7 @@
 #    By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/25 23:55:06 by jdetre            #+#    #+#              #
-#    Updated: 2024/01/05 09:35:12 by judetre          ###   ########.fr        #
+#    Updated: 2024/01/09 18:03:11 by judetre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME_BONUS	=	pipex_bonus
 
 CC			=	gcc
 
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -g
 
 INCLUDE		=	-I.
 

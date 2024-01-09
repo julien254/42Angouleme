@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 09:22:14 by judetre           #+#    #+#             */
-/*   Updated: 2024/01/05 10:52:25 by judetre          ###   ########.fr       */
+/*   Updated: 2024/01/09 18:55:30 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,15 @@ int	open_infile(char *file)
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		perror("Infile");
+	return (fd);
+}
+
+int	open_outfile(char *file)
+{
+	int	fd;
+
+	fd = open(file, O_RDWR | O_CREAT | O_TRUNC, 0000644);
+	if (fd == -1)
+		perror("Outfile");
 	return (fd);
 }
