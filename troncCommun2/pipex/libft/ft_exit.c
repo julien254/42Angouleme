@@ -6,13 +6,11 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 05:45:25 by judetre           #+#    #+#             */
-/*   Updated: 2024/01/05 05:54:43 by judetre          ###   ########.fr       */
+/*   Updated: 2024/01/10 20:13:49 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
-#include <unistd.h>
-#include <stdlib.h>
+#include "libft.h"
 
 void	ft_exit(int nbFd, int nbptr, int exit_type, ...)
 {
