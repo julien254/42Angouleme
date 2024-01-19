@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 08:35:32 by judetre           #+#    #+#             */
-/*   Updated: 2024/01/09 21:53:17 by judetre          ###   ########.fr       */
+/*   Updated: 2024/01/16 04:47:24 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <stdio.h>
 # include "libft/libft.h"
 
 typedef struct s_var
@@ -24,6 +25,7 @@ typedef struct s_var
 	int		infile;
 	int		outfile;
 	int		argc;
+	char	**argv;
 	char	**cmd_arg;
 	char	**envp;
 	char	**path;
