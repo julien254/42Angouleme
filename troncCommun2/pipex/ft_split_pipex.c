@@ -6,13 +6,20 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:56:10 by jdetre            #+#    #+#             */
-/*   Updated: 2024/01/20 01:46:25 by judetre          ###   ########.fr       */
+/*   Updated: 2024/01/20 02:44:00 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+void	search_quote(int *i, char *str)
+{
+	*i = *i + 1;
+	while (str[*i] != '\'' && str[*i] != '\"')
+        *i = *i + 1;	
+    *i = *i + 1;	
+}
 int	count_word(const char *str, char sep)
 {
 	int	count;
@@ -25,7 +32,16 @@ int	count_word(const char *str, char sep)
 	while (str[i])
 	{
 		if (str[i] != sep && str[i - 1] == sep)
+		{
+			if (str[i] == '\'' || str[i] == '\"')
+			{	
+				i++;
+				while (str[i] != '\'' && str[i] != '\"')
+					i++;
+
+			}
 			count++;
+		}
 		i++;
 	}
 	return (count);
@@ -42,6 +58,10 @@ char	*substr(const char *str, int start, int end)
 	if (!substr)
 		return (NULL);
 	i = 0;
+	if (str[start] == '\'' || str[start] == '\"')
+		start++;
+	if (str[end] == '\'' || str[end] == '\"')
+		end--;
 	while (start <= end)
 	{
 		substr[i] = str[start];
@@ -52,7 +72,7 @@ char	*substr(const char *str, int start, int end)
 	return (substr);
 }
 
-char	**ft_split(const char *s, char c)
+char	**ft_split_pipex(const char *s, char c)
 {
 	int		start;
 	int		i;
@@ -68,9 +88,15 @@ char	**ft_split(const char *s, char c)
 	{
 		if (s[i] != c)
 		{
+			
 			start = i;
+			if (s[i] == '\'' || s[i] == '\"')
+				search_quote(&i, (char *)s);
+			else
+			{
 			while (s[i] != c && s[i])
 				i++;
+			}
 			split[j++] = substr(s, start, i - 1);
 		}
 		else
@@ -78,23 +104,4 @@ char	**ft_split(const char *s, char c)
 	}
 	split[j] = NULL;
 	return (split);
-}
-
-int	main(int argc, char *argv[])
-{
-	char	**split;
-	int		i;
-
-	i = 0;
-	if (argc == 2)
-	{
-		split = ft_split(argv[1], ' ');
-		while (split[i])
-		{
-			printf("%s\n", split[i]);
-			free(split[i++]);
-		}
-		free(split);
-	}
-	return (0);
 }

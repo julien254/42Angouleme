@@ -6,11 +6,11 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 18:06:27 by julien            #+#    #+#             */
-/*   Updated: 2022/09/22 15:42:15 by julien           ###   ########.fr       */
+/*   Updated: 2024/01/21 07:35:38 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../pipex.h"
 
 void	ft_free(t_var *pipex, int option)
 {

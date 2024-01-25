@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 14:54:25 by julien            #+#    #+#             */
-/*   Updated: 2022/09/22 15:22:44 by julien           ###   ########.fr       */
+/*   Updated: 2024/01/21 08:11:50 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ int	main(int argc, char *argv[], char **envp)
 
 	if (argc < 5)
 		ft_printf("Pipex: Too few arguments.\n");
-	if (argc >= 5)
+	if (strncmp(argv[1], "here_doc", 8) == 0 && argc < 6)
+		ft_printf("Pipex: Too few arguments.\n");
+	else if (argc >= 5)
 	{
 		pipex.infile = 0;
 		pipex.path = 0;

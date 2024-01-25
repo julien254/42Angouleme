@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
+/*   pipex_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 17:00:24 by julien            #+#    #+#             */
-/*   Updated: 2022/09/18 17:06:06 by julien           ###   ########.fr       */
+/*   Updated: 2024/01/21 07:42:36 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../pipex.h"
 
 void	ft_setbuffer(char *buffer)
 {
@@ -56,7 +56,7 @@ void	ft_read_stdin(t_var *pipex, char *buffer, char **argv, int argc)
 		buffer[ret] = 0;
 		if (strncmp(delimiter, buffer, (ft_strlen(argv[2]) + 1)) == 0)
 			break ;
-		buffertmp = ft_strmcpy(buffer);
+		buffertmp = ft_strdup(buffer);
 		dest = ft_strjoin_malloc(dest, buffertmp);
 	}
 	free(delimiter);
@@ -78,7 +78,7 @@ void	ft_write_fd(t_var *pipex)
 	}
 }
 
-char	**ft_here_doc(t_var *pipex, char **argv, int *argc)
+void	ft_here_doc(t_var *pipex, char **argv, int *argc)
 {
 	char	buffer[10001];
 
@@ -94,5 +94,4 @@ char	**ft_here_doc(t_var *pipex, char **argv, int *argc)
 		pipex->argv = argv;
 		pipex->argc = *argc;
 	}
-	return (argv);
 }
