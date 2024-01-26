@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2023/12/18 18:20:58 by jdetre           ###   ########.fr        #
+#    Updated: 2024/01/25 12:45:29 by judetre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,16 +16,18 @@ NAME_BONUS	=	pipex_bonus
 
 CC			=	gcc
 
-CFLAGS		=	-g -Wall -Wextra -Werror -I.
+CFLAGS		=	-Wall -Wextra -Werror -I.
 
 SRCS		=	pipex.c						\
 				pipex_utils.c				\
-				open_free.c
+				open_free.c					\
+				ft_split_pipex.c
 
 SRCS_BONUS	=	bonus/pipex_bonus.c			\
 				bonus/pipex_utils_bonus.c	\
 				bonus/open_free_bonus.c		\
-				bonus/pipex_heredoc.c
+				bonus/pipex_heredoc.c		\
+				bonus/ft_split_pipex_bonus.c
 
 OBJS		= 	${SRCS:.c=.o}
 

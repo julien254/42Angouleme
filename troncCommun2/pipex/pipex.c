@@ -3,227 +3,91 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
+/*   By: judetre <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/25 23:58:42 by jdetre            #+#    #+#             */
-/*   Updated: 2024/01/20 12:32:26 by judetre          ###   ########.fr       */
+/*   Created: 2024/01/25 13:32:52 by judetre           #+#    #+#             */
+/*   Updated: 2024/01/25 13:32:56 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-void	search_quote(int *i, char *str)
+char	*ft_recovery_cmd(t_var *pipex)
 {
-	*i = *i + 1;
-	while (str[*i] != '\'')
-        *i = *i + 1;	
-    *i = *i + 1;	
-}
-int	count_word(const char *str, char sep)
-{
-	int	count;
-	int	i;
+	size_t		i;
+	char		**env;
+	char		*test;
+	char		*cmd;
 
-	count = 0;
+	env = pipex->envp;
+	while (strncmp(*env, "PATH", 4))
+	{
+		env++;
+		if (*env == NULL)
+			return (NULL);
+	}
+	*env = *env + 5;
+	pipex->path = ft_split(*env, ':');
 	i = 0;
-	if (str[i++] != sep)
-		count++;
-	while (str[i])
+	while (pipex->path[i])
 	{
-		if (str[i] != sep && str[i - 1] == sep)
-		{
-			if (str[i] == '\'')
-			{	
-				i++;
-				while (str[i] != '\'')
-					i++;
-
-			}
-			count++;
-		}
-		i++;
+		test = ft_strjoin(pipex->path[i++], "/");
+		cmd = ft_strjoin(test, *pipex->cmd_arg);
+		free(test);
+		if (access(cmd, F_OK | X_OK) == 0)
+			return (cmd);
+		free(cmd);
 	}
-	return (count);
+	return (NULL);
 }
 
-char	*substr(const char *str, int start, int end)
+void	ft_if_no_infile(t_var *pipex)
 {
-	int		size;
-	char	*substr;
-	int		i;
-
-	size = (end - start) + 1;
-	substr = (char *)malloc((size + 1) * sizeof(char));
-	if (!substr)
-		return (NULL);
-	i = 0;
-	if (str[start] == '\'' && str[end] == '\'')
+	if (pipex->infile == -1)
 	{
-		start++;
-		end--;
+		pipe(pipex->pipe_fd);
+		close(pipex->pipe_fd[1]);
+		pipex->infile = pipex->pipe_fd[0];
 	}
-	while (start <= end)
+}
+
+void	ft_pipex(t_var *pipex, char *order, char *argv)
+{
+	pipex->pid = ft_fork();
+	if (pipex->pid == 0)
 	{
-		substr[i] = str[start];
-		i++;
-		start++;
+		if (strncmp(order, "last", 4) == 0)
+			close(pipex->pipe_fd[1]);
+		else if (strncmp(order, "first", 4) == 0)
+			close(pipex->pipe_fd[0]);
+		ft_choose_dup2(pipex, order);
+		ft_execve(pipex, argv);
 	}
-	substr[i] = '\0';
-	return (substr);
 }
 
-char	**ft_split_pipex(const char *s, char c)
+int	main(int argc, char *argv[], char **envp)
 {
-	int		start;
-	int		i;
-	int		j;
-	char	**split;
+	t_var	pipex;
 
-	split = (char **)malloc(sizeof(char *) * (count_word(s, c) + 1));
-	if (!split)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s[i])
+	if (argc < 5)
+		ft_printf("Pipex: Too few arguments.\n");
+	else if (argc > 5)
+		ft_printf("Pipex: Too many arguments.\n");
+	if (argc == 5)
 	{
-		if (s[i] != c)
-		{
-			
-			start = i;
-			if (s[i] == '\'')
-				search_quote(&i, (char *)s);
-			else
-			{
-				while (s[i] != c && s[i])
-				i++;
-			}
-			split[j++] = substr(s, start, i - 1);
-		}
-		else
-			i++;
+		pipex.envp = envp;
+		pipex.path = 0;
+		pipex.infile = open_infile(argv[1]);
+		ft_if_no_infile(&pipex);
+		pipex.outfile = open_outfile(argv[argc - 1]);
+		ft_pipe(&pipex);
+		ft_pipex(&pipex, "first", argv[2]);
+		ft_pipex(&pipex, "last", argv[3]);
+		close(pipex.pipe_fd[0]);
+		close(pipex.pipe_fd[1]);
+		waitpid(pipex.pid, NULL, 0);
+		close(pipex.infile);
+		close(pipex.outfile);
 	}
-	split[j] = NULL;
-	return (split);
+	exit(EXIT_SUCCESS);
 }
-void ft_pipe(t_var *pipex)
-{
-    if (pipe(pipex->pipe) == -1)
-    {
-        perror("Pipe");
-        exit(EXIT_FAILURE);
-    }
-}
-
-void ft_dup2(int new_stdin, int new_stdout)
-{
-    dup2(new_stdin, 0);
-    dup2(new_stdout, 1);
-}
-
-char *recover_command(t_var *pipex)
-{
-    char **env;
-    char *cmd_temp;
-    char *cmd;
-    int i;
-
-    env = pipex->envp;
-    while (ft_strncmp(*env, "PATH", 4))
-    {
-        env++;
-        if (*env == NULL)
-            return (NULL);
-    }
-    *env = *env + 5;
-    pipex->path = ft_split(*env, ':');
-    i = 0;
-    while (pipex->path[i])
-    {
-        cmd_temp = ft_strjoin(pipex->path[i++], "/");
-        cmd = ft_strjoin(cmd_temp, *pipex->cmd_arg);
-        free(cmd_temp);
-        if (access(cmd, F_OK | X_OK) == 0)
-            return (cmd);
-        free(cmd);
-    }
-    return (NULL);
-}
-
-char **ft_recover_cmd_args(t_var *pipex, char *argv)
-{
-    pipex->cmd_arg = ft_split_pipex(argv, ' ');
-    if (!pipex->cmd_arg)
-    {
-        ft_putstr_fd("Pipex: command not found.", 2);
-        exit(EXIT_FAILURE);
-    }
-    return (pipex->cmd_arg);
-}
-
-void first_child(t_var *pipex)
-{
-    char *cmd;
-
-    ft_dup2(pipex->infile, pipex->pipe[1]);
-    close(pipex->infile);
-    close(pipex->pipe[0]);
-    ft_recover_cmd_args(pipex, pipex->argv[2]);
-    cmd = recover_command(pipex);
-    execve(cmd, pipex->cmd_arg, pipex->envp);
-    perror("Execve");
-    exit(EXIT_FAILURE);
-}
-
-void last_child(t_var *pipex)
-{
-    char *cmd;
-
-    ft_dup2(pipex->pipe[0], pipex->outfile);
-    close(pipex->pipe[1]);
-    ft_recover_cmd_args(pipex, pipex->argv[3]);
-    cmd = recover_command(pipex);
-    execve(cmd, pipex->cmd_arg, pipex->envp);
-    perror("Execve");
-    exit(EXIT_FAILURE);
-}
-
-int main(int argc, char *argv[], char **envp)
-{
-    t_var pipex;
-    int status;
-    int pid;
-    int pid2;
-
-    if (argc < 5)
-    {
-        ft_printf("Pipex: Too few arguments.\n");
-        exit(EXIT_FAILURE);
-    }
-    else if (argc > 5)
-    {
-        ft_printf("Pipex: Too many arguments.\n");
-        exit(EXIT_FAILURE);
-    }
-    pipex.envp = envp;
-    pipex.argc = argc;
-    pipex.argv = argv;
-    pipex.infile = open_infile(pipex.argv[1]);
-    pipex.outfile = open_outfile(pipex.argv[pipex.argc - 1]);
-    ft_pipe(&pipex);
-    pid = fork();
-    if (pid == 0)
-        first_child(&pipex);
-    pid2 = fork();
-    if (pid2 == 0)
-        last_child(&pipex);
-    close(pipex.pipe[0]);
-    close(pipex.pipe[1]);
-    waitpid(pid, &status, 0);
-    waitpid(pid2, &status, 0);
-    exit(EXIT_SUCCESS);
-}
-

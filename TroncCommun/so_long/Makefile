@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2022/10/13 20:17:30 by julien           ###   ########.fr        #
+#    Updated: 2024/01/26 14:12:01 by judetre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,13 @@ NAME_BONUS	=	so_long_bonus
 
 NAME_TEST	=	so_long_test
 
-CC			=	gcc -g
+CC			=	cc -g
 
 CFLAGS		=	-Wall -Wextra -Werror
 
 INCLUDE		=	-I.
 
-LIB			=	-L./libft -lft -L. -lmlx -lXext -lX11 -lm -lz
+LIB			=	-L./libft -lft -L./mlx -lmlx_Linux -lXext -lX11 -lm -lz
 
 SRCS		=	so_long.c						\
 				so_long_img.c					\

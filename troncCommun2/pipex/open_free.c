@@ -1,16 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   open.c                                             :+:      :+:    :+:   */
+/*   open_free.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
+/*   By: judetre <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/05 09:22:14 by judetre           #+#    #+#             */
-/*   Updated: 2024/01/16 02:46:52 by judetre          ###   ########.fr       */
+/*   Created: 2024/01/25 13:31:00 by judetre           #+#    #+#             */
+/*   Updated: 2024/01/25 13:32:01 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	ft_free(t_var *pipex, int option)
+{
+	size_t	i;
+
+	i = 0;
+	while (pipex->cmd_arg[i])
+		free(pipex->cmd_arg[i++]);
+	free(pipex->cmd_arg);
+	i = 0;
+	if (option)
+	{
+		while (pipex->path[i])
+			free(pipex->path[i++]);
+		free(pipex->path);
+	}
+}
 
 int	open_infile(char *file)
 {

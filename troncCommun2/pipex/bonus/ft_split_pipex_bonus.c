@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split_pipex.c                                   :+:      :+:    :+:   */
+/*   ft_split_pipex_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:09:54 by judetre           #+#    #+#             */
-/*   Updated: 2024/01/25 13:28:08 by judetre          ###   ########.fr       */
+/*   Updated: 2024/01/25 12:40:58 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 static void	search_quote(int *i, char *str, char c)
 {

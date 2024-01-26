@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+         #
+#    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/12/25 23:55:06 by jdetre            #+#    #+#              #
-#    Updated: 2024/01/09 18:03:11 by judetre          ###   ########.fr        #
+#    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
+#    Updated: 2024/01/25 14:20:34 by judetre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,18 +14,20 @@ NAME		=	pipex
 
 NAME_BONUS	=	pipex_bonus
 
-CC			=	gcc
+CC			=	cc
 
-CFLAGS		=	-Wall -Wextra -Werror -g
+CFLAGS		=	-Wall -Wextra -Werror -I.
 
-INCLUDE		=	-I.
+SRCS		=	pipex.c						\
+				pipex_utils.c				\
+				open_free.c					\
+				ft_split_pipex.c
 
-LIB			=	-L./libft -lft
-
-SRCS		=	pipex.c			\
-				open.c
-
-SRCS_BONUS	=	
+SRCS_BONUS	=	bonus/pipex_bonus.c			\
+				bonus/pipex_utils_bonus.c	\
+				bonus/open_free_bonus.c		\
+				bonus/pipex_heredoc.c		\
+				bonus/ft_split_pipex_bonus.c
 
 OBJS		= 	${SRCS:.c=.o}
 
@@ -37,13 +39,13 @@ all:			${NAME}
 
 ${NAME}:		${OBJS}
 			make -C ${LIBPATH}
-			${CC} ${CFLAGS} $^ ${INCLUDE} ${LIB} -o $@
+			${CC} ${CFLAGS} $^ -L./libft -lft -o $@
 
 bonus:			${NAME_BONUS}
 
 ${NAME_BONUS}:	${OBJS_BONUS}
 			make -C ${LIBPATH}
-			${CC} ${CFLAGS} $^ ${INCLUDE} ${LIB} -o ${NAME_BONUS}
+			${CC} ${CFLAGS} $^ -L./libft -lft -o ${NAME_BONUS}
 
 clean:
 			rm -f ${OBJS} ${OBJS_BONUS}
