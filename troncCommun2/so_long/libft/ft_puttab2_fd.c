@@ -1,19 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_puttab2_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/12 12:42:03 by julien            #+#    #+#             */
-/*   Updated: 2024/01/10 17:33:10 by judetre          ###   ########.fr       */
+/*   Created: 2022/09/16 08:58:12 by julien            #+#    #+#             */
+/*   Updated: 2023/12/22 15:59:19 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-int	ft_putstr_fd(char *s, int fd)
+int	ft_puttab2_fd(char **tab, int fd)
 {
-	if (!s)
-		return (write(fd, "(null)", 6));
-	return (write(fd, s, ft_strlen(s)));
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (tab[i])
+		count += ft_putendl_fd(tab[i++], fd);
+	return (count);
 }

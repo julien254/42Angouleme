@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_count_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/12 12:42:03 by julien            #+#    #+#             */
-/*   Updated: 2024/01/10 17:33:10 by judetre          ###   ########.fr       */
+/*   Created: 2022/09/28 16:03:49 by julien            #+#    #+#             */
+/*   Updated: 2023/12/22 18:14:49 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
 
-int	ft_putstr_fd(char *s, int fd)
+int	ft_count_line(char *str)
 {
-	if (!s)
-		return (write(fd, "(null)", 6));
-	return (write(fd, s, ft_strlen(s)));
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i++] == '\n')
+			j++;
+	}
+	if (i == 0)
+		return (0);
+	return (j + 1);
 }

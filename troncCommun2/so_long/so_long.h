@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/12 12:42:03 by julien            #+#    #+#             */
-/*   Updated: 2024/01/10 17:33:10 by judetre          ###   ########.fr       */
+/*   Created: 2024/01/27 12:16:15 by judetre           #+#    #+#             */
+/*   Updated: 2024/01/27 12:19:48 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
 
-int	ft_putstr_fd(char *s, int fd)
-{
-	if (!s)
-		return (write(fd, "(null)", 6));
-	return (write(fd, s, ft_strlen(s)));
-}
+#ifndef SO_LONG_H
+# define SO_LONG_H 
+# include "libft/libft.h"
+# include "mlx/mlx.h"
+
+
+
+
+#endif /* ifndef SO_LONG_H */

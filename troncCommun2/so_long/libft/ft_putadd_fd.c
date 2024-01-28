@@ -1,19 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_putadd_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/12 12:42:03 by julien            #+#    #+#             */
-/*   Updated: 2024/01/10 17:33:10 by judetre          ###   ########.fr       */
+/*   Created: 2022/05/28 08:34:43 by jdetre            #+#    #+#             */
+/*   Updated: 2022/05/31 14:49:26 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-int	ft_putstr_fd(char *s, int fd)
+int	ft_putadd_fd(size_t hexa, int fd)
 {
-	if (!s)
-		return (write(fd, "(null)", 6));
-	return (write(fd, s, ft_strlen(s)));
+	int	i;
+
+	i = 0;
+	if (!hexa)
+		return (write(fd, "(nil)", 5));
+	ft_putstr_fd("0x", fd);
+	i += ft_puthexa_ll_fd(hexa, fd, 0);
+	return (i + 2);
 }

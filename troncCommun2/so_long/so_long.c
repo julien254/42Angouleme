@@ -1,19 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/12 12:42:03 by julien            #+#    #+#             */
-/*   Updated: 2024/01/10 17:33:10 by judetre          ###   ########.fr       */
+/*   Created: 2024/01/27 12:14:46 by judetre           #+#    #+#             */
+/*   Updated: 2024/01/27 12:52:43 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
 
-int	ft_putstr_fd(char *s, int fd)
+#include "so_long.h"
+
+int	main(int argc, char *argv[])
 {
-	if (!s)
-		return (write(fd, "(null)", 6));
-	return (write(fd, s, ft_strlen(s)));
+	void	*mlx;
+	void	*win;
+	(void)argc;
+	(void)argv;
+	mlx = mlx_init();
+	win = mlx_new_window(mlx, 1920, 1080, "So_long");
+	mlx_loop(mlx);
+	return (0);
 }

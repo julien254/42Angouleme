@@ -3,18 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2024/01/27 12:40:38 by judetre          ###   ########.fr        #
+#    Created: 2023/12/25 23:56:00 by jdetre            #+#    #+#              #
+#    Updated: 2024/01/27 12:51:23 by judetre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	so_long
 
-NAME_BONUS	=	so_long_bonus
-
-NAME_TEST	=	so_long_test
+NAME_BONUS	=	
 
 CC			=	cc -g
 
@@ -22,31 +20,11 @@ CFLAGS		=	-Wall -Wextra -Werror
 
 INCLUDE		=	-I.
 
-LIB			=	-L./libft -lft -L./mlx -lmlx_Linux -lXext -lX11 -lm -lz
+LIB			=	-L${LIBPATH} -lft -L${MLXPATH} -lmlx_Linux -lXext -lX11 -lm -lz
 
-SRCS		=	so_long.c						\
-				so_long_img.c					\
-				so_long_map.c					\
-				so_long_check.c					\
-				so_long_err.c					\
-				so_long_init.c					\
-				so_long_utils.c					\
-				so_long_close.c					\
-				so_long_way.c					\
-				so_long_map2d.c
+SRCS		=	so_long.c			
 
-SRCS_BONUS	=	bonus/so_long_bonus.c			\
-				bonus/so_long_img_bonus.c		\
-				bonus/so_long_map_bonus.c		\
-				bonus/so_long_check_bonus.c		\
-				bonus/move_down.c				\
-				bonus/move_up.c					\
-				so_long_err.c					\
-				bonus/so_long_init_bonus.c		\
-				bonus/so_long_utils_bonus.c		\
-				so_long_close.c					\
-				so_long_way.c					\
-				so_long_map2d.c
+SRCS_BONUS	=	
 
 OBJS		= 	${SRCS:.c=.o}
 
@@ -54,10 +32,13 @@ OBJS_BONUS	= 	${SRCS_BONUS:.c=.o}
 
 LIBPATH		= 	libft/
 
+MLXPATH		=	mlx/
+
 all:			${NAME}
 
 ${NAME}:		${OBJS}
 			make -C ${LIBPATH}
+			make -C ${MLXPATH}
 			${CC} ${CFLAGS} $^ ${INCLUDE} ${LIB} -o $@
 
 bonus:			${NAME_BONUS}
@@ -66,18 +47,14 @@ ${NAME_BONUS}:	${OBJS_BONUS}
 			make -C ${LIBPATH}
 			${CC} ${CFLAGS} $^ ${INCLUDE} ${LIB} -o ${NAME_BONUS}
 
-test:			${NAME_TEST}
-
-${NAME_TEST}:	${OBJS_BONUS}
-			make -C ${LIBPATH}
-			${CC} ${CFLAGS} $^ ${INCLUDE} ${LIB} -o ${NAME_TEST}
-
 clean:
+			make clean -C ${LIBPATH}
 			rm -f ${OBJS} ${OBJS_BONUS}
 
 fclean:			clean
 			make fclean -C ${LIBPATH}
-			rm -f ${NAME} ${NAME_BONUS} ${NAME_TEST}
+			make clean -C ${MLXPATH}
+			rm -f ${NAME} ${NAME_BONUS}
 
 re:				fclean all
 
