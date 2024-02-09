@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:48:19 by judetre           #+#    #+#             */
-/*   Updated: 2024/01/10 20:20:42 by judetre          ###   ########.fr       */
+/*   Updated: 2024/02/09 20:55:22 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,10 @@ int		ft_puthexa_fd(unsigned int nbr, int fd, int uppercase);
 int		ft_puthexa_ll_fd(size_t nbr, int fd, int uppercase);
 int		ft_puttab2_fd(char **tab, int fd);
 int		ft_put_u_nbr_fd(unsigned int n, int fd);
-char	*ft_recover_fd(char *file);
+char	**ft_recover_fd(char *file);
 char	*ft_strjoin_malloc(char *s1, char *s2);
 int		ft_tab2dlen(char **tab);
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
 /***************** PRINTF ***************/
 
