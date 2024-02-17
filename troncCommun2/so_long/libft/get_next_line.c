@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 10:24:02 by jdetre            #+#    #+#             */
-/*   Updated: 2024/02/09 21:15:13 by judetre          ###   ########.fr       */
+/*   Updated: 2024/02/10 07:32:21 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	set_struct_save(int fd, t_save *save)
 	return (i);
 }
 
-static char	*ft_realloc_gnl(char *buffer, int multiplier, t_save *save, int current_fd)
+static char	*ft_realloc_gnl(char *buffer, int multiplier, t_save *save, \
+														int current_fd)
 {
 	char	*new_buffer;
 

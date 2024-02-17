@@ -6,23 +6,23 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 16:03:49 by julien            #+#    #+#             */
-/*   Updated: 2023/12/22 18:14:49 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/02/11 17:55:01 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	ft_count_line(char *str)
 {
 	int	i;
-	int	j;
+	int	count;
 
 	i = 0;
-	j = 0;
+	count = 0;
 	while (str[i])
 	{
 		if (str[i++] == '\n')
-			j++;
+			count++;
 	}
 	if (i == 0)
 		return (0);
-	return (j + 1);
+	return (count + 1);
 }

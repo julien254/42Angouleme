@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:48:19 by judetre           #+#    #+#             */
-/*   Updated: 2024/02/09 20:55:22 by judetre          ###   ########.fr       */
+/*   Updated: 2024/02/11 19:35:01 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int		ft_printf(const char *str, ...);
 /**************** GET_NEXT_LINE **********/
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 1024
 # endif
 
 typedef struct s_save
@@ -118,4 +118,17 @@ int		if_is_endline_gnl(char *str);
 char	*ft_strdup_gnl(char *src);
 char	*free_all_gnl(char *line, char *residue);
 
+/**************** MEMORY MANAGEMENT **********/
+
+
+typedef struct s_list_malloc
+{
+	void					*addr;
+	int						dimension;
+	struct s_list_malloc	*next;
+}				t_list_malloc;
+
+void			*ft_malloc(t_list_malloc **lst_malloc, int dimension, size_t size);
+void			ft_free(t_list_malloc *lst_malloc, void *ptr);
+void			ft_lstadd_malloc(t_list_malloc **lst_malloc, void *addr, int dimension);
 #endif

@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_realloc.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/11 13:29:42 by judetre           #+#    #+#             */
+/*   Updated: 2024/02/11 13:29:45 by judetre          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 {
 	void	*new_ptr;
 	size_t	size_cpy;
-	
+
 	if (new_size == 0)
 	{
 		free(ptr);
