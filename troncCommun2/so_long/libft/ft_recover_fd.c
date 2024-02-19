@@ -6,11 +6,12 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 00:16:55 by julien            #+#    #+#             */
-/*   Updated: 2024/02/11 13:33:26 by judetre          ###   ########.fr       */
+/*   Updated: 2024/02/19 18:15:25 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
 static void	rm_return_line(char *str)
 {
 	while (*str != '\n' && *str)
@@ -37,6 +38,8 @@ char	**ft_recover_fd(char *file)
 	{
 		fd_2d = ft_realloc(fd_2d, sizeof(char *) * (1 + i), sizeof(char *) * \
 																(1 + i + 1));
+		if (!fd_2d)
+			return (NULL);
 		i++;
 		fd_2d[i] = get_next_line(fd);
 		if (fd_2d[i])
