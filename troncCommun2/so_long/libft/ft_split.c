@@ -6,7 +6,7 @@
 /*   By: judetre <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:27:07 by judetre           #+#    #+#             */
-/*   Updated: 2023/11/06 12:03:45 by judetre          ###   ########.fr       */
+/*   Updated: 2024/02/19 18:37:33 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,24 +51,26 @@ static char	*substr(const char *str, size_t start, size_t end)
 char	**ft_split(char const *s, char c)
 {
 	size_t	i;
-	int		i2;
+	int		start;
 	size_t	j;
 	char	**split;
 
+	if (!s)
+		return (NULL);
 	split = malloc((count(s, c) + 1) * sizeof(char *));
-	if (!s || !split)
-		return (0);
+	if (!split)
+		return (NULL);
 	i = 0;
 	j = 0;
-	i2 = -1;
+	start = -1;
 	while (i <= ft_strlen(s))
 	{
-		if (s[i] != c && i2 < 0)
-			i2 = i;
-		else if ((s[i] == c || i == ft_strlen(s)) && i2 >= 0)
+		if (s[i] != c && start < 0)
+			start = i;
+		else if ((s[i] == c || i == ft_strlen(s)) && start >= 0)
 		{
-			split[j++] = substr(s, i2, i);
-			i2 = -1;
+			split[j++] = substr(s, start, i);
+			start = -1;
 		}
 		i++;
 	}

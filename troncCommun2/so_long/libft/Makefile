@@ -6,13 +6,13 @@
 #    By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/25 23:42:02 by jdetre            #+#    #+#              #
-#    Updated: 2024/01/25 14:20:22 by judetre          ###   ########.fr        #
+#    Updated: 2024/02/09 21:10:22 by judetre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= libft.a
 
-CC			= cc
+CC			= cc -g
 
 CFLAGS		= -Wall -Wextra -Werror -I.
 
@@ -71,6 +71,7 @@ SRCS		=	ft_atoi.c			\
 				ft_lstmap.c      	\
 				ft_lstnew.c      	\
 				ft_lstsize.c     	\
+				ft_realloc.c		\
 				ft_printf.c			\
 				get_next_line.c		\
 				get_next_line_utils.c

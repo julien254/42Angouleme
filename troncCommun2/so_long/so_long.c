@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:14:46 by judetre           #+#    #+#             */
-/*   Updated: 2024/01/30 11:27:55 by judetre          ###   ########.fr       */
+/*   Updated: 2024/02/25 10:19:58 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,29 +55,41 @@ void	ft_put_img(t_img *img)
 
 int	main(int argc, char *argv[])
 {
-	void	*mlx;
-	void	*win;
-	t_img	*floor;
-	int	x;
-	int	y;
+	/* void	*mlx; */
+	/* void	*win; */
+	/* t_img	*floor; */
+	/* int	x; */
+	/* int	y; */
+	/* (void)argc; */
+	/* (void)argv; */
+	/* y = 0; */
+	/* x = 0; */
+	/* mlx = mlx_init(); */
+	/* win = mlx_new_window(mlx, 1920, 1080, "So_long"); */
+	/* floor = ft_new_img("sprite/hero.xpm", mlx, win); */
+	/* while (y < 1080) */
+	/* { */
+	/* 	mlx_put_image_to_window(mlx, win, floor->img, x, y); */
+	/* 	x += 60; */
+	/* 	if (x > 1920) */
+	/* 	{ */
+	/* 		y += 60; */
+	/* 		x = 0; */
+	/* 	} */
+	/* } */
+	/* ft_put_img(floor); */
+	/* mlx_loop(mlx); */
+	char	**map_2d;
+
+	/* void	*mlx; */
+	/* void	*win; */
 	(void)argc;
 	(void)argv;
-	y = 0;
-	x = 0;
-	mlx = mlx_init();
-	win = mlx_new_window(mlx, 1920, 1080, "So_long");
-	floor = ft_new_img("sprite/hero.xpm", mlx, win);
-	while (y < 1080)
-	{
-		mlx_put_image_to_window(mlx, win, floor->img, x, y);
-		x += 60;
-		if (x > 1920)
-		{
-			y += 60;
-			x = 0;
-		}
-	}
-	ft_put_img(floor);
-	mlx_loop(mlx);
+	/* mlx = mlx_init(); */
+	/* win = mlx_new_window(mlx, 1920, 1080, "So_long"); */
+	/* (void)win; */
+	/* mlx_loop(mlx); */
+	map_2d = ft_recover_fd(argv[1]);
+	ft_puttab2_fd(map_2d, 1);
 	return (0);
 }

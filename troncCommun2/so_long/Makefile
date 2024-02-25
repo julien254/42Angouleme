@@ -6,13 +6,15 @@
 #    By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/25 23:56:00 by jdetre            #+#    #+#              #
-#    Updated: 2024/01/27 12:51:23 by judetre          ###   ########.fr        #
+#    Updated: 2024/02/09 22:34:37 by judetre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	so_long
 
 NAME_BONUS	=	
+
+NAME_TEST	=	so_long_test
 
 CC			=	cc -g
 
@@ -46,6 +48,12 @@ bonus:			${NAME_BONUS}
 ${NAME_BONUS}:	${OBJS_BONUS}
 			make -C ${LIBPATH}
 			${CC} ${CFLAGS} $^ ${INCLUDE} ${LIB} -o ${NAME_BONUS}
+
+test :			${NAME_TEST}
+
+${NAME_TEST}:		${OBJS}
+			make -C ${LIBPATH}
+			${CC} ${CFLAGS} $^ ${INCLUDE} -L${LIBPATH} -lft -o $@
 
 clean:
 			make clean -C ${LIBPATH}

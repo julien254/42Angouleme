@@ -6,33 +6,44 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 00:16:55 by julien            #+#    #+#             */
-/*   Updated: 2022/10/09 05:05:56 by julien           ###   ########.fr       */
+/*   Updated: 2024/02/19 18:15:25 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_recover_fd(char *file)
+static void	rm_return_line(char *str)
+{
+	while (*str != '\n' && *str)
+		str++;
+	*str = 0;
+}
+
+char	**ft_recover_fd(char *file)
 {
 	int		fd;
-	char	*buffer;
-	char	*buffertmp;
-	char	*bufferfinal;
+	char	**fd_2d;
+	size_t	i;
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return (NULL);
-	buffer = get_next_line(fd);
-	bufferfinal = ft_strdup(buffer);
-	while (buffer)
+	fd_2d = malloc(sizeof(char *) * 1);
+	if (!fd_2d)
+		return (NULL);
+	i = 0;
+	fd_2d[i] = get_next_line(fd);
+	rm_return_line(fd_2d[i]);
+	while (fd_2d[i])
 	{
-		free(buffer);
-		buffer = get_next_line(fd);
-		buffertmp = ft_strdup(buffer);
-		if (buffertmp)
-			bufferfinal = ft_strjoin_malloc(bufferfinal, buffertmp);
+		fd_2d = ft_realloc(fd_2d, sizeof(char *) * (1 + i), sizeof(char *) * \
+																(1 + i + 1));
+		if (!fd_2d)
+			return (NULL);
+		i++;
+		fd_2d[i] = get_next_line(fd);
+		if (fd_2d[i])
+			rm_return_line(fd_2d[i]);
 	}
-	if (buffer)
-		free(buffer);
-	return (bufferfinal);
+	return (fd_2d);
 }

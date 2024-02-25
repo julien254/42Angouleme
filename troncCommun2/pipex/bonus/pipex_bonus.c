@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 14:54:25 by julien            #+#    #+#             */
-/*   Updated: 2024/01/25 11:57:14 by judetre          ###   ########.fr       */
+/*   Updated: 2024/02/17 07:31:45 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	ft_pipex_loop(t_var *pipex)
 	close(pipex->infile);
 	pipex->infile = pipex->pipe_fd[0];
 	close(pipex->pipe_fd[1]);
-	waitpid(pipex->pid, NULL, 0);
 	pipex->i++;
 }
 
@@ -88,6 +87,7 @@ int	main(int argc, char *argv[], char **envp)
 		ft_write_fd(&pipex);
 		while (pipex.i != pipex.argc - 1)
 			ft_pipex_loop(&pipex);
+		waitpid(pipex.pid, NULL, 0);
 		close(pipex.infile);
 		close(pipex.outfile);
 	}

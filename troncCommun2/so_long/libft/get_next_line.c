@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 10:24:02 by jdetre            #+#    #+#             */
-/*   Updated: 2023/12/22 18:17:51 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/02/10 07:32:21 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	set_struct_save(int fd, t_save *save)
 	return (i);
 }
 
-char	*ft_realloc(char *buffer, int multiplier, t_save *save, int current_fd)
+static char	*ft_realloc_gnl(char *buffer, int multiplier, t_save *save, \
+														int current_fd)
 {
 	char	*new_buffer;
 
@@ -68,7 +69,7 @@ char	*read_while_noendline(int fd, t_save *save, int current_fd)
 			!= 0)
 	{
 		multiplier++;
-		buffer = ft_realloc(buffer, multiplier, save, current_fd);
+		buffer = ft_realloc_gnl(buffer, multiplier, save, current_fd);
 		if (multiplier == 1)
 			save->residue[current_fd] = NULL;
 		save->read_size[current_fd] = read(fd, buffer_tmp, BUFFER_SIZE);
