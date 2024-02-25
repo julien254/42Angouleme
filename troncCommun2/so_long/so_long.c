@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:14:46 by judetre           #+#    #+#             */
-/*   Updated: 2024/02/25 10:19:58 by judetre          ###   ########.fr       */
+/*   Updated: 2024/02/25 11:10:19 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int	main(int argc, char *argv[])
 	/* } */
 	/* ft_put_img(floor); */
 	/* mlx_loop(mlx); */
+
 	char	**map_2d;
 
 	/* void	*mlx; */
@@ -91,5 +92,6 @@ int	main(int argc, char *argv[])
 	/* mlx_loop(mlx); */
 	map_2d = ft_recover_fd(argv[1]);
 	ft_puttab2_fd(map_2d, 1);
+	ft_printf("LOL");
 	return (0);
 }

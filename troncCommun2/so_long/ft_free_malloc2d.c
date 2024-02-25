@@ -6,11 +6,10 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:01:32 by judetre           #+#    #+#             */
-/*   Updated: 2024/02/25 11:34:27 by judetre          ###   ########.fr       */
+/*   Updated: 2024/02/25 11:24:41 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
-#include <stdio.h>
+#include "ft_free_malloc2d.h"
 
 void ft_free_malloc2d(void **tab2d)
 {
@@ -37,6 +36,6 @@ int	main(int argc, char *argv[])
 	char **split;
 	split = ft_split("   1 2 3    4 55 6    7 8 9 0    ", ' ');
 	ft_free_malloc2d((void **)split);
-	ft_printf("LOL\n");
+	ft_printf("\n");
 	return (0);
 }
