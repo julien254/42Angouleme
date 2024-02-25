@@ -3,77 +3,78 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: judetre <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/03 15:27:07 by judetre           #+#    #+#             */
-/*   Updated: 2024/02/19 18:37:33 by judetre          ###   ########.fr       */
+/*   Created: 2023/11/07 17:56:10 by jdetre            #+#    #+#             */
+/*   Updated: 2024/02/25 14:02:33 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "libft.h"
 
-static int	count(const char *str, char c)
+int	count_word(const char *str, char sep)
 {
-	int	lock;
+	int	count;
 	int	i;
 
+	count = 0;
 	i = 0;
-	lock = 0;
-	if (!str)
-		return (0);
-	while (*str)
+	if (str[i++] != sep)
+		count++;
+	while (str[i])
 	{
-		if (*str != c && lock == 0)
-		{
-			lock = 1;
-			i++;
-		}
-		else if (*str == c)
-			lock = 0;
-		str++;
-	}
-	return (i);
-}
-
-static char	*substr(const char *str, size_t start, size_t end)
-{
-	char	*sub;
-	int		i;
-
-	i = 0;
-	sub = malloc((end - start + 1) * sizeof(char));
-	while (start < end)
-		sub[i++] = str[start++];
-	sub[i] = '\0';
-	return (sub);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	size_t	i;
-	int		start;
-	size_t	j;
-	char	**split;
-
-	if (!s)
-		return (NULL);
-	split = malloc((count(s, c) + 1) * sizeof(char *));
-	if (!split)
-		return (NULL);
-	i = 0;
-	j = 0;
-	start = -1;
-	while (i <= ft_strlen(s))
-	{
-		if (s[i] != c && start < 0)
-			start = i;
-		else if ((s[i] == c || i == ft_strlen(s)) && start >= 0)
-		{
-			split[j++] = substr(s, start, i);
-			start = -1;
-		}
+		if (str[i] != sep && str[i - 1] == sep)
+			count++;
 		i++;
 	}
-	split[j] = 0;
+	return (count);
+}
+
+char	*substr(const char *str, int start, int end)
+{
+	int		size;
+	char	*substr;
+	int		i;
+
+	size = (end - start) + 1;
+	substr = (char *)malloc((size + 1) * sizeof(char));
+	if (!substr)
+		return (NULL);
+	i = 0;
+	while (start <= end)
+	{
+		substr[i] = str[start];
+		i++;
+		start++;
+	}
+	substr[i] = '\0';
+	return (substr);
+}
+
+char	**ft_split(const char *s, char c)
+{
+	int		start;
+	int		i[2];
+	char	**split;
+
+	split = (char **)malloc(sizeof(char *) * (count_word(s, c) + 1));
+	if (!split)
+		return (NULL);
+	i[0] = 0;
+	i[1] = 0;
+	while (s[i[0]])
+	{
+		if (s[i[0]] != c)
+		{
+			start = i[0];
+			while (s[i[0]] != c && s[i[0]])
+				i[0]++;
+			split[i[1]++] = substr(s, start, i[0] - 1);
+			if (!split[i[1] - 1])
+				return ((char **)ft_free_malloc2d((void **)split));
+		}
+		else
+			i[0]++;
+	}
+	split[i[1]] = NULL;
 	return (split);
 }

@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:48:19 by judetre           #+#    #+#             */
-/*   Updated: 2024/02/25 11:08:32 by judetre          ###   ########.fr       */
+/*   Updated: 2024/02/25 14:56:25 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	**ft_recover_fd(char *file);
 char	*ft_strjoin_malloc(char *s1, char *s2);
 int		ft_tab2dlen(char **tab);
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
-void	ft_free_malloc2d(void **tab2d);
+void	*ft_free_malloc2d(void **tab2d);
 
 
 /***************** PRINTF ***************/
