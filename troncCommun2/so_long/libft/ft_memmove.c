@@ -6,10 +6,9 @@
 /*   By: judetre <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:28:47 by judetre           #+#    #+#             */
-/*   Updated: 2023/11/03 17:33:24 by judetre          ###   ########.fr       */
+/*   Updated: 2024/02/26 16:29:35 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "libft.h"
 
 static int	check_overlap(void *dest, const void *src, size_t n)

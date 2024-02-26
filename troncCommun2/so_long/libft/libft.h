@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:48:19 by judetre           #+#    #+#             */
-/*   Updated: 2024/02/25 21:31:33 by judetre          ###   ########.fr       */
+/*   Updated: 2024/02/26 17:56:46 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,8 @@ typedef struct s_list_malloc
 	struct s_list_malloc	*next;
 }				t_list_malloc;
 
-void			*ft_malloc(t_list_malloc **lst_malloc, char *fonction, ...);
-void			*ft_malloc2d(t_list_malloc **lst_malloc, char *fonction, ...);
+void			*ft_malloc(t_list_malloc **lst_malloc, char *function, ...);
+void			*ft_malloc2d(t_list_malloc **lst_malloc, char *function, ...);
 void			ft_free(t_list_malloc *lst_malloc, void *ptr);
 void			ft_lstadd_malloc(t_list_malloc **lst_malloc, void *addr, int dimension);
 #endif
