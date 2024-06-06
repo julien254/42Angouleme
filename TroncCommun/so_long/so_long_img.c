@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 13:12:31 by julien            #+#    #+#             */
-/*   Updated: 2024/01/30 10:55:23 by judetre          ###   ########.fr       */
+/*   Updated: 2024/06/06 12:38:53 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_img	*ft_new_img(char *filename, void *mlx, void *win)
 	t_img	*img;
 
 	img = (t_img *)ft_calloc(sizeof(t_img), 1);
-	img = 0;
+	//img = 0;
 	ft_verif_malloc(img);
 	img->img = mlx_xpm_file_to_image(mlx, filename, &img->size_x, &img->size_y);
 	img->name = filename;
