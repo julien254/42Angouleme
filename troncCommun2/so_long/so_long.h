@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:16:15 by judetre           #+#    #+#             */
-/*   Updated: 2024/06/15 10:40:51 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/06/15 14:27:15 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define SO_LONG_H 
 # include "libft/libft.h"
 # include "mlx/mlx.h"
+# include <stdio.h>
+# include <errno.h>
 
 typedef struct s_win {
 	void				*mlx;
