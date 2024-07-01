@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:48:19 by judetre           #+#    #+#             */
-/*   Updated: 2024/06/29 10:45:30 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/07/01 12:41:58 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int		ft_tab2dlen(char **tab);
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 void	*ft_free_malloc2d(void **tab2d);
 
-
 /***************** PRINTF ***************/
 
 typedef struct s_ind
@@ -119,19 +118,4 @@ void	ft_strlcat_gnl(char *dst, char *src);
 int		if_is_endline_gnl(char *str);
 char	*ft_strdup_gnl(char *src);
 char	*free_all_gnl(char *line, char *residue);
-
-/**************** MEMORY MANAGEMENT **********/
-
-
-typedef struct s_list_malloc
-{
-	void					*addr;
-	int						dimension;
-	struct s_list_malloc	*next;
-}				t_list_malloc;
-
-void			*ft_malloc(t_list_malloc **lst_malloc, char *function, ...);
-void			*ft_malloc2d(t_list_malloc **lst_malloc, char *function, ...);
-void			ft_free(t_list_malloc *lst_malloc, void *ptr);
-void			ft_lstadd_malloc(t_list_malloc **lst_malloc, void *addr, int dimension);
 #endif

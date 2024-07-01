@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/12/25 23:56:00 by jdetre            #+#    #+#              #
-#    Updated: 2024/06/15 16:34:49 by jdetre           ###   ########.fr        #
+#    Created: 2024/06/30 16:35:18 by jdetre            #+#    #+#              #
+#    Updated: 2024/06/30 17:21:36 by jdetre           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,14 @@ INCLUDE		=	-I.
 
 LIB			=	-L${LIBPATH} -lft -L${MLXPATH} -lmlx_Linux -lXext -lX11 -lm -lz
 
-SRCS		=	so_long.c			
+SRCS		=	so_long.c		\
+				so_long_loop.c	\
+				so_long_hook.c	\
+				exit_game.c		\
+				check_map.c 	\
+				map_utils.c		\
+				pixel_utils.c	\
+				img_load.c
 
 SRCS_BONUS	=	
 

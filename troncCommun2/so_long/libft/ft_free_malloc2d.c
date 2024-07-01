@@ -6,12 +6,12 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:01:32 by judetre           #+#    #+#             */
-/*   Updated: 2024/06/29 12:27:18 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/07/01 12:38:02 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
 
-void *ft_free_malloc2d(void **tab2d)
+void	*ft_free_malloc2d(void **tab2d)
 {
 	int	i;
 
