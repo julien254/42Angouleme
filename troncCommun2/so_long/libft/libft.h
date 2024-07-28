@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:48:19 by judetre           #+#    #+#             */
-/*   Updated: 2024/07/01 12:41:58 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/07/11 12:37:40 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdint.h>
 # include <stdarg.h>
 # include <fcntl.h>
+# include <stdio.h>
 
 /****************** Basic Function ****************/
 
@@ -85,6 +86,10 @@ char	*ft_strjoin_malloc(char *s1, char *s2);
 int		ft_tab2dlen(char **tab);
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 void	*ft_free_malloc2d(void **tab2d);
+int		**ft_tab2d_int(int size_y, int size_x);
+void	*ft_free_malloc3d(void ***tab3d);
+int		***ft_tab3d_int(int size_y, int size_x, int size_z);
+char	*ft_print_bits(long int nbr);
 
 /***************** PRINTF ***************/
 

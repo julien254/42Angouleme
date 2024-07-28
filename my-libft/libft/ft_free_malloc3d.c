@@ -1,26 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_2d.c                                       :+:      :+:    :+:   */
+/*   ft_free_malloc3d.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
+/*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/05 05:45:25 by judetre           #+#    #+#             */
-/*   Updated: 2024/01/05 08:38:03 by judetre          ###   ########.fr       */
+/*   Created: 2024/07/07 15:38:24 by jdetre            #+#    #+#             */
+/*   Updated: 2024/07/07 15:40:07 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "libft.h"
 
-void	ft_free_2d(char **tab2d)
+void	*ft_free_malloc3d(void ***tab3d)
 {
-	int		i;
+	int	y;
+	int	x;
 
-	i = 0;
-	while (tab2d[i])
+	if (!tab3d)
+		return (NULL);
+	y = 0;
+	while (tab3d[y])
 	{
-		free(tab2d[i]);
-		i++;
+		x = 0;
+		while (tab3d[y][x])
+		{
+			free(tab3d[y][x]);
+			x++;
+		}
+		free(tab3d[y]);
+		y++;
 	}
-	free(tab2d);
+	free(tab3d);
+	return (NULL);
 }

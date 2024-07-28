@@ -1,35 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
+/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/05 05:45:25 by judetre           #+#    #+#             */
-/*   Updated: 2024/01/10 20:13:49 by judetre          ###   ########.fr       */
+/*   Created: 2022/04/12 12:47:58 by julien            #+#    #+#             */
+/*   Updated: 2022/05/28 10:34:46 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_exit(int nbFd, int nbptr, int exit_type, ...)
+int	ft_putnbr_fd(int n, int fd)
 {
-	va_list	args;
-	int		i;
+	int				i;
+	unsigned int	nb;
 
 	i = 0;
-	while (i <= nbFd)
+	if (n < 0)
 	{
-		close(va_arg(args, int));
-		i++;
+		i += ft_putchar_fd('-', fd);
+		nb = n * -1;
 	}
-	while (i <= nbFd + nbptr)
-	{
-		free(va_arg(args, void *));
-		i++;
-	}
-	if (exit_type == 1)
-		exit(EXIT_SUCCESS);
 	else
-		exit(EXIT_FAILURE);
+		nb = n;
+	if (nb <= 9)
+		i += ft_putchar_fd('0' + nb, fd);
+	else
+	{
+		i += ft_putnbr_fd(nb / 10, fd);
+		i += ft_putchar_fd('0' + nb % 10, fd);
+	}
+	return (i);
 }

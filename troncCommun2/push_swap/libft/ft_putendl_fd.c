@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free.c                                          :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
+/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/05 05:45:25 by judetre           #+#    #+#             */
-/*   Updated: 2024/01/05 08:38:28 by judetre          ###   ########.fr       */
+/*   Created: 2022/04/12 12:42:03 by julien            #+#    #+#             */
+/*   Updated: 2024/02/10 08:08:36 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-void	ft_free(int nbptr, ...)
+int	ft_putendl_fd(char *s, int fd)
 {
-	va_list	args;
-	int		i;
-
-	i = 0;
-	while (i <= nbptr)
-	{
-		free(va_arg(args, void *));
-		i++;
-	}
+	return (ft_putstr_fd(s, fd) + write(fd, "\n", 1));
 }

@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 15:42:15 by jdetre            #+#    #+#             */
-/*   Updated: 2024/06/30 17:00:54 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/07/11 12:47:35 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "so_long.h"
@@ -18,7 +18,7 @@ void	check_ber_extension(char *map)
 	ext = map + ft_strlen(map) - 4;
 	if (ft_strncmp(ext, ".ber", 4))
 	{
-		ft_printf("Error: The map isn't a .ber\n");
+		ft_putendl_fd("Error\nThe map isn't a .ber", 2);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -34,7 +34,7 @@ void	check_size_map(t_win *game)
 	game->map.map_size_x = ft_strlen(map2d[y++]);
 	while (map2d[y])
 	{
-		if (ft_strlen(map2d[y++]) != game->map.map_size_x)
+		if ((int)ft_strlen(map2d[y++]) != game->map.map_size_x)
 			exit_failure(ERR_SHAPE, STR_ERR_SHAPE, game);
 	}
 }
@@ -75,4 +75,25 @@ void	check_elem_map(t_win *game)
 		exit_failure(ERR_HERO, STR_ERR_HERO, game);
 	if (game->map.exit != 1)
 		exit_failure(ERR_EXIT, STR_ERR_EXIT, game);
+}
+
+void	check_wrong_characters(t_win *game)
+{
+	int	y;
+	int	x;
+
+	y = 0;
+	while (game->map2d[y])
+	{
+		x = 0;
+		while (game->map2d[y][x])
+		{
+			if (game->map2d[y][x] != '1' && game->map2d[y][x] != '0' \
+					&& game->map2d[y][x] != 'C' && game->map2d[y][x] != 'E' \
+						&& game->map2d[y][x] != 'P')
+				exit_failure(ERR_ELEM, STR_ERR_ELEM, game);
+			x++;
+		}
+		y++;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:14:46 by judetre           #+#    #+#             */
-/*   Updated: 2024/06/30 17:26:57 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/07/11 12:01:27 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "so_long.h"
@@ -16,6 +16,7 @@ void	check_map(t_win *game)
 	check_size_map(game);
 	check_wall_map(game);
 	count_elem_map(game);
+	check_wrong_characters(game);
 	check_elem_map(game);
 }
 
@@ -26,11 +27,12 @@ int	main(int argc, char *argv[])
 	ft_memset(&game, 0, sizeof(t_win));
 	if (argc != 2)
 	{
-		ft_printf("Error : Too many or too few arguments\n");
+		ft_putendl_fd("Error : Too many or too few arguments", 2);
 		exit(EXIT_FAILURE);
 	}
 	game.map2d = read_map(argv[1]);
 	check_map(&game);
+	check_way(&game);
 	game.mlx = mlx_init();
 	if (!game.mlx)
 		close_window(&game);

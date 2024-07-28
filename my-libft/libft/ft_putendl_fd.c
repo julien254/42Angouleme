@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 12:42:03 by julien            #+#    #+#             */
-/*   Updated: 2023/12/22 16:18:40 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/02/10 08:08:36 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 int	ft_putendl_fd(char *s, int fd)
 {
-	return (write(fd, s, ft_strlen(s)) + write(fd, "\n", 1));
+	return (ft_putstr_fd(s, fd) + write(fd, "\n", 1));
 }

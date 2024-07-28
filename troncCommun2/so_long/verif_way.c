@@ -6,120 +6,82 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 13:44:20 by jdetre            #+#    #+#             */
-/*   Updated: 2024/07/01 15:41:02 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/07/11 12:33:58 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdio.h>
-#include <stdlib.h>
+#include "so_long.h"
 
-#define WALL 999999
-#define EMPTY 999998
-#define ITEM 999997
-#define EXIT 999996
-#define START 999995
-
-typedef struct s_win {            
-	int	pos_x;
-	int	pos_y;
-	int	item;
-}               t_win;
-
-void	show_tab2d_int(int **tab2d, int size_x, int size_y)
+int	is_valid_move(int x, int y, t_win *game, int bitmask)
 {
-	int	y;
-	int	x;
+	if (game->map2d[y][x] == 'E' && bitmask != (1 << game->map.item) - 1)
+		return (0);
+	if (x < game->map.map_size_x - 1 && y < \
+			game->map.map_size_y - 1 && game->map2d[y][x] != '1')
+		return (1);
+	return (0);
+}
 
-	y = 0;
-	while (y < size_y)
+int	add_good_way_in_queue(t_win *game, t_position *pos, int *new_y, int *new_x)
+{
+	int			i;
+	long int	new_bitmask;
+
+	i = -1;
+	while (++i < 4)
 	{
-		x = 0;
-		while (x < size_x)
+		*new_x = pos->x + game->way.movements.x[i];
+		*new_y = pos->y + game->way.movements.y[i];
+		if (is_valid_move(*new_x, *new_y, game, pos->bitmask))
 		{
-			printf("%d, ", tab2d[y][x]);
-			x++;
+			new_bitmask = pos->bitmask;
+			if (game->map2d[*new_y][*new_x] == 'C')
+				new_bitmask |= get_item_bitmask(game, *new_y, *new_x);
+			if (is_visited(*new_y, *new_x, new_bitmask, game))
+				continue ;
+			game->way.queue[game->way.next_way].x = *new_x;
+			game->way.queue[game->way.next_way].y = *new_y;
+			game->way.queue[game->way.next_way].steps = pos->steps + 1;
+			game->way.queue[game->way.next_way].bitmask = new_bitmask;
+			game->way.next_way++;
+			mark_visited(*new_y, *new_x, new_bitmask, game);
 		}
-		printf("\n");
-		y++;
 	}
+	return (0);
 }
 
-
-void	set_tab2d(char **map2d, int **tab2d)
+int	verif_way(t_win *game, int start_x, int start_y)
 {
-	int	y;
-	int	x;
+	t_position	pos;
+	int			new_x;
+	int			new_y;
+	int			steps;
 
-	y = 0;
-	while (map2d[y])
+	initialize_way(game, start_x, start_y);
+	while (game->way.current_way < game->way.next_way)
 	{
-		x = 0;
-		while (map2d[y][x])
+		pos = game->way.queue[game->way.current_way];
+		game->way.current_way++;
+		if (game->map2d[pos.y][pos.x] == 'E' && pos.bitmask == \
+											(1L << game->map.item) - 1)
 		{
-			if (map2d[y][x] == '1')
-				tab2d[y][x] = WALL;
-			if (map2d[y][x] == '0')
-				tab2d[y][x] = EMPTY;
-			if (map2d[y][x] == 'C')
-				tab2d[y][x] = ITEM;
-			if (map2d[y][x] == 'E')
-				tab2d[y][x] = EXIT;
-			if (map2d[y][x] == 'P')
-				tab2d[y][x] = START;
-			x++;
+			steps = pos.steps;
+			free(game->way.queue);
+			game->way.queue = NULL;
+			game->way.visited = ft_free_malloc3d((void ***)game->way.visited);
+			return (steps);
 		}
-		y++;
+		add_good_way_in_queue(game, &pos, &new_y, &new_x);
 	}
+	free(game->way.queue);
+	game->way.queue = NULL;
+	game->way.visited = ft_free_malloc3d((void ***)game->way.visited);
+	return (-1);
 }
 
-int **make_map_int(int size_x, int size_y)
+void	check_way(t_win *game)
 {
-	int	**tab2d;
-	int	y;
-	int	x;
-
-	tab2d = (int **)malloc(sizeof(int *) * size_y);
-	if (!tab2d)
-		return (NULL);
-	y = 0;
-	while (y < size_y)
-	{
-		tab2d[y] = (int *)malloc(sizeof(int) * size_x);
-		if (!tab2d[y])
-			return (NULL);
-		y++;
-	}
-	return (tab2d);
-}
-
-int	verif_way(int **tab2d, t_win *game)
-{
-	
-}
-
-int main(int argc, char **argv)
-{
-	int	**tab2d;
-	char map[6][6] = {
-    {'1', '1', '1', '1', '1', '\0'},
-    {'1', 'P', '0', 'C', '1', '\0'},
-    {'1', '0', '1', '0', '1', '\0'},
-    {'1', 'E', '0', 'C', '1', '\0'},
-    {'1', '1', '1', '1', '1', '\0'}};
-	char *map2d[6];
-	t_win	game;
-
-	map2d[0] = map[0];
-	map2d[1] = map[1];
-	map2d[2] = map[2];
-	map2d[3] = map[3];
-	map2d[4] = map[4];
-	map2d[5] = NULL;
-	game.pos_x = 1;
-	game.pos_y = 1;
-	game.item = 2;
-
-	tab2d = make_map_int(5, 5);
-	set_tab2d((char **)map2d, tab2d);
-	show_tab2d_int(tab2d, 5, 5);
-	verif_way(tab2d, &game);
+	game->map.shortest_way = verif_way(game, game->map.hero_x, \
+													game->map.hero_y);
+	if (game->map.shortest_way == -1)
+		exit_failure(ERR_WAY, STR_ERR_WAY, game);
 }

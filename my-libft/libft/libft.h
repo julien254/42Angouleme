@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:48:19 by judetre           #+#    #+#             */
-/*   Updated: 2024/01/10 20:20:42 by judetre          ###   ########.fr       */
+/*   Updated: 2024/07/11 12:37:40 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdint.h>
 # include <stdarg.h>
 # include <fcntl.h>
+# include <stdio.h>
 
 /****************** Basic Function ****************/
 
@@ -80,9 +81,15 @@ int		ft_puthexa_fd(unsigned int nbr, int fd, int uppercase);
 int		ft_puthexa_ll_fd(size_t nbr, int fd, int uppercase);
 int		ft_puttab2_fd(char **tab, int fd);
 int		ft_put_u_nbr_fd(unsigned int n, int fd);
-char	*ft_recover_fd(char *file);
+char	**ft_recover_fd(char *file);
 char	*ft_strjoin_malloc(char *s1, char *s2);
 int		ft_tab2dlen(char **tab);
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+void	*ft_free_malloc2d(void **tab2d);
+int		**ft_tab2d_int(int size_y, int size_x);
+void	*ft_free_malloc3d(void ***tab3d);
+int		***ft_tab3d_int(int size_y, int size_x, int size_z);
+char	*ft_print_bits(long int nbr);
 
 /***************** PRINTF ***************/
 
@@ -99,7 +106,7 @@ int		ft_printf(const char *str, ...);
 /**************** GET_NEXT_LINE **********/
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 1024
 # endif
 
 typedef struct s_save
@@ -116,5 +123,4 @@ void	ft_strlcat_gnl(char *dst, char *src);
 int		if_is_endline_gnl(char *str);
 char	*ft_strdup_gnl(char *src);
 char	*free_all_gnl(char *line, char *residue);
-
 #endif

@@ -6,7 +6,7 @@
 #    By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/30 16:35:18 by jdetre            #+#    #+#              #
-#    Updated: 2024/06/30 17:21:36 by jdetre           ###   ########.fr        #
+#    Updated: 2024/07/11 12:35:20 by jdetre           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		=	so_long
 
 NAME_BONUS	=	
 
-CC			=	cc -g
+CC			=	clang
 
 CFLAGS		=	-Wall -Wextra -Werror
 
@@ -29,7 +29,10 @@ SRCS		=	so_long.c		\
 				check_map.c 	\
 				map_utils.c		\
 				pixel_utils.c	\
-				img_load.c
+				img_load.c		\
+				bitmask_utils.c	\
+				verif_way.c		\
+				init_way.c
 
 SRCS_BONUS	=	
 

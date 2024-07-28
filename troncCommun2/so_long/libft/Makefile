@@ -6,7 +6,7 @@
 #    By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/25 23:42:02 by jdetre            #+#    #+#              #
-#    Updated: 2024/02/25 11:51:56 by judetre          ###   ########.fr        #
+#    Updated: 2024/07/09 12:41:15 by jdetre           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,10 @@ SRCS		=	ft_atoi.c			\
 				ft_lstsize.c     	\
 				ft_realloc.c		\
 				ft_free_malloc2d.c  \
+				ft_tab2d_int.c		\
+				ft_free_malloc3d.c  \
+				ft_tab3d_int.c		\
+				ft_print_bits.c		\
 				ft_printf.c			\
 				get_next_line.c		\
 				get_next_line_utils.c
