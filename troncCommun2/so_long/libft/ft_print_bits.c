@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 12:34:54 by jdetre            #+#    #+#             */
-/*   Updated: 2024/07/11 12:41:54 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/07/28 13:48:16 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -28,7 +28,7 @@ int	calculate_bits_needed(long int num)
 
 char	*ft_print_bits(long int nbr)
 {
-	int		bits; 
+	int		bits;
 	char	*binary;
 	int		index;
 

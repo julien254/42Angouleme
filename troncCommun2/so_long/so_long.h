@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:16:15 by judetre           #+#    #+#             */
-/*   Updated: 2024/07/11 12:48:06 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/07/28 13:50:37 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,22 @@
 
 /************************** STRUCT FOR VERIF_WAY ****************************/
 
-typedef struct s_position {
+typedef struct s_position
+{
 	int			x;
 	int			y;
 	int			steps;
 	long int	bitmask;
 }				t_position;
 
-typedef struct s_mouvements {
+typedef struct s_mouvements
+{
 	int	x[4];
 	int	y[4];
 }				t_movements;
 
-typedef struct s_bfs_verif_way {
+typedef struct s_bfs_verif_way
+{
 	int			***visited;
 	t_movements	movements;
 	t_position	*queue;
@@ -65,7 +68,8 @@ typedef struct s_bfs_verif_way {
 
 /********************** STRUCT FOR SO_LONG *********************/
 
-typedef struct s_data {
+typedef struct s_data
+{
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -73,7 +77,8 @@ typedef struct s_data {
 	int		endian;
 }				t_data;
 
-typedef struct s_img {
+typedef struct s_img
+{
 	t_data	wall;
 	t_data	item;
 	t_data	exit;
@@ -84,7 +89,8 @@ typedef struct s_img {
 	t_data	hero_back;
 }				t_img;
 
-typedef struct s_map {
+typedef struct s_map
+{
 	int	map_size_y;
 	int	map_size_x;
 	int	hero;
@@ -98,7 +104,8 @@ typedef struct s_map {
 	int	shortest_way;
 }				t_map;
 
-typedef struct s_win {
+typedef struct s_win
+{
 	void				*mlx;
 	void				*win;
 	char				**map2d;

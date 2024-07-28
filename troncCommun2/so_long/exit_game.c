@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 15:29:37 by jdetre            #+#    #+#             */
-/*   Updated: 2024/07/09 15:48:59 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/07/28 13:48:43 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "so_long.h"
@@ -69,6 +69,6 @@ int	close_window(t_win *game)
 void	exit_failure(int err, char *str_err, t_win *game)
 {
 	game->map.err_map = err;
-	ft_putendl_fd(str_err, 2); 
+	ft_putendl_fd(str_err, 2);
 	close_window(game);
 }

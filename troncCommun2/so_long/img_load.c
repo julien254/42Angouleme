@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 16:06:22 by jdetre            #+#    #+#             */
-/*   Updated: 2024/07/09 14:37:40 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/07/28 13:49:30 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "so_long.h"
@@ -88,13 +88,13 @@ void	get_addr_decor(t_win *game)
 
 void	load_img(t_win *game)
 {
-	load_hero(game, ELEM_SIZE_X, ELEM_SIZE_Y); 
+	load_hero(game, ELEM_SIZE_X, ELEM_SIZE_Y);
 	get_addr_hero(game);
-	load_decor(game, ELEM_SIZE_X, ELEM_SIZE_Y); 
+	load_decor(game, ELEM_SIZE_X, ELEM_SIZE_Y);
 	get_addr_decor(game);
-	add_background_img(game, &game->img.hero); 
-	add_background_img(game, &game->img.hero_left); 
-	add_background_img(game, &game->img.hero_right); 
+	add_background_img(game, &game->img.hero);
+	add_background_img(game, &game->img.hero_left);
+	add_background_img(game, &game->img.hero_right);
 	add_background_img(game, &game->img.hero_back);
 	add_background_img(game, &game->img.item);
 	add_background_img(game, &game->img.exit);
