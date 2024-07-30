@@ -6,7 +6,7 @@
 #    By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/25 23:42:02 by jdetre            #+#    #+#              #
-#    Updated: 2024/07/09 12:41:15 by jdetre           ###   ########.fr        #
+#    Updated: 2024/07/30 16:54:25 by judetre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		= libft.a
 
 CC			= clang
 
-CFLAGS		= -Wall -Wextra -Werror -I.
+CFLAGS		= -Wall -Wextra -Werror -I. -g
 
 SRCS		=	ft_atoi.c			\
 				ft_bzero.c			\

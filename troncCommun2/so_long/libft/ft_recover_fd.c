@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 00:16:55 by julien            #+#    #+#             */
-/*   Updated: 2024/07/09 13:50:04 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/07/30 16:57:41 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static void	rm_return_line(char *str)
 {
+	if (!str)
+		return ;
 	while (*str != '\n' && *str)
 		str++;
 	*str = 0;
