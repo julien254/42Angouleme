@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2024/08/02 07:21:02 by judetre          ###   ########.fr        #
+#    Updated: 2024/08/02 10:07:44 by judetre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		=	push_swap
 
 NAME_BONUS	=	
 
-CC			=	clang -g
+CC			=	clang
 
 CFLAGS		=	-Wall -Wextra -Werror
 
@@ -27,7 +27,10 @@ SRCS		=	push_swap.c		\
 				moves.c			\
 				stack_utils.c	\
 				bit_utils.c		\
-				sort.c
+				sort.c			\
+				lst_stack.c		\
+				normalize.c		\
+				utils.c
 SRCS_BONUS	=	
 
 OBJS		= 	${SRCS:.c=.o}

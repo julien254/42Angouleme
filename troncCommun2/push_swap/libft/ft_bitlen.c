@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 11:09:20 by jdetre            #+#    #+#             */
-/*   Updated: 2024/07/27 11:09:49 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/08/02 10:13:55 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,3 @@ int	ft_bitlen(long int num)
 	}
 	return (count);
 }
-

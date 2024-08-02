@@ -6,16 +6,31 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 12:58:37 by jdetre            #+#    #+#             */
-/*   Updated: 2024/08/02 07:58:14 by judetre          ###   ########.fr       */
+/*   Updated: 2024/08/02 10:12:13 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
+
+void	free_stack(t_stack *stack)
+{
+	t_stack	*temp;
+	t_stack	*current;
+
+	current = stack;
+	while (current)
+	{
+		temp = current->next;
+		free(current);
+		current = temp;
+	}
+}
+
 int	index_min(t_stack **stack)
 {
-	int i;
-	int min;
-	int index_min;
-	t_stack *current;
+	int		i;
+	int		min;
+	int		index_min;
+	t_stack	*current;
 
 	current = *stack;
 	min = current->index;
@@ -33,9 +48,9 @@ int	index_min(t_stack **stack)
 	return (index_min);
 }
 
-int     stack_size(t_stack *stack)
+int	stack_size(t_stack *stack)
 {
-	int size;
+	int	size;
 
 	size = 0;
 	while (stack)
@@ -46,7 +61,7 @@ int     stack_size(t_stack *stack)
 	return (size);
 }
 
-t_stack *stack_before_last(t_stack *stack)
+t_stack	*stack_before_last(t_stack *stack)
 {
 	int	size;
 	int	i;
@@ -59,6 +74,17 @@ t_stack *stack_before_last(t_stack *stack)
 	{
 		stack = stack->next;
 		i++;
+	}
+	return (stack);
+}
+
+t_stack	*stack_last(t_stack *stack)
+{
+	while (stack)
+	{
+		if (stack->next == NULL)
+			return (stack);
+		stack = stack->next;
 	}
 	return (stack);
 }

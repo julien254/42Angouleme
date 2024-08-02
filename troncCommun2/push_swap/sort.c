@@ -6,13 +6,14 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 14:03:56 by jdetre            #+#    #+#             */
-/*   Updated: 2024/08/02 08:23:47 by judetre          ###   ########.fr       */
+/*   Updated: 2024/08/02 10:13:32 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
+
 void	sort_3_elem(t_stack **stack)
 {
-	int min;
+	int	min;
 
 	min = index_min(stack);
 	if (min == 0)
@@ -41,7 +42,7 @@ void	sort_3_elem(t_stack **stack)
 
 void	sort_4_elem(t_stack **stack_a, t_stack **stack_b)
 {
-	int min;
+	int	min;
 
 	min = index_min(stack_a);
 	if (min == 1)
@@ -61,7 +62,7 @@ void	sort_4_elem(t_stack **stack_a, t_stack **stack_b)
 
 void	sort_5_elem(t_stack **stack_a, t_stack **stack_b)
 {
-	int min;
+	int	min;
 
 	min = index_min(stack_a);
 	if (min == 1)

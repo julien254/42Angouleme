@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 11:45:16 by jdetre            #+#    #+#             */
-/*   Updated: 2024/07/27 16:24:37 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/08/02 10:12:33 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
@@ -53,8 +53,8 @@ void	rev_rotate(t_stack **stack)
 
 void	swap(t_stack **stack)
 {
-	t_stack *tmp;
-	t_stack *tmp2;
+	t_stack	*tmp;
+	t_stack	*tmp2;
 
 	if (!*stack || !(*stack)->next)
 		return ;
