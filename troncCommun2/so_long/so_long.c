@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:14:46 by judetre           #+#    #+#             */
-/*   Updated: 2024/07/11 12:01:27 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/07/31 12:00:11 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "so_long.h"
@@ -32,7 +32,8 @@ int	main(int argc, char *argv[])
 	}
 	game.map2d = read_map(argv[1]);
 	check_map(&game);
-	check_way(&game);
+	game.way.map2d_int = map2d_char_to_int(&game);
+	verif_way(&game, game.map.hero_x, game.map.hero_y, 0);
 	game.mlx = mlx_init();
 	if (!game.mlx)
 		close_window(&game);

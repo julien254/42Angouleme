@@ -6,10 +6,32 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 12:58:37 by jdetre            #+#    #+#             */
-/*   Updated: 2024/07/27 13:11:50 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/08/02 07:58:14 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
+int	index_min(t_stack **stack)
+{
+	int i;
+	int min;
+	int index_min;
+	t_stack *current;
+
+	current = *stack;
+	min = current->index;
+	i = 0;
+	while (current)
+	{
+		if (min >= current->index)
+		{
+			min = current->index;
+			index_min = i;
+		}
+		current = current->next;
+		i++;
+	}
+	return (index_min);
+}
 
 int     stack_size(t_stack *stack)
 {

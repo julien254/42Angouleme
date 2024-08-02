@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 16:59:39 by jdetre            #+#    #+#             */
-/*   Updated: 2024/07/30 17:06:06 by judetre          ###   ########.fr       */
+/*   Updated: 2024/08/02 09:28:05 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "so_long.h"
@@ -19,7 +19,7 @@ char	**read_map(char *file)
 	map2d = ft_recover_fd(file);
 	if (!map2d)
 	{
-		perror("Error\n");
+		perror("Error ");
 		exit(EXIT_FAILURE);
 	}
 	if (!*map2d)

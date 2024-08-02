@@ -6,7 +6,7 @@
 #    By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/30 16:35:18 by jdetre            #+#    #+#              #
-#    Updated: 2024/07/30 16:52:07 by judetre          ###   ########.fr        #
+#    Updated: 2024/07/31 16:33:04 by judetre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME_BONUS	=
 
 CC			=	clang
 
-CFLAGS		=	-Wall -Wextra -Werror -g
+CFLAGS		=	-Wall -Wextra -Werror
 
 INCLUDE		=	-I.
 
@@ -25,14 +25,15 @@ LIB			=	-L${LIBPATH} -lft -L${MLXPATH} -lmlx_Linux -lXext -lX11 -lm -lz
 SRCS		=	so_long.c		\
 				so_long_loop.c	\
 				so_long_hook.c	\
+				so_long_way.c	\
 				exit_game.c		\
 				check_map.c 	\
 				map_utils.c		\
 				pixel_utils.c	\
 				img_load.c		\
-				bitmask_utils.c	\
-				verif_way.c		\
-				init_way.c
+				way_utils.c		\
+				lst_utils.c		\
+				lst_near_utils.c
 
 SRCS_BONUS	=	
 

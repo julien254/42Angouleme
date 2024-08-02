@@ -6,7 +6,7 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 16:14:22 by jdetre            #+#    #+#             */
-/*   Updated: 2024/07/27 15:52:34 by jdetre           ###   ########.fr       */
+/*   Updated: 2024/08/02 09:28:29 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void    swap(t_stack **stack);
 t_stack *stack_last(t_stack *stack);
 t_stack	*stack_before_last(t_stack *stack);
 int		stack_size(t_stack *stack);
+int		index_min(t_stack **stack);
 
 /************************ BIT_UTILS *************************/
 

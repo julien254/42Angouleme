@@ -6,7 +6,7 @@
 /*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:16:15 by judetre           #+#    #+#             */
-/*   Updated: 2024/07/28 13:50:37 by judetre          ###   ########.fr       */
+/*   Updated: 2024/07/31 16:48:16 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,68 +40,69 @@
 # define STR_ERR_IMG "Error\nCannot load one or more image"
 # define ERR_ELEM 18
 # define STR_ERR_ELEM "Error\nThe map contains bad characters"
+# define ERR_WAY_EXIT 19
+# define STR_ERR_WAY_EXIT "Error\nThe exit is not accessible."
+# define ERR_WAY_ITEM 20
+# define STR_ERR_WAY_ITEM "Error\nOne or more item is not accessible."
 
-/************************** STRUCT FOR VERIF_WAY ****************************/
+/********************** STRUCT FOR VERIF_WAY *********************/
 
-typedef struct s_position
+typedef struct s_lst_near
 {
-	int			x;
-	int			y;
-	int			steps;
-	long int	bitmask;
-}				t_position;
+	int					x;
+	int					y;
+	int					*value;
+	struct s_lst_near	*next;
+}		t_lst_near;
 
-typedef struct s_mouvements
+typedef struct s_lst_lst
 {
-	int	x[4];
-	int	y[4];
-}				t_movements;
+	t_lst_near			*near;
+	struct s_lst_lst	*next;
+}		t_lst_lst;
 
-typedef struct s_bfs_verif_way
+typedef struct s_way
 {
-	int			***visited;
-	t_movements	movements;
-	t_position	*queue;
-	int			current_way;
-	int			next_way;
-}				t_bfs_verif_way;
+	int					**map2d_int;
+	int					item_found;
+	int					exit_found;
+}				t_way;
 
 /********************** STRUCT FOR SO_LONG *********************/
 
 typedef struct s_data
 {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
+	void				*img;
+	char				*addr;
+	int					bits_per_pixel;
+	int					line_length;
+	int					endian;
 }				t_data;
 
 typedef struct s_img
 {
-	t_data	wall;
-	t_data	item;
-	t_data	exit;
-	t_data	floor;
-	t_data	hero;
-	t_data	hero_right;
-	t_data	hero_left;
-	t_data	hero_back;
+	t_data				wall;
+	t_data				item;
+	t_data				exit;
+	t_data				floor;
+	t_data				hero;
+	t_data				hero_right;
+	t_data				hero_left;
+	t_data				hero_back;
 }				t_img;
 
 typedef struct s_map
 {
-	int	map_size_y;
-	int	map_size_x;
-	int	hero;
-	int	hero_direction;
-	int	hero_y;
-	int	hero_x;
-	int	count_move;
-	int	item;
-	int	exit;
-	int	err_map;
-	int	shortest_way;
+	int					map_size_y;
+	int					map_size_x;
+	int					hero;
+	int					hero_direction;
+	int					hero_y;
+	int					hero_x;
+	int					count_move;
+	int					item;
+	int					exit;
+	int					err_map;
 }				t_map;
 
 typedef struct s_win
@@ -112,11 +113,13 @@ typedef struct s_win
 	int					exit_success;
 	t_map				map;
 	t_img				img;
-	t_bfs_verif_way		way;
+	t_way				way;
+	t_lst_lst			*lst;
 }				t_win;
 
 /********************************* EXIT_GAME ********************************/
 
+void			free_lst(t_lst_lst *lst);
 void			free_img(t_win *game);
 int				close_window(t_win *game);
 void			exit_failure(int err, char *str_err, t_win *game);
@@ -157,19 +160,20 @@ int				key_hook(int keycode, t_win *game);
 
 /******************************** VERIF_WAY *******************************/
 
-void			check_way(t_win *game);
+int				**map2d_char_to_int(t_win *game);
+void			verif_way(t_win *game, int x, int y, int step);
+void			free_lst(t_lst_lst *lst);
 
-/******************************* BITMASK_UTILS *************************/
+/******************************** LST_UTLIS *******************************/
 
-void			mark_visited(int y, int x, long int bitmask, t_win *game);
-int				is_visited(int y, int x, long int bitmask, t_win *game);
-int				get_item_bitmask(t_win *game, int y, int x);
+t_lst_lst		*lst_lstlast(t_lst_lst *lst);
+void			lstlstadd_back(t_lst_lst **lst, t_lst_lst *neW);
+t_lst_lst		*lst_lstnew(t_lst_near **near, t_win *game);
 
-/******************************* INIT_WAY *************************/
+/******************************** LST_NEAR_UTLIS ***************************/
 
-void			init_way_mouvements(t_win *game);
-void			init_way_queue(t_win *game, int start_y, int start_x);
-void			init_way_visited(t_win *game, int start_y, int start_x);
-void			initialize_way(t_win *game, int start_x, int start_y);
+t_lst_near		*lstlast(t_lst_near *lst);
+void			lstadd_back(t_lst_near **lst, t_lst_near *new);
+t_lst_near		*lstnew(int y, int x, int *value, t_win *game);
 
 #endif /* ifndef SO_LONG_H */

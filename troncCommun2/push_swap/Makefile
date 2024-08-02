@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2024/07/27 14:05:16 by jdetre           ###   ########.fr        #
+#    Updated: 2024/08/02 07:21:02 by judetre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		=	push_swap
 
 NAME_BONUS	=	
 
-CC			=	gcc -g
+CC			=	clang -g
 
 CFLAGS		=	-Wall -Wextra -Werror
 

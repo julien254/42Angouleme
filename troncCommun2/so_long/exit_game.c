@@ -6,10 +6,35 @@
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 15:29:37 by jdetre            #+#    #+#             */
-/*   Updated: 2024/07/28 13:48:43 by judetre          ###   ########.fr       */
+/*   Updated: 2024/07/31 16:39:13 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "so_long.h"
+
+void	free_lst(t_lst_lst *lst)
+{
+	t_lst_lst	*lst_tmp;
+	t_lst_near	*near_tmp;
+
+	if (lst)
+	{
+		while (lst)
+		{
+			if (lst->near)
+			{
+				while (lst->near)
+				{
+					near_tmp = lst->near->next;
+					free(lst->near);
+					lst->near = near_tmp;
+				}
+			}
+			lst_tmp = lst->next;
+			free(lst);
+			lst = lst_tmp;
+		}
+	}
+}
 
 void	free_img(t_win *game)
 {
@@ -33,26 +58,16 @@ void	free_img(t_win *game)
 
 void	print_victory_str(t_win *game)
 {
-	if (game->map.count_move == game->map.shortest_way)
-	{
-		ft_printf("Congratulation, You found the shortest path and won ");
-		ft_printf("in %d moves !!!\n", game->map.count_move);
-	}
-	else
-	{
-		ft_printf("Congratulation, won in %d moves", game->map.count_move);
-		ft_printf(", but the shortest path is %d moves =)\n", \
-				game->map.shortest_way);
-	}
+	ft_printf("Congratulation, You won ");
+	ft_printf("in %d moves !!!\n", game->map.count_move);
 }
 
 int	close_window(t_win *game)
 {
 	free_img(game);
 	ft_free_malloc2d((void **)game->map2d);
-	if (game->way.queue)
-		free(game->way.queue);
-	ft_free_malloc3d((void ***)game->way.visited);
+	ft_free_malloc2d((void **)game->way.map2d_int);
+	free_lst(game->lst);
 	if (game->win)
 		mlx_destroy_window(game->mlx, game->win);
 	if (game->mlx)
