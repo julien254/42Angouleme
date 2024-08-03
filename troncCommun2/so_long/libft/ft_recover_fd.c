@@ -6,7 +6,7 @@
 /*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 00:16:55 by julien            #+#    #+#             */
-/*   Updated: 2024/07/30 16:57:41 by judetre          ###   ########.fr       */
+/*   Updated: 2024/08/03 09:11:27 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ static void	rm_return_line(char *str)
 	*str = 0;
 }
 
+char	**close_fd(int fd)
+{
+	close(fd);
+	return (NULL);
+}
+
 char	**ft_recover_fd(char *file)
 {
 	int		fd;
@@ -32,7 +38,7 @@ char	**ft_recover_fd(char *file)
 		return (NULL);
 	fd_2d = malloc(sizeof(char *) * 1);
 	if (!fd_2d)
-		return (NULL);
+		return (close_fd(fd));
 	i = 0;
 	fd_2d[i] = get_next_line(fd);
 	rm_return_line(fd_2d[i]);
@@ -41,11 +47,11 @@ char	**ft_recover_fd(char *file)
 		fd_2d = ft_realloc(fd_2d, sizeof(char *) * (1 + i), sizeof(char *) * \
 																(1 + i + 1));
 		if (!fd_2d)
-			return (NULL);
-		i++;
-		fd_2d[i] = get_next_line(fd);
+			return (close_fd(fd));
+		fd_2d[++i] = get_next_line(fd);
 		if (fd_2d[i])
 			rm_return_line(fd_2d[i]);
 	}
+	close(fd);
 	return (fd_2d);
 }
