@@ -6,7 +6,7 @@
 #    By: julien <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 14:28:17 by julien            #+#    #+#              #
-#    Updated: 2024/08/02 10:07:44 by judetre          ###   ########.fr        #
+#    Updated: 2024/08/04 16:03:33 by judetre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,9 @@ NAME		=	push_swap
 
 NAME_BONUS	=	
 
-CC			=	clang
+CC			=	gcc
 
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -g -ffunction-sections -Wl,--gc-sections -Wl,--print-gc-sections
 
 INCLUDE		=	-I.
 
