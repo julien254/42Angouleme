@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_puttab2_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
+/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/01 14:47:57 by jdetre            #+#    #+#             */
-/*   Updated: 2024/08/15 07:34:45 by judetre          ###   ########.fr       */
+/*   Created: 2022/09/16 08:58:12 by julien            #+#    #+#             */
+/*   Updated: 2024/02/10 08:07:06 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strcmp(char *s1, char *s2)
+#include "libft.h"
+
+int	ft_puttab2_fd(char **tab, int fd)
 {
 	int	i;
+	int	count;
 
+	if (!tab || !tab[0])
+		return (0);
 	i = 0;
-	while (s1[i] && s2[i])
-	{
-		if (s1[i] < s2[i])
-			return (-1);
-		else if (s1[i] > s2[i])
-			return (1);
-		i++;
-	}
-	return (0);
+	count = 0;
+	while (tab[i])
+		count += ft_putendl_fd(tab[i++], fd);
+	count += ft_putendl_fd(tab[i], fd);
+	return (count);
 }

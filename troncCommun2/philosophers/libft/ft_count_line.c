@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_count_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
+/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/01 14:47:57 by jdetre            #+#    #+#             */
-/*   Updated: 2024/08/15 07:34:45 by judetre          ###   ########.fr       */
+/*   Created: 2022/09/28 16:03:49 by julien            #+#    #+#             */
+/*   Updated: 2024/02/11 17:55:01 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strcmp(char *s1, char *s2)
+int	ft_count_line(char *str)
 {
 	int	i;
+	int	count;
 
 	i = 0;
-	while (s1[i] && s2[i])
+	count = 0;
+	while (str[i])
 	{
-		if (s1[i] < s2[i])
-			return (-1);
-		else if (s1[i] > s2[i])
-			return (1);
-		i++;
+		if (str[i++] == '\n')
+			count++;
 	}
-	return (0);
+	if (i == 0)
+		return (0);
+	return (count + 1);
 }

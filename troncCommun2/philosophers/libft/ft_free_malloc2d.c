@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_free_malloc2d.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
+/*   By: judetre <julien.detre.dev@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/01 14:47:57 by jdetre            #+#    #+#             */
-/*   Updated: 2024/08/15 07:34:45 by judetre          ###   ########.fr       */
+/*   Created: 2024/02/23 12:01:32 by judetre           #+#    #+#             */
+/*   Updated: 2024/07/01 12:38:02 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-int	ft_strcmp(char *s1, char *s2)
+void	*ft_free_malloc2d(void **tab2d)
 {
 	int	i;
 
+	if (!tab2d)
+		return (NULL);
 	i = 0;
-	while (s1[i] && s2[i])
+	while (tab2d[i])
 	{
-		if (s1[i] < s2[i])
-			return (-1);
-		else if (s1[i] > s2[i])
-			return (1);
+		free(tab2d[i]);
 		i++;
 	}
-	return (0);
+	free(tab2d);
+	return (NULL);
 }

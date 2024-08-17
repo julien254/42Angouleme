@@ -1,27 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_print_bits.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/01 14:47:57 by jdetre            #+#    #+#             */
-/*   Updated: 2024/08/15 07:34:45 by judetre          ###   ########.fr       */
+/*   Created: 2024/07/09 12:34:54 by jdetre            #+#    #+#             */
+/*   Updated: 2024/08/02 10:14:22 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-int	ft_strcmp(char *s1, char *s2)
+char	*ft_print_bits(long int nbr)
 {
-	int	i;
+	int		bits;
+	char	*binary;
+	int		index;
 
-	i = 0;
-	while (s1[i] && s2[i])
+	bits = ft_bitlen(nbr);
+	binary = (char *)malloc(bits + 1);
+	if (binary == NULL)
 	{
-		if (s1[i] < s2[i])
-			return (-1);
-		else if (s1[i] > s2[i])
-			return (1);
-		i++;
+		perror("Error allocate memory");
+		return (NULL);
 	}
-	return (0);
+	binary[bits] = '\0';
+	index = bits - 1;
+	while (index >= 0)
+	{
+		if (nbr & 1)
+			binary[index] = '1';
+		else
+			binary[index] = '0';
+		nbr >>= 1;
+		index--;
+	}
+	return (binary);
 }

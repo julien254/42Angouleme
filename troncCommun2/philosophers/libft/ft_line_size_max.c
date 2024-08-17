@@ -1,27 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_line_size_max.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
+/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/01 14:47:57 by jdetre            #+#    #+#             */
-/*   Updated: 2024/08/15 07:34:45 by judetre          ###   ########.fr       */
+/*   Created: 2022/09/28 17:27:27 by julien            #+#    #+#             */
+/*   Updated: 2024/02/11 18:40:17 by judetre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strcmp(char *s1, char *s2)
+int	ft_line_size_max(char *str)
 {
 	int	i;
+	int	size_max;
+	int	j;
 
+	size_max = 0;
 	i = 0;
-	while (s1[i] && s2[i])
+	if (!str)
+		return (0);
+	while (str[i])
 	{
-		if (s1[i] < s2[i])
-			return (-1);
-		else if (s1[i] > s2[i])
-			return (1);
-		i++;
+		j = 0;
+		while (str[i++] != '\n')
+			j++;
+		if (j > size_max)
+			size_max = j;
 	}
-	return (0);
+	return (j);
 }

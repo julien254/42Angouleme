@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_putadd_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
+/*   By: jdetre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/01 14:47:57 by jdetre            #+#    #+#             */
-/*   Updated: 2024/08/15 07:34:45 by judetre          ###   ########.fr       */
+/*   Created: 2022/05/28 08:34:43 by jdetre            #+#    #+#             */
+/*   Updated: 2022/05/31 14:49:26 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strcmp(char *s1, char *s2)
+#include "libft.h"
+
+int	ft_putadd_fd(size_t hexa, int fd)
 {
 	int	i;
 
 	i = 0;
-	while (s1[i] && s2[i])
-	{
-		if (s1[i] < s2[i])
-			return (-1);
-		else if (s1[i] > s2[i])
-			return (1);
-		i++;
-	}
-	return (0);
+	if (!hexa)
+		return (write(fd, "(nil)", 5));
+	ft_putstr_fd("0x", fd);
+	i += ft_puthexa_ll_fd(hexa, fd, 0);
+	return (i + 2);
 }

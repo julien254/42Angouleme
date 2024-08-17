@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_put_u_nbr_fd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdetre <julien.detre.dev@gmail.com>        +#+  +:+       +#+        */
+/*   By: julien <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/01 14:47:57 by jdetre            #+#    #+#             */
-/*   Updated: 2024/08/15 07:34:45 by judetre          ###   ########.fr       */
+/*   Created: 2022/04/12 12:47:58 by julien            #+#    #+#             */
+/*   Updated: 2022/05/28 07:48:04 by jdetre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strcmp(char *s1, char *s2)
+#include "libft.h"
+
+int	ft_put_u_nbr_fd(unsigned int n, int fd)
 {
 	int	i;
 
 	i = 0;
-	while (s1[i] && s2[i])
+	if (n <= 9)
+		i += ft_putchar_fd('0' + n, fd);
+	else
 	{
-		if (s1[i] < s2[i])
-			return (-1);
-		else if (s1[i] > s2[i])
-			return (1);
-		i++;
+		i += ft_putnbr_fd(n / 10, fd);
+		i += ft_putchar_fd('0' + n % 10, fd);
 	}
-	return (0);
+	return (i);
 }
